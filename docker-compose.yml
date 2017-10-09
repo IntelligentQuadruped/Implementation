@@ -1,0 +1,11 @@
+
+version: "2"
+services:
+  base:
+    build: ./
+    container_name: intelligent_quadruped
+    volumes:
+      - ./:/project
+    ports:
+      - "80:80"
+    command: start
