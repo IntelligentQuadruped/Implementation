@@ -5,7 +5,7 @@ services:
     build: ./
     container_name: intelligent_quadruped
     volumes:
-      - ./:/project
+      - ./:/main
     ports:
       - "80:80"
     command: start
