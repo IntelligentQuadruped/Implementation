@@ -37,10 +37,10 @@ class Robot(object):
         Controls main body translation.
         Converts command input to 8 byte integer.
         Takes arguments as follows:
-            behavior    [int]       0 to 9,
-            forward     [float]  -0.9 to 0.9,
-            turn        [float]  -0.9 to 0.9,
-            height      [float]  -0.9 to 0.9
+            behavior    [int]                      0 to 9,
+            forward     [m/s]                   -0.9 to 0.9,
+            turn        [rad/s]                 -0.9 to 0.9,
+            height      [% relative to normal]  -0.9 to 0.9
         """
         new_command = list("90000000")
 
@@ -65,15 +65,43 @@ class Robot(object):
         
         # Sending new command string
         self.ser.write(str.encode(str(new_command)))
-
-    def look(self, **kwargs):
-        """ 
-        --- Under development ---
-        Controls the field of vision by rotating head. 
-        Takes arguments as follows:
-        keyword     =   [float] value
-        tilt:
-        turn: 
-        """
-        pass
     
+if __name__ == '__main__':
+    """
+    For example code see below.
+    
+    Test routine: 
+     - walk forward 3sec, 
+     - walk at higher standing height normal height 2sec, 
+     - sit 2 sec,
+     - return to starting position
+    """
+    import time # for consistency
+
+    # different for every computer
+    PORT = '/dev/tty.usbserial-DN01QALN' 
+    BAUDERATE = 115200
+    TIMEOUT = 1
+    obj = Robot()
+    obj.connect(PORT,BAUDERATE,TIMEOUT)
+    print(" >>> START TEST SEQUENCE <<<")
+    print(">>> WALK <<<")
+    for _ in range(30):
+        obj.command(forward=0.3)
+        time.sleep(0.1)
+    print(">>> HIGH WALK <<<")
+    for _ in range(20):
+        obj.command(forward=0.2,height=0.3)
+        time.sleep(0.1)
+    print(">>> SIT <<<")
+    for _ in range (20):
+        obj.command(height = -.9)
+        time.sleep(0.1)
+    print(">>> STAND <<<")
+    for _ in range (20):
+        obj.command()
+        time.sleep(0.1)
+    
+    obj.disconnect()
+    print(">>> TEST COMPLETE <<<")
+
