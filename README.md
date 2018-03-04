@@ -7,13 +7,14 @@ High-level control commands for the quadruped.
  - [x] object terminal testing
  - [x] object robot testing
 #### Head unit control:
- - [ ] add control code
+ - [x] add control code
  - [ ] terminal testing of control code
  - [ ] physical testing of control code
 
 ## Setup
 ### Requirements:
 - python3
+- RPi ```sudo apt-get -y install python3-rpi.gpio``` (only for robot_dev.py)
 - pyserial ```pip3 install pyserial```
 - robot.py
 
@@ -46,12 +47,12 @@ for _ in range(30):
 
 print(">>> HIGH WALK <<<")
 for _ in range(20):
-    obj.command(forward=0.2,height=0.3)
+    obj.command(forward=0.2, height=0.3)
     time.sleep(0.1)
 
 print(">>> SIT <<<")
 for _ in range (20):
-    obj.command(height = -.9)
+    obj.command(height=-.9)
     time.sleep(0.1)
 
 print(">>> STAND <<<")
