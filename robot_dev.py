@@ -3,9 +3,8 @@ import RPi.GPIO as GPIO
 import time
 
 # Global Constants
-CYCLES = 2
-DEBUG = False
-DEBUG_CODE = 'esd'
+CONVERSION_FACTOR_TURN = 4.44 #steps per degree
+CONVERSION_FACTOR_TILT = 20.0 #steps per degree
 
 class Robot(object):
     """
@@ -18,16 +17,18 @@ class Robot(object):
         self.MOTOR_DELAY = 0.02 #sec
 
         # setup pins for rotation
-        self.STEP_PIN_1 = 13
+        self.STEP_PIN_1 = 2
         self.STEP_PIN_2 = 14
-        self.DIRECTION_PIN_1 = 15
-        self.DIRECTION_PIN_2 = 16
-        self.ENABLE_PIN_1 = 17
-        self.ENABLE_PIN_2 = 18
+        self.DIRECTION_PIN_1 = 3
+        self.DIRECTION_PIN_2 = 15
+        self.ENABLE_PIN_1 = 4
+        self.ENABLE_PIN_2 = 17
 
         # starting head position
         self.turn_angle = 0 #deg
         self.tilt_angle = 0 #deg
+        self.turn_steps = 0 # count of steps from neutral
+        self.tilt_steps = 0 # count of steps from neutral
 
         return
 
@@ -125,7 +126,7 @@ class Robot(object):
         
         return 
 
-    def deg2step(self, degrees):
+    def deg2step(self, degrees, CONVERSION_FACTOR):
         """
         Converts number of degrees to number of steps and step direction.
 
@@ -136,7 +137,6 @@ class Robot(object):
         """
         # assuming that LOW goes left and HIGH turns right
         direction = GPIO.LOW if degrees <= 0 else GPIO.HIGH
-        CONVERSION_FACTOR = 1.0
         steps = round(CONVERSION_FACTOR*degrees,0) # rounding to next integer
         steps = abs(int(steps))                    # convert to positive int type
         return (direction,steps)
@@ -145,11 +145,13 @@ class Robot(object):
     def look(self, **kwargs):
         """ 
         --- Under development ---
+        Add max degree safety feature
+        -----------------------------
         Controls the field of vision by rotating head. 
         Takes arguments as follows:
         keyword:    [int] value
-        tilt:       [deg]  -13 to 13 
-        turn:       [deg] -135 to 135
+        tilt:       [deg]  -45 to 45 
+        turn:       [deg] -160 to 160
         """
         steps_turn = 0
         direct_turn = None
@@ -159,13 +161,26 @@ class Robot(object):
 
         for key in kwargs:
             if key == 'turn':
+                if abs(kwargs[key]) > 160:
+                    print("Degrees of head rotation out of bounds. \n \\
+                    Valid interval: [-135, 135]")
+                    return
                 degrees = kwargs[key] - self.turn_angle
-                direct_turn, steps_turn = deg2step(degrees)
-                self.turn_angle = kwargs[key]
+                direct_turn, steps_turn = deg2step(degrees, CONVERSION_FACTOR_TURN)
+                self.turn_steps = self.turn_steps + (-1*steps_turn) \
+                                if degrees < 0 else self.turn_steps + steps_turn
+                self.turn_angle = self.turn_steps / CONVERSION_FACTOR_TURN
             elif key == 'tilt':
+                if abs(kwargs[key]) > 45:
+                    print("Degrees of head rotation out of bounds. \n \\
+                    Valid interval: [-135, 135]")
+                    return
                 degrees = kwargs[key] - self.tilt_angle
-                direct_tilt, steps_tilt = deg2step(degrees)
-                self.tilt_angle = kwargs[key]
+                direct_tilt, steps_tilt = deg2step(degrees, CONVERSION_FACTOR_TILT)
+                self.tilt_steps = self.tilt_steps + (-1*steps_tilt) \
+                                if degrees < 0 else self.tilt_steps + steps_tilt
+                self.tilt_angle = self.tilt_steps / CONVERSION_FACTOR_TILT
+                
             else
                 print("ERROR: Invalid command input.")
 
@@ -201,14 +216,15 @@ if __name__ == '__main__':
      -  return to starting position
     """
     # different for every computer
-    PORT = '/dev/tty.usbserial-DN01QALN' 
+    PORT = '/dev/ttyUSB0' # Realsense CPU
+    # PORT = '/dev/tty.usbserial-DN01QALN' # Jan's MB
     BAUDERATE = 115200
     TIMEOUT = 1
     obj = Robot()
     obj.connect(PORT,BAUDERATE,TIMEOUT)
     print(" >>> START TEST SEQUENCE <<<")
     print(">>> WALK & LOOK SLIGHTLY RIGHT, UP <<<")
-    obj.look(turn=30,tilt=5)
+    obj.look(turn=90,tilt=35)
     for _ in range(30):
         obj.command(forward=0.3)
         time.sleep(0.1)
