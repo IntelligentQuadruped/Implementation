@@ -3,8 +3,8 @@ import RPi.GPIO as GPIO
 import time
 
 # Global Constants
-CONVERSION_FACTOR_TURN = 4.44 #steps per degree
-CONVERSION_FACTOR_TILT = 20.0 #steps per degree
+CONVERSION_FACTOR_TURN = 2.22 #steps per degree
+CONVERSION_FACTOR_TILT = 10.0 #steps per degree
 
 class Robot(object):
     """
@@ -14,15 +14,15 @@ class Robot(object):
     
     def __init__(self):
         # Setting time to pause between steps of stepper motor
-        self.MOTOR_DELAY = 0.02 #sec
+        self.MOTOR_DELAY = 0.01 #sec
 
         # setup pins for rotation
-        self.STEP_PIN_1 = 2
-        self.STEP_PIN_2 = 14
-        self.DIRECTION_PIN_1 = 3
-        self.DIRECTION_PIN_2 = 15
-        self.ENABLE_PIN_1 = 4
-        self.ENABLE_PIN_2 = 17
+        self.STEP_PIN_TURN = 2
+        self.STEP_PIN_TILT = 14
+        self.DIRECTION_PIN_TURN = 3
+        self.DIRECTION_PIN_TILT = 15
+        self.ENABLE_PIN_TURN = 4
+        self.ENABLE_PIN_TILT = 17
 
         # starting head position
         self.turn_angle = 0 #deg
@@ -32,7 +32,7 @@ class Robot(object):
 
         return
 
-    def connect(self, usb_port_address, bauderate, time_out = 1):
+    def connect(self, usb_port_address, bauderate, time_out = 1, head = True):
         """
         Sets up the initial serial communication connection
         """
@@ -40,20 +40,21 @@ class Robot(object):
                                 bauderate, 
                                 timeout = time_out)
         
-        # Head control via pin communicatoin
-        GPIO.setmode(GPIO.BCM)
-        ## motor 1: turning
-        GPIO.setup(self.STEP_PIN_1, GPIO.OUT)
-        GPIO.setup(self.DIRECTION_PIN_1, GPIO.OUT)
-        GPIO.setup(self.ENABLE_PIN_1, GPIO.OUT)
-        ## motor 2: tilting
-        GPIO.setup(self.STEP_PIN_2, GPIO.OUT)
-        GPIO.setup(self.DIRECTION_PIN_2, GPIO.OUT)
-        GPIO.setup(self.ENABLE_PIN_2, GPIO.OUT)
+        if head:
+            # Head control via pin communicatoin
+            GPIO.setmode(GPIO.BCM)
+            ## motor 1: turning
+            GPIO.setup(self.STEP_PIN_TURN, GPIO.OUT)
+            GPIO.setup(self.DIRECTION_PIN_TURN, GPIO.OUT)
+            GPIO.setup(self.ENABLE_PIN_TURN, GPIO.OUT)
+            ## motor 2: tilting
+            GPIO.setup(self.STEP_PIN_TILT, GPIO.OUT)
+            GPIO.setup(self.DIRECTION_PIN_TILT, GPIO.OUT)
+            GPIO.setup(self.ENABLE_PIN_TILT, GPIO.OUT)
 
-        ## connecting to motors
-        GPIO.output(self.ENABLE_PIN_1,GPIO.LOW)
-        GPIO.output(self.ENABLE_PIN_2,GPIO.LOW)
+            ## connecting to motors
+            GPIO.output(self.ENABLE_PIN_TURN,GPIO.LOW)
+            GPIO.output(self.ENABLE_PIN_TILT,GPIO.LOW)
 
         return
     
@@ -126,10 +127,9 @@ class Robot(object):
         
         return 
 
-    def deg2step(self, degrees, CONVERSION_FACTOR):
+    def __deg2step(self, degrees, CONVERSION_FACTOR):
         """
         Converts number of degrees to number of steps and step direction.
-
         --- Under development ---
         Add conversion factor: emperically determined.
         Check: Direction assumption
@@ -162,26 +162,23 @@ class Robot(object):
         for key in kwargs:
             if key == 'turn':
                 if abs(kwargs[key]) > 160:
-                    print("Degrees of head rotation out of bounds. \n \\
-                    Valid interval: [-135, 135]")
+                    print("Degrees of head rotation out of bounds. \n Valid interval: [-135, 135]")
                     return
                 degrees = kwargs[key] - self.turn_angle
-                direct_turn, steps_turn = deg2step(degrees, CONVERSION_FACTOR_TURN)
+                direct_turn, steps_turn = self.__deg2step(degrees, CONVERSION_FACTOR_TURN)
                 self.turn_steps = self.turn_steps + (-1*steps_turn) \
                                 if degrees < 0 else self.turn_steps + steps_turn
                 self.turn_angle = self.turn_steps / CONVERSION_FACTOR_TURN
             elif key == 'tilt':
                 if abs(kwargs[key]) > 45:
-                    print("Degrees of head rotation out of bounds. \n \\
-                    Valid interval: [-135, 135]")
+                    print("Degrees of head rotation out of bounds. \n Valid interval: [-135, 135]")
                     return
                 degrees = kwargs[key] - self.tilt_angle
-                direct_tilt, steps_tilt = deg2step(degrees, CONVERSION_FACTOR_TILT)
+                direct_tilt, steps_tilt = self.__deg2step(degrees, CONVERSION_FACTOR_TILT)
                 self.tilt_steps = self.tilt_steps + (-1*steps_tilt) \
                                 if degrees < 0 else self.tilt_steps + steps_tilt
-                self.tilt_angle = self.tilt_steps / CONVERSION_FACTOR_TILT
-                
-            else
+                self.tilt_angle = self.tilt_steps / CONVERSION_FACTOR_TILT   
+            else:
                 print("ERROR: Invalid command input.")
 
         print(">>> Moving head to new position <<<")
@@ -190,17 +187,24 @@ class Robot(object):
         steps = steps_turn if steps_turn > steps_tilt else steps_tilt
 
         # Setting direction
-        GPIO.output(self.DIRECTION_PIN_1,direct_turn)
-        GPIO.output(self.DIRECTION_PIN_2,direct_tilt)
+        GPIO.output(self.DIRECTION_PIN_TURN,direct_turn)
+        GPIO.output(self.DIRECTION_PIN_TILT,direct_tilt)
+
+        print("Turning table by %.1f steps"%steps_turn)
+        print("Tilting mount by %.1f steps"%steps_tilt)
 
         # Sending signal to motors
         for i in range(steps):
-            if steps < steps_turn:
-		        GPIO.output(self.STEP_PIN_1,GPIO.HIGH)
-            if steps < steps_tilt:
-		        GPIO.output(self.STEP_PIN_2,GPIO.HIGH)
-		    time.sleep(self.MOTOR_DELAY)
-
+            if i < steps_turn:
+                GPIO.output(self.STEP_PIN_TURN,GPIO.LOW)
+            if i < steps_tilt:
+                GPIO.output(self.STEP_PIN_TILT,GPIO.LOW)
+            time.sleep(self.MOTOR_DELAY)
+            if i < steps_turn:
+                GPIO.output(self.STEP_PIN_TURN,GPIO.HIGH)
+            if i < steps_tilt:
+                GPIO.output(self.STEP_PIN_TILT,GPIO.HIGH)
+            time.sleep(self.MOTOR_DELAY)
         print(">>> Head arrived at target position <<<")
         return
 
@@ -222,26 +226,30 @@ if __name__ == '__main__':
     TIMEOUT = 1
     obj = Robot()
     obj.connect(PORT,BAUDERATE,TIMEOUT)
-    print(" >>> START TEST SEQUENCE <<<")
-    print(">>> WALK & LOOK SLIGHTLY RIGHT, UP <<<")
-    obj.look(turn=90,tilt=35)
-    for _ in range(30):
-        obj.command(forward=0.3)
-        time.sleep(0.1)
-    print(">>> HIGH WALK & LOOK FROM INITIAL POSITION <<<")
-    obj.look(turn=0,tilt=0)
-    for _ in range(20):
-        obj.command(forward=0.2,height=0.3)
-        time.sleep(0.1)
-    print(">>> SIT <<<")
-    for _ in range (20):
-        obj.command(height = -.9)
-        time.sleep(0.1)
-    print(">>> STAND <<<")
-    for _ in range (20):
-        obj.command()
-        time.sleep(0.1)
-    
-    obj.disconnect()
-    print(">>> TEST COMPLETE <<<")
-
+    try:
+        print(" >>> START TEST SEQUENCE <<<")
+        print(">>> WALK & LOOK SLIGHTLY RIGHT, UP <<<")
+        obj.look(turn=90,tilt=35)
+        for _ in range(30):
+            obj.command(forward=0.3)
+            time.sleep(0.1)
+        print(">>> HIGH WALK & LOOK FROM INITIAL POSITION <<<")
+        obj.look(turn=0,tilt=0)
+        for _ in range(20):
+            obj.command(forward=0.2,height=0.3)
+            time.sleep(0.1)
+        print(">>> SIT <<<")
+        for _ in range (20):
+            obj.command(height = -.9)
+            time.sleep(0.1)
+        print(">>> STAND <<<")
+        for _ in range (20):
+            obj.command()
+            time.sleep(0.1)
+        
+        obj.disconnect()
+        print(">>> TEST COMPLETE <<<")
+        
+    except KeyboardInterrupt:
+        obj.disconnect()    
+        print("Test ended prematurely and has been disconnected")

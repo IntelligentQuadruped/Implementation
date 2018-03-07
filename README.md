@@ -8,8 +8,8 @@ High-level control commands for the quadruped.
  - [x] object robot testing
 #### Head unit control:
  - [x] add control code
- - [ ] terminal testing of control code
- - [ ] physical testing of control code
+ - [x] terminal testing of control code
+ - [x] physical testing of control code
 
 ## Setup
 ### Requirements:
