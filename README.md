@@ -10,6 +10,11 @@ High-level control commands for the quadruped.
  - [x] add control code
  - [x] terminal testing of control code
  - [x] physical testing of control code
+#### V0.2: With logging capability and more robust functionality:
+ - [] add logging
+ - [x] replace if-loops with try-except statements
+ - [] testing
+ - [] merge robot.py with robot_dev_wLog.py
 
 ## Setup
 ### Requirements:
