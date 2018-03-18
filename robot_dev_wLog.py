@@ -1,13 +1,23 @@
-import serial
-import RPi.GPIO as GPIO
-import time
-import logging
+'''
+Author: Jan Bernhard
+Purpose: Module to control the Princeton Minitaur robot research unit.
+'''
 
+
+# standard imports
+import serial
+import time
+
+import logging
 # Setup of logging
-logging.basicConfig(filename="Robot_log_{}.log".time.ctime(),
+logging.basicConfig(filename="Control_Log_{}.log".format(time.ctime()),
                     format='%(asctime)s - %(levelname)s: %(message)s',
-                    datefmt='%I:%M:%S.%f'
+                    datefmt='%I:%M:%S',
                     level=logging.DEBUG)
+try:
+    import RPi.GPIO as GPIO
+except:
+    logging.warning("Could not import RPi module.")
 
 # Global Constants
 CONVERSION_FACTOR_TURN = 2.22 #steps per degree
@@ -44,7 +54,7 @@ class Robot(object):
         Sets up the initial serial communication connection
         """
 
-        logging.info("Connect is called.")\
+        logging.info("Starts to connect components.")
 
         # connect components
         try:
@@ -77,6 +87,9 @@ class Robot(object):
         except:
             self.connect_head = False
             logging.warning("Head Component could not be connected.")
+        
+        logging.info("Connected Head = {}, Body = {}".format(self.connect_head,
+                                                            self.connect_body))
 
         return
     
@@ -84,13 +97,13 @@ class Robot(object):
         """
         Disconnects the serial communication.
         """
-        logging.info("Components are disconnected.")
         if self.connect_body:
             self.ser.close()
 
         if self.connect_head:
             GPIO.cleanup()
-        
+
+        logging.info("Disconected components successfully.")
         return
 
 #--------------------------------------------------------------------
@@ -101,7 +114,7 @@ class Robot(object):
         """
         Takes in move in float form and encodes move as two digit string.
         """
-        logging.info("Converts move command to 8byte string")
+        # logging.info("Converts move command to 8byte string")
         int_in = int(float_in * 10)
         first_digit = 0 if int_in < 0 else 1    #encodes negative
         second_digit = abs(int_in)              #only consider magnitude
@@ -117,9 +130,8 @@ class Robot(object):
             turn        [rad/s]                 -0.9 to 0.9,
             height      [% relative to normal]  -0.9 to 0.9
         """
-        if connect_body is False:
-            print(">>> Body component is not connected.")
-            print(">>> Commands cannot be execuded.") 
+        if self.connect_body is False:
+            logging.warning("Method move(): Cannot execute command. Body disconneted.")
             return
 
         new_move = list("90000000")
@@ -141,10 +153,11 @@ class Robot(object):
         read = None
         while(read != b'next\n'):
             read = self.ser.readline()
-            print(read)
+            # print(read)
         
         # Sending new move string
         self.ser.write(str.encode(str(new_move)))
+        logging.info("Move command sent: {}".format(new_move))
 
 
 #--------------------------------------------------------------------
@@ -187,9 +200,8 @@ class Robot(object):
         tilt:       [deg]  -45 to 45 
         turn:       [deg] -160 to 160
         """
-        if connect_head is False:
-            print(">>> Head component is not connected.")
-            print(">>> Commands cannot be execuded.")
+        if self.connect_head is False:
+            logging.warning("Method look(): Cannot execute command. Head disconneted.")
             return
     
         steps_turn = 0
@@ -201,8 +213,8 @@ class Robot(object):
         for key in kwargs:
             if key == 'turn':
                 if abs(kwargs[key]) > 160:
-                    print(">>> Degrees of head rotation out of bounds.")
-                    print(">>> Valid interval: [-160, 160]")
+                    logging.warning(">>> Degrees of head rotation out of bounds.")
+                    logging.warning(">>> Valid interval: [-160, 160]")
                     return
                 degrees = kwargs[key] - self.turn_angle
                 direct_turn, steps_turn = self.__deg2step(degrees, CONVERSION_FACTOR_TURN)
@@ -211,8 +223,8 @@ class Robot(object):
                 self.turn_angle = self.turn_steps / CONVERSION_FACTOR_TURN
             elif key == 'tilt':
                 if abs(kwargs[key]) > 45:
-                    print("Degrees of head rotation out of bounds.")
-                    print(">>> Valid interval: [-45, 45]")
+                    logging.warning("Degrees of head rotation out of bounds.")
+                    logging.warning(">>> Valid interval: [-45, 45]")
                     return
                 degrees = kwargs[key] - self.tilt_angle
                 direct_tilt, steps_tilt = self.__deg2step(degrees, CONVERSION_FACTOR_TILT)
@@ -220,9 +232,7 @@ class Robot(object):
                                 if degrees < 0 else self.tilt_steps + steps_tilt
                 self.tilt_angle = self.tilt_steps / CONVERSION_FACTOR_TILT   
             else:
-                print("ERROR: Invalid command input to look().")
-
-        print(">>> Moving head to new position <<<")
+                logging.warning("Invalid command input to look().")
 
         # Choosing max steps value
         steps = steps_turn if steps_turn > steps_tilt else steps_tilt
@@ -231,8 +241,7 @@ class Robot(object):
         GPIO.output(self.DIRECTION_PIN_TURN,direct_turn)
         GPIO.output(self.DIRECTION_PIN_TILT,direct_tilt)
 
-        print("Turning table by %.1f steps"%steps_turn)
-        print("Tilting mount by %.1f steps"%steps_tilt)
+        logging.info("Look command sent: turn={}, tilt={}".format(direct_turn,direct_tilt))
 
         # Sending signal to motors
         for i in range(steps):
@@ -246,7 +255,7 @@ class Robot(object):
             if i < steps_tilt:
                 GPIO.output(self.STEP_PIN_TILT,GPIO.HIGH)
             time.sleep(self.MOTOR_DELAY)
-        print(">>> Head arrived at target position <<<")
+        logging.info("Head arrived at target position.")
         return
 
 
