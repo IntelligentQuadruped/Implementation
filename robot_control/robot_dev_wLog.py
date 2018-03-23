@@ -24,7 +24,7 @@ class Robot(object):
         Sets up the initial serial communication connection
         """
 
-        logging.info("Starts to connect components.")
+        logging.info("robot.py: Starts to connect components.")
 
         # connect components
         try:
@@ -32,12 +32,12 @@ class Robot(object):
                                     bauderate, 
                                     timeout = time_out)
             self.connect_body = True # stores which components are connected.
-            logging.info("Body component connected")
+            logging.info("robot.py: Body component connected")
         except:
             self.connect_body = False
-            logging.warning("Body component could not be connected.")
+            logging.warning("robot.py: Body component could not be connected.")
 
-        logging.info("Body = {}".format(self.connect_body))
+        logging.info("robot.py: Body = {}".format(self.connect_body))
 
         return
     
@@ -48,7 +48,7 @@ class Robot(object):
         if self.connect_body:
             self.ser.close()
 
-        logging.info("Disconected components successfully.")
+        logging.info("robot.py: Disconected body component successfully.")
         return
 
 #--------------------------------------------------------------------
@@ -76,7 +76,7 @@ class Robot(object):
             height      [% relative to normal]  -0.9 to 0.9
         """
         if self.connect_body is False:
-            logging.warning("Method move(): Cannot execute command. Body disconneted.")
+            logging.warning("robot.py: Method move(): Cannot execute command. Body disconneted.")
             return
 
         new_move = list("90000000")
@@ -102,7 +102,7 @@ class Robot(object):
         
         # Sending new move string
         self.ser.write(str.encode(str(new_move)))
-        logging.info("Move command sent: {}".format(new_move))
+        logging.info("robot.py: Move command sent: {}".format(new_move))
 
 
         def test_move(self, **kwargs):

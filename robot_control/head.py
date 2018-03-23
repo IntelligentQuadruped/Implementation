@@ -5,7 +5,7 @@ import logging
 try:
     import RPi.GPIO as GPIO
 except:
-    logging.warning("Could not import RPi module.")
+    logging.warning("head.py: Could not import RPi module.")
 
 
 class Head(object):
@@ -50,15 +50,16 @@ class Head(object):
 			GPIO.output(self.ENABLE_PIN_TURN,GPIO.LOW)
 			GPIO.output(self.ENABLE_PIN_TILT,GPIO.LOW)
 			self.connected = True # stores which components are connected.
-			logging.info("Head Component is connected.")
+			logging.info("head.py: Head Component is connected.")
 		except:
 			self.connected = False
-			logging.warning("Head Component could not be connected.")
+			logging.warning("head.py: Head Component could not be connected.")
 
 
 	def disconnect():
 		if self.connect_head:
 			GPIO.cleanup()
+		logging.info("head.py: Disconected head component successfully.")
 
 	def resetHeadPosition(self):
 		"""
@@ -97,7 +98,7 @@ class Head(object):
 		turn:       [deg] -160 to 160
 		"""
 		if self.connect_head is False:
-			logging.warning("Method look(): Cannot execute command. Head disconneted.")
+			logging.warning("head.py: Method look(): Cannot execute command. Head disconneted.")
 			return
     
 		steps_turn = 0
@@ -109,8 +110,8 @@ class Head(object):
 		for key in kwargs:
 			if key == 'turn':
 				if abs(kwargs[key]) > 160:
-					logging.warning(">>> Degrees of head rotation out of bounds.")
-					logging.warning(">>> Valid interval: [-160, 160]")
+					logging.warning("head.py: >>> Degrees of head rotation out of bounds.")
+					logging.warning("head.py: >>> Valid interval: [-160, 160]")
 					return
 				degrees = kwargs[key] - self.turn_angle
 				direct_turn, steps_turn = self.__deg2step(degrees, self.CONVERSION_FACTOR_TURN)
@@ -119,8 +120,8 @@ class Head(object):
 				self.turn_angle = self.turn_steps / self.CONVERSION_FACTOR_TURN
 			elif key == 'tilt':
 				if abs(kwargs[key]) > 45:
-					logging.warning("Degrees of head rotation out of bounds.")
-					logging.warning(">>> Valid interval: [-45, 45]")
+					logging.warning("head.py: Degrees of head rotation out of bounds.")
+					logging.warning("head.py: >>> Valid interval: [-45, 45]")
 					return
 				degrees = kwargs[key] - self.tilt_angle
 				direct_tilt, steps_tilt = self.__deg2step(degrees, self.CONVERSION_FACTOR_TILT)
@@ -128,7 +129,7 @@ class Head(object):
 								if degrees < 0 else self.tilt_steps + steps_tilt
 				self.tilt_angle = self.tilt_steps / self.CONVERSION_FACTOR_TILT   
 			else:
-				logging.warning("Invalid command input to look().")
+				logging.warning("head.py: Invalid command input to look().")
 
         # Choosing max steps value
 		steps = steps_turn if steps_turn > steps_tilt else steps_tilt
@@ -137,7 +138,7 @@ class Head(object):
 		GPIO.output(self.DIRECTION_PIN_TURN,direct_turn)
 		GPIO.output(self.DIRECTION_PIN_TILT,direct_tilt)
 
-		logging.info("Look command sent: turn={}, tilt={}".format(direct_turn,direct_tilt))
+		logging.info("head.py: Look command sent: turn={}, tilt={}".format(direct_turn,direct_tilt))
 
         # Sending signal to motors
 		for i in range(steps):
@@ -151,7 +152,7 @@ class Head(object):
 			if i < steps_tilt:
 				GPIO.output(self.STEP_PIN_TILT,GPIO.HIGH)
 			time.sleep(self.MOTOR_DELAY)
-		logging.info("Head arrived at target position.")
+		logging.info("head.py: Head arrived at target position.")
 		return
 
 
