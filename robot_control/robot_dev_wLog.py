@@ -105,6 +105,34 @@ class Robot(object):
         logging.info("Move command sent: {}".format(new_move))
 
 
+        def test_move(self, **kwargs):
+        """
+        Same as move but does not need connection/prints dummy responses
+        Takes arguments as follows:
+            behavior    [int]                      0 to 9,
+            forward     [m/s]                   -0.9 to 0.9,
+            turn        [rad/s]                 -0.9 to 0.9,
+            height      [% relative to normal]  -0.9 to 0.9
+        """
+
+        new_move = list("90000000")
+
+        for key in kwargs:
+            if key == 'forward':
+                new_move[2:4] = self.__convertToMove(kwargs[key])
+            elif key == 'turn':
+                new_move[4:6] = self.__convertToMove(kwargs[key])
+            elif key == 'height':
+                new_move[6:8] = self.__convertToMove(kwargs[key])
+            elif key == 'behavior':
+                new_move[1] = int(kwargs[key])
+
+        new_move = map(str,new_move) # converting int to char
+        new_move = ''.join(new_move) # joining char to str
+
+        print("Move command sent: {}".format(new_move))
+
+
     
 if __name__ == '__main__':
     """
