@@ -9,11 +9,7 @@ import serial
 import time
 
 import logging
-# Setup of logging
-logging.basicConfig(filename="Control_Log_{}.log".format(time.ctime()),
-                    format='%(asctime)s - %(levelname)s: %(message)s',
-                    datefmt='%I:%M:%S',
-                    level=logging.DEBUG)
+
 try:
     import RPi.GPIO as GPIO
 except:
