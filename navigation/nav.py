@@ -53,7 +53,7 @@ class Navigation:
 	    	gaps values. If smaller, return false.
 	    	"""
 			g = self.gap
-			if g != None:
+			if g is not None:
 				return g[1]-g[0] < f-s
 			else:
 				return True
@@ -63,7 +63,7 @@ class Navigation:
 	    	Save new gap if larger than the current saved one.
 	    	"""
 			g = self.gap
-			if g == None:
+			if g is None:
 				self.gap = (s, f)
 			else:
 				if f-s > g[1]-g[0]:
@@ -137,7 +137,7 @@ class Navigation:
 		self.__add_next_row(0, 0, np.inf, data)
 
 		sf = data.gap
-		if sf == None:
+		if sf is None:
 			return None
 
 		return (sf[0]+sf[1])/2
@@ -190,7 +190,7 @@ class Navigation:
 	  	frac = 2.*pos/depth.shape[1] - 1
 	  	return (frac, deg)
 
-	def plot(self, rgb, depth, interpolated, pos, cmap='gray'):
+	def plot(self, rgb, depth, interpolated, pos, cmap='gray', b=False):
 		"""
 	    Will plot the rgb image, original depth, interpolated depth and the
 	    position of where the algorithm recommends to move.
@@ -219,9 +219,10 @@ class Navigation:
 		cax = plt.axes([0.85, 0.1, 0.075, 0.8])
 		plt.colorbar(cax=cax)
 
-		plt.show(block=False)
-		time.sleep(1)
-		plt.close()
+		plt.show(block=b)
+		if ~b:
+			time.sleep(t)
+			plt.close()
 
 
 

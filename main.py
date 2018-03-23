@@ -8,8 +8,8 @@ import numpy as np
 import time
 import logging
 
-from robot_control import robot_dev_wLog as robot
-from robot_control import head
+# from robot_control import robot_dev_wLog as robot
+# from robot_control import head
 from navigation import nav
 from vision import cam
 
@@ -35,7 +35,7 @@ def online(c, n, r, h):
 			max_dist = 1.2
 			frac, deg = n.obstacle_avoid(x, max_dist)
 			print("Time: ", time.time()-t)
-			if frac == None:
+			if frac is None:
 				print("Error: cannot find where to walk")
 				n.plot(rgb, depth, x, 0)
 				r.test_move()
@@ -66,12 +66,12 @@ def offline(c, n):
 	frac, deg = n.obstacle_avoid(x, max_dist)
 
 	print("Time: ", time.time()-t)
-	if frac == None:
+	if frac is None:
 		print("Error: cannot find where to walk")
-		n.plot(rgb, depth, x, 10)
+		n.plot(rgb, depth, x, 10, b=1)
 	else:
 		print("Rotate {:.1f} degree".format(deg))
-		n.plot(rgb, depth, x, (1+frac)*rgb.shape[1]/2)
+		n.plot(rgb, depth, x, (1+frac)*rgb.shape[1]/2, b=1)
 
 
 
@@ -83,8 +83,8 @@ def main():
 
 	c = cam.Camera(subSample=0.3, heightRatio=0.3)
 	n = nav.Navigation(percSamples=0.3)
-	r = robot.Robot()
-	h = head.Head()
+	# r = robot.Robot()
+	# h = head.Head()
 
 	# PORT = '/dev/ttyUSB0'
 	# BAUDERATE = 115200
