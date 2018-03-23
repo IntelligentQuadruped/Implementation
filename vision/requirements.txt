@@ -1,0 +1,6 @@
+opencv-contrib-python
+Pillow
+numpy
+matplotlib
+
+

@@ -1,0 +1,8 @@
+version: '2'
+services:
+  base:
+    build: .
+    container_name: cv_base
+    volumes:
+      - ./inc:/main
+    command: start
