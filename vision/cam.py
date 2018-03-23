@@ -4,7 +4,7 @@ Purpose: Module to connect to camera and retrieve rgb or depth data
 
 '''
 
-import pyrealsense as pyrs
+# import pyrealsense as pyrs
 from skimage.transform import rescale
 import numpy as np
 import logging
@@ -32,7 +32,7 @@ class Camera:
 	    Establish connection to R200 camera
 	    """
 
-	    logging.info("Cam.py: Starts to connect components.")
+		logging.info("Cam.py: Starts to connect components.")
 		self.serv = pyrs.Service()
 		self.dev = self.serv.Device(device_id=0, 
 									streams=[pyrs.stream.DepthStream(fps=60),

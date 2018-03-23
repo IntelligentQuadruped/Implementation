@@ -3,24 +3,26 @@ Author: Viveque Ramji
 Purpose: Main script to bring all modules together
 
 '''
-
 import cv2
 import numpy as np
 import time
 import logging
 
-import robot
-import nav
-import cam
+from robot_control import robot_dev_wLog as robot
+from robot_control import head
+from navigation import nav
+from vision import cam
 
 
-def online(c, n):
+def online(c, n, r, h):
 	'''
 	Will continuously to get depth images from camera and then plot rgb,
 	original depth, interpolated depth, and the point where the robot is told
 	to move until keyboard interrupt
 	'''
 	c.connect()
+	r.connect()
+	h.connect()
 
 	try:
 		while True:
@@ -45,6 +47,8 @@ def online(c, n):
 	except KeyboardInterrupt:
 		logging.warning("Main.py: KeyboardInterrupt")
 		c.disconnect()
+		r.disconnect()
+		h.disconnect()
 		pass
 
 def offline(c, n):
@@ -53,7 +57,7 @@ def offline(c, n):
 	'''
 
 	t = time.time()
-	filename = 'npz/%d_c_5d.npz' % 1
+	filename = 'navigation/npz/%d_c_5d.npz' % 2
 	
 	depth, rgb = c.get_frames_from_file(filename)
 
@@ -77,18 +81,19 @@ def main():
                     datefmt='%I:%M:%S',
                     level=logging.DEBUG)
 
-	c = cam.Camera(subSample=0.3, height_ratio=0.3)
+	c = cam.Camera(subSample=0.3, heightRatio=0.3)
 	n = nav.Navigation(percSamples=0.3)
 	r = robot.Robot()
+	h = head.Head()
 
 	# PORT = '/dev/ttyUSB0'
 	# BAUDERATE = 115200
     # r.connect(PORT,BAUDERATE)
 
-	on = True
+	on = False
 
 	if on:
-		online(c, n)
+		online(c, n, r, h)
 	else:
 		offline(c, n)
 	

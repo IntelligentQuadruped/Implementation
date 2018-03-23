@@ -172,8 +172,6 @@ class Navigation:
 	    all missing data.
 	    """
 		samples, measured_vector = self.__createSamples(depth)
-		print(samples)
-		print(measured_vector)
 		if len(samples) <= 1:
 			return None
 		return self.__reconstructDepthImage(depth.shape, measured_vector, samples)
