@@ -14,6 +14,7 @@ class Head(object):
 		# Constants
 		self.CONVERSION_FACTOR_TURN = 2.22 #steps per degree
 		self.CONVERSION_FACTOR_TILT = 10.0 #steps per degree
+		self.connect_head = False
 
 		# Setting time to pause between steps of stepper motor
 		self.MOTOR_DELAY = 0.01 #sec
@@ -33,7 +34,7 @@ class Head(object):
 		self.tilt_steps = 0 # count of steps from neutral
 
 
-	def connect():
+	def connect(self):
 		try:
             # Head control via pin communicatoin
 			GPIO.setmode(GPIO.BCM)
@@ -56,7 +57,7 @@ class Head(object):
 			logging.warning("head.py: Head Component could not be connected.")
 
 
-	def disconnect():
+	def disconnect(self):
 		if self.connect_head:
 			GPIO.cleanup()
 		logging.info("head.py: Disconected head component successfully.")

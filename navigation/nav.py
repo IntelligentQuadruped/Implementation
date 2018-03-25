@@ -38,7 +38,7 @@ class Navigation:
 	    	Intitalize Camera object with following optional parameters:
 	    		row_i			Number of frames to average over
 	    		start_i 		Ratio of bottom part of image to keep
-	    		end_i			Rescale image by subSample
+	    		end_i			Rescale image by sub_sample
 	    		n				Upper values to keep in depth image
 	    	"""
 			self.row_i = row_i
@@ -47,7 +47,7 @@ class Navigation:
 			self.n = n
 			self.gap = None
 
-		def compare_gap(self, s, f):
+		def compareGap(self, s, f):
 			"""
 	    	Compare start, s, and finish, f, values with that of the current
 	    	gaps values. If smaller, return false.
@@ -58,7 +58,7 @@ class Navigation:
 			else:
 				return True
 
-		def set_gap(self, s, f):
+		def setGap(self, s, f):
 			"""
 	    	Save new gap if larger than the current saved one.
 	    	"""
@@ -71,24 +71,24 @@ class Navigation:
 
 
 
-	def __init__(self, percSamples=0.1, angle_swept=60):
+	def __init__(self, perc_samples=0.1, angle_swept=60):
 		"""
 	    Intitalize Navigation module with optional values of percentage of
 	    samples to use, and depth angle swept by camera.
 	    """
-		self.percSamples = percSamples
+		self.perc_samples = perc_samples
 		self.angle_swept = angle_swept
 
 	def __createSamples(self, depth):
 		"""
-	    Using percSamples, return random number of samples from original data.
+	    Using perc_samples, return random number of samples from original data.
 	    Sparse identity matrices are used to conserve memory since identity
 	    matrices are mostly zeros.
 	    """
 		height = depth.shape[0]
 		width = depth.shape[1]
 		N = height * width
-		K = int(N * self.percSamples)
+		K = int(N * self.perc_samples)
 
 		xGT = depth.flatten()
 		rand = np.random.permutation(N)[:K]
@@ -115,18 +115,18 @@ class Navigation:
 		Z_sample = Zq.flatten()[samples]
 
 		rbf1 = Rbf(Y_sample, Z_sample, measured_vector, function='linear')
-		RBF1 = rbf1(Yq, Zq)
+		interpolated = rbf1(Yq, Zq)
 
-		return RBF1
+		return interpolated
 
-	def __find_largest_gap(self, depth, maxDist):
+	def __findLargestGap(self, depth, max_dist):
 		"""
 	    Given depth image, find the largest gap that goes from the bottom of
-	    the image to the top. Use maxDist to threshold where objects are 
+	    the image to the top. Use max_dist to threshold where objects are 
 	    shown to be too close Return the position in the middle of the largest
 	    gap.
 	    """
-		depth =  depth > maxDist # true where gap exists
+		depth =  depth > max_dist # true where gap exists
 		npad = ((0, 0), (1, 1))
 		d = np.pad(depth, pad_width=npad, mode='constant', constant_values=0)
 
@@ -134,7 +134,7 @@ class Navigation:
 		r = f[0][0::2] # row indices
 		data = self.__Data(r, f[1][0::2], f[1][1::2], len(np.unique(r)))
 
-		self.__add_next_row(0, 0, np.inf, data)
+		self.__addNextRow(0, 0, np.inf, data)
 
 		sf = data.gap
 		if sf is None:
@@ -142,13 +142,13 @@ class Navigation:
 
 		return (sf[0]+sf[1])/2
 
-	def __add_next_row(self, row, start, finish, data):
+	def __addNextRow(self, row, start, finish, data):
 		"""
 	    Private function that is used to recursively check the rows above to
 	    find if a gap matches up.
 	    """
 		if row == data.n:
-			data.set_gap(start, finish)
+			data.setGap(start, finish)
 			return
 		args = np.argwhere(data.row_i == row)
 		for i in args:
@@ -161,12 +161,12 @@ class Navigation:
 					s = c
 				if f > d:
 					f = d
-				if data.compare_gap(s, f):
-					self.__add_next_row(row+1, s, f, data)
+				if data.compareGap(s, f):
+					self.__addNextRow(row+1, s, f, data)
 			return
 
 
-	def reconstruct_frame(self, depth):
+	def reconstructFrame(self, depth):
 		"""
 	    Givena partial depth image, will return an interpolated version filling
 	    all missing data.
@@ -176,13 +176,13 @@ class Navigation:
 			return None
 		return self.__reconstructDepthImage(depth.shape, measured_vector, samples)
 
-	def obstacle_avoid(self, depth, maxDist):
+	def obstacleAvoid(self, depth, max_dist):
 		"""
 	    Given a depth image and a threshold value, will find the largest gap
 	    that can be used, returning the fraction along the images width where
 	    this is and the degrees rotation from the center. 
 	    """
-	  	pos = self.__find_largest_gap(depth, maxDist)
+	  	pos = self.__findLargestGap(depth, max_dist)
 	  	if pos is None:
 	  		return(None, None)
 	  	
@@ -190,7 +190,7 @@ class Navigation:
 	  	frac = 2.*pos/depth.shape[1] - 1
 	  	return (frac, deg)
 
-	def plot(self, rgb, depth, interpolated, pos, cmap='gray', b=False):
+	def plot(self, rgb, depth, interpolated, pos, cmap='gray', b=1):
 		"""
 	    Will plot the rgb image, original depth, interpolated depth and the
 	    position of where the algorithm recommends to move.
@@ -219,9 +219,9 @@ class Navigation:
 		cax = plt.axes([0.85, 0.1, 0.075, 0.8])
 		plt.colorbar(cax=cax)
 
-		plt.show(block=b)
-		if ~b:
-			time.sleep(t)
+		plt.show(block=~b)
+		if b:
+			time.sleep(b)
 			plt.close()
 
 

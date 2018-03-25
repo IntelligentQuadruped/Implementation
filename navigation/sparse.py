@@ -185,7 +185,7 @@ def createSamples(depth, rgb, settings):
 	height = depth.shape[0]
 	width = depth.shape[1]
 	N = height * width
-	K = int(N * settings['percSamples'])
+	K = int(N * settings['perc_samples'])
 	rand = np.random.permutation(N)[:K]
 
 	a = np.isnan(depth.flatten()[rand])
@@ -214,12 +214,11 @@ def getRawData(settings, n):
 	depth[depth <= 0] = np.nan
 	depth[depth > 4000] = np.nan
 
-	if settings['subSample'] < 1:
-		depth = rescale(depth, settings['subSample'])
-		# rgb = rescale(rgb, settings['subSample'])
-	odom = {'Position': [], 'Theta': 0}
+	if settings['sub_sample'] < 1:
+		depth = rescale(depth, settings['sub_sample'])
+		# rgb = rescale(rgb, settings['sub_sample'])
 
-	return (depth, rgb, odom)
+	return (depth, rgb)
 
 def linearInterpolationOnImage(settings, height, width, samples, measured_vector):
 	
@@ -338,14 +337,13 @@ def plot(cmap, rgb, depth, depth_sampled, x):
 
 def reconstruct_single_frame(settings, n):
 	t = time.time()
-	depth, rgb, odom = getRawData(settings, n)
+	depth, rgb = getRawData(settings, n)
 	print("Number of abailable values: ", np.count_nonzero(np.isnan(depth)))
 
 	samples = createSamples(depth, rgb, settings)
 	
 	xGT = depth.flatten()
 	N = len(xGT)
-	K = len(samples)
 
 	height = depth.shape[0]
 	width = depth.shape[1]
@@ -360,8 +358,8 @@ def reconstruct_single_frame(settings, n):
 	xGT[mask] = np.nan
 	depth_sampled = xGT.reshape(height,width)
 
-	x, z = reconstructDepthImage(settings, height, width, measured_vector, samples)
-	obstacle_avoid(x[3])
+	x = reconstructDepthImage(settings, height, width, measured_vector, samples)
+	obstacleAvoid(x[3])
 
 	print("time:", time.time() - t)
 
@@ -396,7 +394,7 @@ def find_largest_gap(collisions):
 	print(lmax, f)
 	return (f - lmax/2)
 
-def obstacle_avoid(depth):
+def obstacleAvoid(depth):
   	max_dist = 1
   	depth[depth > max_dist] = -1
   	d = depth[-1,:]
@@ -411,8 +409,8 @@ def main():
 	settings = {}
 
 	settings['cmap'] = 'gray' #gray, rainbow, winter, spring, autumn
-	settings['subSample'] = 0.3
-	settings['percSamples'] = 0.03
+	settings['sub_sample'] = 0.3
+	settings['perc_samples'] = 0.03
 	settings['method'] = 'cubic'
 	settings['frames'] = 5
 	settings['plot'] = True

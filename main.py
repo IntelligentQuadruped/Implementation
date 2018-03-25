@@ -3,7 +3,6 @@ Author: Viveque Ramji
 Purpose: Main script to bring all modules together
 
 '''
-import cv2
 import numpy as np
 import time
 import logging
@@ -27,13 +26,13 @@ def online(c, n, r, h):
 	try:
 		while True:
 			t = time.time()
-			depth, rgb = c.get_frames(1)
-			x = n.reconstruct_frame(depth)
+			depth, rgb = c.getFrames(1)
+			x = n.reconstructFrame(depth)
 			if x is None:
 				print("Error, caannot find where to walk")
 				continue
 			max_dist = 1.2
-			frac, deg = n.obstacle_avoid(x, max_dist)
+			frac, deg = n.obstacleAvoid(x, max_dist)
 			print("Time: ", time.time()-t)
 			if frac is None:
 				print("Error: cannot find where to walk")
@@ -57,13 +56,13 @@ def offline(c, n):
 	'''
 
 	t = time.time()
-	filename = 'navigation/npz/%d_c_5d.npz' % 2
+	filename = 'navigation/npz/%d_c_5d.npz' % 1
 	
-	depth, rgb = c.get_frames_from_file(filename)
+	depth, rgb = c.getFramesFromFile(filename)
 
-	x = n.reconstruct_frame(depth)
+	x = n.reconstructFrame(depth)
 	max_dist = 1.2
-	frac, deg = n.obstacle_avoid(x, max_dist)
+	frac, deg = n.obstacleAvoid(x, max_dist)
 
 	print("Time: ", time.time()-t)
 	if frac is None:
@@ -81,8 +80,8 @@ def main():
                     datefmt='%I:%M:%S',
                     level=logging.DEBUG)
 
-	c = cam.Camera(subSample=0.3, heightRatio=0.3)
-	n = nav.Navigation(percSamples=0.3)
+	c = cam.Camera(sub_sample=0.3, height_ratio=0.3)
+	n = nav.Navigation(perc_samples=0.3)
 	# r = robot.Robot()
 	# h = head.Head()
 

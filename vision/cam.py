@@ -14,18 +14,18 @@ class Camera:
     Object to get data from Realsense Camera
     """
 
-	def __init__(self, frames=5, heightRatio=0.5, subSample=0.3, maxVal=4):
+	def __init__(self, frames=5, height_ratio=0.5, sub_sample=0.3, max_val=4):
 		"""
 	    Intitalize Camera object with following optional parameters:
 	    	frames			Number of frames to average over
-	    	heightRatio 	Ratio of bottom part of image to keep
-	    	subSample		Rescale image by subSample
-	    	maxVal			Upper values to keep in depth image
+	    	height_ratio 	Ratio of bottom part of image to keep
+	    	sub_sample		Rescale image by sub_sample
+	    	max_val			Upper values to keep in depth image
 	    """
 		self.frames = frames
-		self.heightRatio = heightRatio
-		self.subSample = subSample
-		self.maxVal = maxVal
+		self.height_ratio = height_ratio
+		self.sub_sample = sub_sample
+		self.max_val = max_val
 
 	def connect(self):
 		"""
@@ -48,48 +48,48 @@ class Camera:
 		self.serv.stop()
 		logging.info("Cam.py: Camera Disconnected")
 
-	def __reduce_frame(self, depth, h=0):
+	def __reduceFrame(self, depth, h=0):
 		"""
-	    Takes in a depth image and removes 0 and values bigger than maxVal
+	    Takes in a depth image and removes 0 and values bigger than max_val
 	    Will also crop image to be last h rows
 	    """
 		if h:
 			depth = depth[-h:-10, 69:-10]
 		depth[depth <= 0] = np.nan
-		depth[depth > self.maxVal] = np.nan
+		depth[depth > self.max_val] = np.nan
 
 		return depth
 
-	def get_frames_from_file(self, filename):
+	def getFramesFromFile(self, filename):
 		"""
 	    Function used for testing on saved files
 	    Gets images from file, cleans and averages depth images and scales down
-	    by subSample
+	    by sub_sample
 	    """
 		npz = np.load(filename)
 
 		col = npz['arr_0']
 		d = npz['arr_1']/1000
-		h = int(self.heightRatio*(d.shape[0]))
+		h = int(self.height_ratio*(d.shape[0]))
 
-		red = self.__reduce_frame(d, h)
+		red = self.__reduceFrame(d, h)
 
 		for i in range(self.frames-1):
 			s = 'arr_%d' % (i+2)
-			curr = self.__reduce_frame(npz[s]/1000, h)
+			curr = self.__reduceFrame(npz[s]/1000, h)
 			red = np.dstack((red, curr))
 
 		meand = np.nanmean(red, 2)
-		redmeand = self.__reduce_frame(meand)
-		final = rescale(redmeand, self.subSample)
+		red_meand = self.__reduceFrame(meand)
+		final = rescale(red_meand, self.sub_sample)
 
 		return final, col
 
 
-	def get_frames(self, rgb=False):
+	def getFrames(self, rgb=False):
 		"""
 	    Function will retrieve depth frames (and rgb if true) from R200 input
-	    Cleans and averages depth images and scales down by subSample
+	    Cleans and averages depth images and scales down by sub_sample
 	    """
 		self.dev.wait_for_frames()
 		if rgb:
@@ -98,16 +98,16 @@ class Camera:
 		d = self.dev.depth * self.dev.depth_scale
 		h = int(self.height_ratio*(d.shape[0]))
 
-		red = self.__reduce_frame(d, h)
+		red = self.__reduceFrame(d, h)
 
 		for i in range(self.frames-1):
 			self.dev.wait_for_frames()
-			curr = self.__reduce_frame(self.dev.depth*self.dev.depth_scale, h)
+			curr = self.__reduceFrame(self.dev.depth*self.dev.depth_scale, h)
 			red = np.dstack((red, curr))
 
 		meand = np.nanmean(red, 2)
-		redmeand = self.__reduce_frame(meand)
-		final = rescale(redmeand, self.subSample)
+		red_meand = self.__reduceFrame(meand)
+		final = rescale(red_meand, self.sub_sample)
 
 		return final, col
 
