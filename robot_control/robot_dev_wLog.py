@@ -17,6 +17,7 @@ class Robot(object):
     """
     
     def __init__(self):
+        self.current_command = None # stores most recent command
         pass
 
     def connect(self, usb_port_address, bauderate, time_out = 1):
@@ -69,11 +70,15 @@ class Robot(object):
         """
         Controls main body translation.
         Converts command move input to 8 byte integer.
+
         Takes arguments as follows:
             behavior    [int]                      0 to 9,
             forward     [m/s]                   -0.9 to 0.9,
             turn        [rad/s]                 -0.9 to 0.9,
             height      [% relative to normal]  -0.9 to 0.9
+        
+        Returns:
+            Bool that signifies if command was correctly received by Minitaur.
         """
         if self.connect_body is False:
             logging.warning("robot.py: Method move(): Cannot execute command. Body disconneted.")
@@ -95,17 +100,31 @@ class Robot(object):
         new_move = ''.join(new_move) # joining char to str
 
         # Waiting for Signal that Minitaur is ready to receive move input
-        read = None
+        read = None # Stores messages from Minitaur
+        received = False # True iff the correct message was received
         while(read != b'next\n'):
             read = self.ser.readline()
-            # print(read)
+            read = str(read, encoding) # converts bites to unicode str
+            if str(self.current_command) in read:
+                received = True
         
         # Sending new move string
         self.ser.write(str.encode(str(new_move)))
-        logging.info("robot.py: Move command sent: {}".format(new_move))
+
+        # Through warning if move command wasn't correctly received by Minitaur
+        if received is False:
+            logging.warning("robot.py: Last Move command {} was not received by Minitaur."\
+                            .format(self.current_command))
+
+        # Update current move command and log command
+        if self.current_command != new_move:
+            self.current_command = new_move
+            logging.info("robot.py: Move command sent: {}".format(new_move))
+        
+        return received
 
 
-        def test_move(self, **kwargs):
+    def test_move(self, **kwargs):
         """
         Same as move but does not need connection/prints dummy responses
         Takes arguments as follows:
