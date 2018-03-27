@@ -4,7 +4,7 @@ Purpose: Module to connect to camera and retrieve rgb or depth data
 
 '''
 
-# import pyrealsense as pyrs
+import pyrealsense as pyrs
 from skimage.transform import rescale
 import numpy as np
 import logging

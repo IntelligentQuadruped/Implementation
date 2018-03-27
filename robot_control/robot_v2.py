@@ -106,6 +106,7 @@ class Robot(object):
             read = self.ser.readline()
             read = str(read, encoding) # converts bites to unicode str
             if str(self.current_command) in read:
+                print(read)
                 received = True
         
         # Sending new move string
