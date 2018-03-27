@@ -16,16 +16,16 @@ def main():
     connection = False # Holds received message from Minitaur
     try:
         # Wait for successful communication to be established
-        while(connection==False):
+        while(~connection):
             received = obj.move(height = .5) 
-            connection = True if received != None else False
+            connection = True if received is not None else False
             print(">>> Connecting... " + str(received))
     
         print(" >>> START TEST SEQUENCE <<<")
         print(">>> RAISE TO WALKING HEIGHT <<<")
         for _ in range(30):
             connection = obj.move(height = .2)
-            if connection==True:
+            if connection:
                 print(">>> Successful Communication")
             else:
                 print(">>> ERROR: Unsuccessful Communication")
@@ -33,7 +33,7 @@ def main():
         print(">>> WALK FORWARD <<<")
         for _ in range(20):
             connection = obj.move(forward=0.4,height=0.2)
-            if connection==True:
+            if connection:
                 print(">>> Successful Communication")
             else:
                 print(">>> ERROR: Unsuccessful Communication")
@@ -41,7 +41,7 @@ def main():
         print(">>> TURN RIGHT <<<")
         for _ in range (30):
             connection = obj.move(forward=.3,turn = .3, height = .2)
-            if connection==True:
+            if connection:
                 print(">>> Successful Communication")
             else:
                 print(">>> ERROR: Unsuccessful Communication")
@@ -49,7 +49,7 @@ def main():
         print(">>> TURN LEFT <<<")
         for _ in range (30):
             connection = obj.move(forward=.3,turn = -0.3, height = .2)
-            if connection==True:
+            if connection:
                 print(">>> Successful Communication")
             else:
                 print(">>> ERROR: Unsuccessful Communication")
