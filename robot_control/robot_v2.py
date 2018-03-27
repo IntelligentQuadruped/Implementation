@@ -80,7 +80,7 @@ class Robot(object):
         Returns:
             Bool that signifies if command was correctly received by Minitaur.
         """
-        if self.connect_body is False:
+        if not self.connect_body:
             logging.warning("robot.py: Method move(): Cannot execute command. Body disconneted.")
             return
 
@@ -117,7 +117,7 @@ class Robot(object):
         self.ser.write(str.encode(str(new_move)))
 
         # Through warning if move command wasn't correctly received by Minitaur
-        if received is False:
+        if not received:
             logging.warning("robot.py: Last Move command {} was not received by Minitaur."\
                             .format(self.current_command))
 
