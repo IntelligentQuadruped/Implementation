@@ -97,7 +97,7 @@ class Head(object):
 		tilt:       [deg]  -45 to 45 
 		turn:       [deg] -90 to 90
 		"""
-		if self.connect_head is False:
+		if not self.connect_head:
 			logging.warning("head.py: Method look(): Cannot execute command. Head disconneted.")
 			return
     
