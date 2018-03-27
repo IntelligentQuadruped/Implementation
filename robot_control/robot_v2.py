@@ -103,9 +103,14 @@ class Robot(object):
         read = None # Stores messages from Minitaur
         received = False # True iff the correct message was received
         while(read != b'next\n'):
+            # print(read)
             read = self.ser.readline()
-            read = str(read, encoding) # converts bites to unicode str
-            if str(self.current_command) in read:
+            # Logs warning when battery voltage is too low
+            if 'battery voltage' in str(read,"utf-8"):
+                logging.warning("robot.py: Battery Voltage too low")
+                logging.info("robot.py: " + str(read,"utf-8"))
+            # converts bites to unicode str
+            if str(self.current_command) in str(read,"utf-8"):
                 received = True
         
         # Sending new move string
@@ -172,12 +177,10 @@ if __name__ == '__main__':
     try:
         print(" >>> START TEST SEQUENCE <<<")
         print(">>> WALK & LOOK SLIGHTLY RIGHT, UP <<<")
-        obj.look(turn=90,tilt=35)
         for _ in range(30):
             obj.move(forward=0.3)
             time.sleep(0.1)
         print(">>> HIGH WALK & LOOK FROM INITIAL POSITION <<<")
-        obj.look(turn=0,tilt=0)
         for _ in range(20):
             obj.move(forward=0.2,height=0.3)
             time.sleep(0.1)
