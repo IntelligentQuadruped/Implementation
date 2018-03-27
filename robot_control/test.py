@@ -16,7 +16,7 @@ def main():
     connection = False # Holds received message from Minitaur
     try:
         # Wait for successful communication to be established
-        while(~connection):
+        while(not connection):
             received = obj.move(height = .5) 
             connection = True if received is not None else False
             print(">>> Connecting... " + str(received))
