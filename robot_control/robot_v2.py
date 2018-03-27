@@ -103,10 +103,14 @@ class Robot(object):
         read = None # Stores messages from Minitaur
         received = False # True iff the correct message was received
         while(read != b'next\n'):
+            # print(read)
             read = self.ser.readline()
-            read = str(read, encoding) # converts bites to unicode str
-            if str(self.current_command) in read:
-                print(read)
+            # Logs warning when battery voltage is too low
+            if 'battery voltage' in str(read,"utf-8"):
+                logging.warning("robot.py: Battery Voltage too low")
+                logging.info("robot.py: " + str(read,"utf-8"))
+            # converts bites to unicode str
+            if str(self.current_command) in str(read,"utf-8"):
                 received = True
         
         # Sending new move string
@@ -168,7 +172,7 @@ if __name__ == '__main__':
     # PORT = '/dev/tty.usbserial-DN01QALN' # Jan's MB
     BAUDERATE = 115200
     TIMEOUT = 1
-    obj = robot_v2.Robot()
+    obj = Robot()
     obj.connect(PORT,BAUDERATE,TIMEOUT)
     try:
         print(" >>> START TEST SEQUENCE <<<")
