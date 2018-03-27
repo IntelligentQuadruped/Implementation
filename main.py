@@ -7,7 +7,7 @@ import numpy as np
 import time
 import logging
 
-# from robot_control import robot_dev_wLog as robot
+# from robot_control import robot_v2 as robot
 # from robot_control import head
 from navigation import nav
 from vision import cam
