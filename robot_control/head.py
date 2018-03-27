@@ -1,5 +1,4 @@
 import time
-
 import logging
 
 try:
@@ -96,7 +95,7 @@ class Head(object):
 		Takes arguments as follows:
 		keyword:    [int] value
 		tilt:       [deg]  -45 to 45 
-		turn:       [deg] -160 to 160
+		turn:       [deg] -90 to 90
 		"""
 		if self.connect_head is False:
 			logging.warning("head.py: Method look(): Cannot execute command. Head disconneted.")
@@ -110,9 +109,9 @@ class Head(object):
 
 		for key in kwargs:
 			if key == 'turn':
-				if abs(kwargs[key]) > 160:
+				if abs(kwargs[key]) >= 90:
 					logging.warning("head.py: >>> Degrees of head rotation out of bounds.")
-					logging.warning("head.py: >>> Valid interval: [-160, 160]")
+					logging.info("head.py: >>> Valid interval: [-90, 90]")
 					return
 				degrees = kwargs[key] - self.turn_angle
 				direct_turn, steps_turn = self.__deg2step(degrees, self.CONVERSION_FACTOR_TURN)
@@ -122,7 +121,7 @@ class Head(object):
 			elif key == 'tilt':
 				if abs(kwargs[key]) > 45:
 					logging.warning("head.py: Degrees of head rotation out of bounds.")
-					logging.warning("head.py: >>> Valid interval: [-45, 45]")
+					logging.info("head.py: >>> Valid interval: [-45, 45]")
 					return
 				degrees = kwargs[key] - self.tilt_angle
 				direct_tilt, steps_tilt = self.__deg2step(degrees, self.CONVERSION_FACTOR_TILT)
@@ -156,19 +155,41 @@ class Head(object):
 		logging.info("head.py: Head arrived at target position.")
 		return
 
+if __name__ == "__main__":
+	"""
+	Module testing under development!
+	"""
+	obj = Head()
+	obj.connect()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	try: 
+		print(">>> TEST SEQUENCE STARTED <<<")
+		print(">>> Testing Turn Table: Standard use")
+		obj.look(turn = -45)
+		obj.look(turn = 0)
+		obj.look(turn = 45)
+		obj.look(turn = -90)
+		obj.look(turn = 0)
+		obj.look(turn = 90)
+		print(">>> Testing Turn Table: Unvalid inputs")
+		obj.look(turn = -100)
+		obj.look(turn = 0)
+		obj.look(turn = 100)
+		print(">>> Testing Turn Table: Complete")
+		print(">>> Testing Tilt Axis: Standard use")
+		obj.look(turn = -15)
+		obj.look(turn = 0)
+		obj.look(turn = 15)
+		obj.look(turn = -45)
+		obj.look(turn = 0)
+		obj.look(turn = 45)
+		print(">>> Testing Tilt Axis: Unvalid inputs")
+		obj.look(turn = -70)
+		obj.look(turn = 0)
+		obj.look(turn = 70)
+		print(">>> Testing Tilt Axis: Complete")
+		obj.disconnect()
+		print(">>> TEST COMPLETE <<<")
+	except KeyboardInterrupt:
+		obj.disconnect()    
+		print("Test ended prematurely and has been disconnected")
