@@ -3,7 +3,7 @@ Author: Jan Bernhard
 Purpose: Full test sequence for Minitaur loaded with research platform.
 """
 
-import robot_v2
+import robot
 import time
 
 def main():
@@ -11,7 +11,7 @@ def main():
     PORT = '/dev/tty.usbserial-DN01QALN' 
     BAUDERATE = 115200
     TIMEOUT = 1
-    obj = robot_v2.Robot()
+    obj = robot.Robot()
     obj.connect(PORT,BAUDERATE,TIMEOUT)
     connection = False # Holds received message from Minitaur
     try:

@@ -105,10 +105,15 @@ class Robot(object):
         while(read != b'next\n'):
             # print(read)
             read = self.ser.readline()
-            # Logs warning when battery voltage is too low
-            if 'battery voltage' in str(read,"utf-8"):
-                logging.warning("robot.py: Battery Voltage too low")
-                logging.info("robot.py: " + str(read,"utf-8"))
+            # Logs warning when battery voltage is too low or motor temp to high
+            if 'WARNING' in str(read,"utf-8"):
+                warning_str = str(read,"utf-8")[8:len(str(read,"utf-8"))]
+                if 'voltage' in str(read,"utf-8"):
+                    logging.warning("robot.py: Battery Voltage too low")
+                    logging.info("robot.py: " + warning_str)
+                if 'temperature' in str(read,"utf-8"):
+                    logging.warning("robot.py: Motor temperature too high")
+                    logging.info("robot.py: " + warning_str)
             # converts bites to unicode str
             if str(self.current_command) in str(read,"utf-8"):
                 received = True
