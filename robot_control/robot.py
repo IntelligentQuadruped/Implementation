@@ -105,19 +105,25 @@ class Robot(object):
         while(read != b'next\n'):
             # print(read)
             read = self.ser.readline()
-            # Logs warning when battery voltage is too low or motor temp to high
-            if 'WARNING' in str(read,"utf-8"):
-                warning_str = str(read,"utf-8")[8:len(str(read,"utf-8"))]
-                if 'voltage' in str(read,"utf-8"):
-                    logging.warning("robot.py: Battery Voltage too low")
-                    logging.info("robot.py: " + warning_str)
-                if 'temperature' in str(read,"utf-8"):
-                    logging.warning("robot.py: Motor temperature too high")
-                    logging.info("robot.py: " + warning_str)
-            # converts bites to unicode str
-            if str(self.current_command) in str(read,"utf-8"):
-                received = True
-        
+            
+            try:
+                # Logs warning when battery voltage is too low or motor temp to high
+                if 'WARNING' in str(read,"utf-8"):
+                    warning_str = str(read,"utf-8")[8:len(str(read,"utf-8"))]
+                    if 'voltage' in str(read,"utf-8"):
+                        logging.warning("robot.py: Battery Voltage too low")
+                        logging.info("robot.py: " + warning_str)
+                    if 'temperature' in str(read,"utf-8"):
+                        # Won't currently work because .getTemperature() 
+                        # isn't implemented on Minitaur SDK
+                        logging.warning("robot.py: " + warning_str)
+                # converts bites to unicode str
+                if str(self.current_command) in str(read,"utf-8"):
+                    received = True
+
+            except UnicodeDecodeError:
+                logging.warning("robot.py: Communication couldn't be decoded")
+
         # Sending new move string
         self.ser.write(str.encode(str(new_move)))
 
@@ -173,8 +179,8 @@ if __name__ == '__main__':
      -  return to starting position
     """
     # different for every computer
-    PORT = '/dev/ttyUSB0' # Realsense CPU
-    # PORT = '/dev/tty.usbserial-DN01QALN' # Jan's MB
+    # PORT = '/dev/ttyUSB0' # Realsense CPU
+    PORT = '/dev/tty.usbserial-DN01QALN' # Jan's MB
     BAUDERATE = 115200
     TIMEOUT = 1
     obj = Robot()
@@ -187,11 +193,11 @@ if __name__ == '__main__':
             time.sleep(0.1)
         print(">>> HIGH WALK & LOOK FROM INITIAL POSITION <<<")
         for _ in range(20):
-            obj.move(forward=0.2,height=0.3)
+            obj.move(forward=0.2, height=.5)
             time.sleep(0.1)
         print(">>> SIT <<<")
         for _ in range (20):
-            obj.move(height = -.9)
+            obj.move(height = .5)
             time.sleep(0.1)
         print(">>> STAND <<<")
         for _ in range (20):
