@@ -2,19 +2,19 @@
 High-level control commands for the quadruped.
 
 ## Development status
-#### Main body motion control:
+#### Robot.py:
  - [x] function testing 
  - [x] object terminal testing
  - [x] object robot testing
-#### Head unit control:
+#### Head.py:
  - [x] add control code
  - [x] terminal testing of control code
  - [x] physical testing of control code
 #### V0.2: With logging capability and more robust functionality:
  - [x] add logging
  - [x] replace if-loops with try-except statements
- - [ ] testing
- - [ ] merge robot.py with robot_dev_wLog.py
+ - [x] testing
+ - [x] merge robot.py with robot_dev_wLog.py
 
 ## Setup
 ### Requirements:
