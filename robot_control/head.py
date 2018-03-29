@@ -11,7 +11,7 @@ class Head(object):
 
 	def __init__(self):
 		# Constants
-		self.CONVERSION_FACTOR_TURN = 2.22 #steps per degree
+		self.CONVERSION_FACTOR_TURN = 20/9 #steps per degree
 		self.CONVERSION_FACTOR_TILT = 10.0 #steps per degree
 		self.connect_head = False
 
@@ -19,12 +19,12 @@ class Head(object):
 		self.MOTOR_DELAY = 0.01 #sec
 
         # setup pins for rotation
-		self.STEP_PIN_TURN = 2
-		self.STEP_PIN_TILT = 14
-		self.DIRECTION_PIN_TURN = 3
-		self.DIRECTION_PIN_TILT = 15
-		self.ENABLE_PIN_TURN = 4
-		self.ENABLE_PIN_TILT = 17
+		self.STEP_PIN_TURN = 14
+		self.STEP_PIN_TILT = 2
+		self.DIRECTION_PIN_TURN = 15
+		self.DIRECTION_PIN_TILT = 3
+		self.ENABLE_PIN_TURN = 17
+		self.ENABLE_PIN_TILT = 4
 
         # starting head position
 		self.turn_angle = 0 #deg
@@ -49,19 +49,21 @@ class Head(object):
             ## connecting to motors
 			GPIO.output(self.ENABLE_PIN_TURN,GPIO.LOW)
 			GPIO.output(self.ENABLE_PIN_TILT,GPIO.LOW)
-			self.connected = True # stores which components are connected.
+			self.connect_head = True # stores which components are connected.
 			logging.info("head.py: Head Component is connected.")
 		except:
-			self.connected = False
+			self.connect_head = False
 			logging.warning("head.py: Head Component could not be connected.")
 
 
 	def disconnect(self):
 		if self.connect_head:
+			GPIO.output(self.ENABLE_PIN_TURN,GPIO.HIGH)
+			GPIO.output(self.ENABLE_PIN_TILT,GPIO.HIGH)
 			GPIO.cleanup()
 		logging.info("head.py: Disconected head component successfully.")
 
-	def resetHeadPosition(self):
+	def __resetHeadPosition(self):
 		"""
 		Resets head to move to 0 deg turn and 0 deg tilt.
 		--- Under development ---
@@ -83,7 +85,8 @@ class Head(object):
 		direction = GPIO.LOW if degrees <= 0 else GPIO.HIGH
 		steps = round(CONVERSION_FACTOR*degrees,0) # rounding to next integer
 		steps = abs(int(steps))                    # convert to positive int type
-		return (direction,steps)
+		
+		return direction,steps
 
 
 	def look(self, **kwargs):
@@ -97,7 +100,7 @@ class Head(object):
 		tilt:       [deg]  -45 to 45 
 		turn:       [deg] -90 to 90
 		"""
-		if self.connect_head is False:
+		if not self.connect_head:
 			logging.warning("head.py: Method look(): Cannot execute command. Head disconneted.")
 			return
     
@@ -109,7 +112,7 @@ class Head(object):
 
 		for key in kwargs:
 			if key == 'turn':
-				if abs(kwargs[key]) >= 90:
+				if abs(kwargs[key]) > 90:
 					logging.warning("head.py: >>> Degrees of head rotation out of bounds.")
 					logging.info("head.py: >>> Valid interval: [-90, 90]")
 					return
@@ -119,7 +122,7 @@ class Head(object):
 								if degrees < 0 else self.turn_steps + steps_turn
 				self.turn_angle = self.turn_steps / self.CONVERSION_FACTOR_TURN
 			elif key == 'tilt':
-				if abs(kwargs[key]) > 45:
+				if abs(kwargs[key]) > 30:
 					logging.warning("head.py: Degrees of head rotation out of bounds.")
 					logging.info("head.py: >>> Valid interval: [-45, 45]")
 					return
@@ -135,8 +138,16 @@ class Head(object):
 		steps = steps_turn if steps_turn > steps_tilt else steps_tilt
 
         # Setting direction
-		GPIO.output(self.DIRECTION_PIN_TURN,direct_turn)
-		GPIO.output(self.DIRECTION_PIN_TILT,direct_tilt)
+		# print(type(self.DIRECTION_PIN_TURN))
+		# print(type(direct_turn))
+		if direct_turn:
+			GPIO.output(self.DIRECTION_PIN_TURN,GPIO.HIGH)
+		else:
+			GPIO.output(self.DIRECTION_PIN_TURN,GPIO.LOW)
+		if direct_tilt:
+			GPIO.output(self.DIRECTION_PIN_TILT,GPIO.HIGH)
+		else:
+			GPIO.output(self.DIRECTION_PIN_TILT,GPIO.LOW)
 
 		logging.info("head.py: Look command sent: turn={}, tilt={}".format(direct_turn,direct_tilt))
 
@@ -153,6 +164,8 @@ class Head(object):
 				GPIO.output(self.STEP_PIN_TILT,GPIO.HIGH)
 			time.sleep(self.MOTOR_DELAY)
 		logging.info("head.py: Head arrived at target position.")
+		steps_turn = 0
+		steps_tilt = 0
 		return
 
 if __name__ == "__main__":
@@ -165,31 +178,38 @@ if __name__ == "__main__":
 	try: 
 		print(">>> TEST SEQUENCE STARTED <<<")
 		print(">>> Testing Turn Table: Standard use")
+		# print("Turning to -45")
 		obj.look(turn = -45)
+		# print("Turning to 0")
 		obj.look(turn = 0)
+		# print("Turning to 45")
 		obj.look(turn = 45)
+		# print("Turning to -90")
 		obj.look(turn = -90)
+		# print("Turning to 0")
 		obj.look(turn = 0)
+		# print("Turning to 90")
 		obj.look(turn = 90)
-		print(">>> Testing Turn Table: Unvalid inputs")
-		obj.look(turn = -100)
 		obj.look(turn = 0)
+		print(">>> Testing Turn Table: Invalid inputs")
+		obj.look(turn = -100)
 		obj.look(turn = 100)
 		print(">>> Testing Turn Table: Complete")
 		print(">>> Testing Tilt Axis: Standard use")
-		obj.look(turn = -15)
-		obj.look(turn = 0)
-		obj.look(turn = 15)
-		obj.look(turn = -45)
-		obj.look(turn = 0)
-		obj.look(turn = 45)
+		obj.look(tilt = -15)
+		obj.look(tilt = 0)
+		obj.look(tilt = 15)
+		obj.look(tilt = -45)
+		obj.look(tilt = 0)
+		obj.look(tilt = 45)
+		obj.look(tilt = 0)
 		print(">>> Testing Tilt Axis: Unvalid inputs")
-		obj.look(turn = -70)
-		obj.look(turn = 0)
-		obj.look(turn = 70)
+		obj.look(tilt = -70)
+		obj.look(tilt = 70)
 		print(">>> Testing Tilt Axis: Complete")
 		obj.disconnect()
 		print(">>> TEST COMPLETE <<<")
 	except KeyboardInterrupt:
+
 		obj.disconnect()    
 		print("Test ended prematurely and has been disconnected")
