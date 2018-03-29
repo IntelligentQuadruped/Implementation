@@ -2,8 +2,6 @@
 Author: Jan Bernhard
 Purpose: Module to control the Princeton Minitaur robot research unit.
 '''
-
-
 # standard imports
 import serial
 import time
@@ -187,17 +185,21 @@ if __name__ == '__main__':
     obj.connect(PORT,BAUDERATE,TIMEOUT)
     try:
         print(" >>> START TEST SEQUENCE <<<")
-        print(">>> WALK & LOOK SLIGHTLY RIGHT, UP <<<")
+        print(">>> Stand <<<")
         for _ in range(30):
-            obj.move(forward=0.3)
+            obj.move()
             time.sleep(0.1)
-        print(">>> HIGH WALK & LOOK FROM INITIAL POSITION <<<")
+        print(">>> WALK <<<")
+        for _ in range(100):
+            obj.move(forward=-0.3,height = .1)
+            time.sleep(0.1)
+        print(">>> Turn right<<<")
         for _ in range(20):
-            obj.move(forward=0.2, height=.5)
+            obj.move(forward=0.1,turn =.6, height=.1)
             time.sleep(0.1)
-        print(">>> SIT <<<")
+        print(">>> Turn left <<<")
         for _ in range (20):
-            obj.move(height = .5)
+            obj.move(forward=0.1,turn=-.6,height=.1)
             time.sleep(0.1)
         print(">>> STAND <<<")
         for _ in range (20):
