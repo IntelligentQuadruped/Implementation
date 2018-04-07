@@ -150,6 +150,7 @@ class Robot(object):
                 new_move[6:8] = self.__convertToMove(kwargs[key])
             elif key == 'behavior':
                 new_move[1] = int(kwargs[key])
+            print(key)
 
         new_move = map(str,new_move) # converting int to char
         new_move = ''.join(new_move) # joining char to str

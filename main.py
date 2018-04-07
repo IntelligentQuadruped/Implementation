@@ -7,8 +7,7 @@ import numpy as np
 import time
 import logging
 
-# from robot_control import robot_v2 as robot
-# from robot_control import head
+from robot_control import robot_v2 as robot
 from navigation import nav
 from vision import cam
 
@@ -50,27 +49,30 @@ def online(c, n, r, h):
 		h.disconnect()
 		pass
 
-def offline(c, n):
+def offline(c, n, r):
 	'''
 	Offline version to load saved images and plot where the robot should move
 	'''
 
-	t = time.time()
-	filename = 'navigation/npz/%d_c_5d.npz' % 1
-	
-	depth, rgb = c.getFramesFromFile(filename)
+	for i in range(1):
 
-	x = n.reconstructFrame(depth)
-	max_dist = 1.2
-	frac, deg = n.obstacleAvoid(x, max_dist)
+		t = time.time()
+		filename = 'sample_obstacle_course/1_%d_' % (i+105)
+		# filename = 'navigation/npz/%d_c_5d.npz' % 1
+		
+		depth, rgb = c.getFramesFromFile(filename)
 
-	print("Time: ", time.time()-t)
-	if frac is None:
-		print("Error: cannot find where to walk")
-		n.plot(rgb, depth, x, 10, b=1)
-	else:
-		print("Rotate {:.1f} degree".format(deg))
-		n.plot(rgb, depth, x, (1+frac)*rgb.shape[1]/2, b=1)
+		x = n.reconstructFrame(depth)
+		max_dist = 0.8
+		frac, deg = n.obstacleAvoid(x, max_dist)
+
+		print("Time: ", time.time()-t)
+		if frac is None:
+			print("Error: cannot find where to walk")
+			n.plot(rgb, depth, x, 10, b=1)
+		else:
+			print("Rotate {:.1f} degree".format(deg))
+			n.plot(rgb, depth, x, (1+frac)*rgb.shape[1]/2, b=1)
 
 
 
@@ -81,8 +83,8 @@ def main():
                     level=logging.DEBUG)
 
 	c = cam.Camera(sub_sample=0.3, height_ratio=0.3)
-	n = nav.Navigation(perc_samples=0.3)
-	# r = robot.Robot()
+	n = nav.Navigation(perc_samples=0.5)
+	r = robot.Robot()
 	# h = head.Head()
 
 	# PORT = '/dev/ttyUSB0'
@@ -94,7 +96,7 @@ def main():
 	if on:
 		online(c, n, r, h)
 	else:
-		offline(c, n)
+		offline(c, n, r)
 	
 
 if __name__== "__main__":

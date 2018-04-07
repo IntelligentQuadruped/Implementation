@@ -128,6 +128,7 @@ class Navigation:
 	    """
 		depth =  depth > max_dist # true where gap exists
 		npad = ((0, 0), (1, 1))
+
 		d = np.pad(depth, pad_width=npad, mode='constant', constant_values=0)
 
 		f = np.nonzero(np.diff(d))
@@ -182,13 +183,13 @@ class Navigation:
 	    that can be used, returning the fraction along the images width where
 	    this is and the degrees rotation from the center. 
 	    """
-	  	pos = self.__findLargestGap(depth, max_dist)
-	  	if pos is None:
-	  		return(None, None)
+		pos = self.__findLargestGap(depth, max_dist)
+		if pos is None:
+			return(None, None)
 	  	
-	  	deg = 1.*self.angle_swept*pos/depth.shape[1] - self.angle_swept/2.
-	  	frac = 2.*pos/depth.shape[1] - 1
-	  	return (frac, deg)
+		deg = 1.*self.angle_swept*pos/depth.shape[1] - self.angle_swept/2.
+		frac = 2.*pos/depth.shape[1] - 1
+		return (frac, deg)
 
 	def plot(self, rgb, depth, interpolated, pos, cmap='gray', b=1):
 		"""
