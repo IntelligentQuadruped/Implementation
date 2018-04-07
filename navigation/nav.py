@@ -23,6 +23,7 @@ from scipy.interpolate import Rbf
 import matplotlib.pyplot as plt
 import time
 import logging
+import adaptive_grid_sizing as ags
 
 class Navigation:
 	"""
