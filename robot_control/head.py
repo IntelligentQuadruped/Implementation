@@ -11,7 +11,7 @@ class Head(object):
 
 	def __init__(self):
 		# Constants
-		self.CONVERSION_FACTOR_TURN = 20/9 #steps per degree
+		self.CONVERSION_FACTOR_TURN = 2.22 #steps per degree
 		self.CONVERSION_FACTOR_TILT = 10.0 #steps per degree
 		self.connect_head = False
 
