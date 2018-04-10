@@ -2,19 +2,19 @@
 High-level control commands for the quadruped.
 
 ## Development status
-#### Main body motion control:
+#### Robot.py:
  - [x] function testing 
  - [x] object terminal testing
  - [x] object robot testing
-#### Head unit control:
+#### Head.py:
  - [x] add control code
  - [x] terminal testing of control code
  - [x] physical testing of control code
 #### V0.2: With logging capability and more robust functionality:
  - [x] add logging
  - [x] replace if-loops with try-except statements
- - [ ] testing
- - [ ] merge robot.py with robot_dev_wLog.py
+ - [x] testing
+ - [x] merge robot.py with robot_dev_wLog.py
 
 ## Setup
 ### Requirements:
@@ -45,13 +45,13 @@ obj = robot_v2.Robot()
 obj.connect(PORT,BAUDERATE,TIMEOUT)
 try:
     print(" >>> START TEST SEQUENCE <<<")
-    print(">>> WALK & LOOK SLIGHTLY RIGHT, UP <<<")
+    print(">>> WALK <<<")
     for _ in range(30):
         obj.move(forward=0.3)
         time.sleep(0.1)
-    print(">>> HIGH WALK & LOOK FROM INITIAL POSITION <<<")
+    print(">>> HIGH WALK, TURN RIGHT<<<")
     for _ in range(20):
-        obj.move(forward=0.2,height=0.3)
+        obj.move(forward=0.2,height=0.3,turn = 0.3)
         time.sleep(0.1)
     print(">>> SIT <<<")
     for _ in range (20):
