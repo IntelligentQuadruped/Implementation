@@ -81,21 +81,21 @@ def online(c, n, r, h):
 			if frac is None and gap_direction == 0:
 				print('Warning: No path straight ahead. Using head to find path')
 				n.plot(rgb, depth, x, 0)
-				r.move()
+				r.test_move()
 				gap_direction = searchForGap(c,n,h,gap_direction)
 			
 			elif(frac is None and frac_prime is None):
 				print("Error: cannot find where to walk")
-				r.move()
+				r.test_move()
 
 			elif(gap_direction != 0):
 				#max turning rate in gap_direction
-				r.move(forward=0.3, turn=gap_direction*0.6)
+				r.test_move(forward=0.3, turn=gap_direction*0.6)
 
 			else:
 				print("Rotate {:.1f} fraction".format(frac))
 				n.plot(rgb, depth, x, (1+frac)*rgb.shape[1]/2)
-				r.move(forward=0.3, turn=round(0.6*frac,1))
+				r.test_move(forward=0.3, turn=round(0.6*frac,1))
 
 	except KeyboardInterrupt:
 		logging.warning("Main.py: KeyboardInterrupt")

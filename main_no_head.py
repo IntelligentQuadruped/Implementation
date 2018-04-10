@@ -1,7 +1,6 @@
 '''
 Author: Viveque Ramji
 Purpose: Main script to bring all modules together
-
 '''
 import numpy as np
 import time
@@ -11,44 +10,6 @@ from robot_control import robot
 from robot_control import head
 from navigation import nav
 from vision import cam
-
-MAX_DIST = 1.2
-
-def searchForGap(c,n,h,head_offset):
-	'''
-	Will check if the head was used to find gap and will adjust body rotation to follow head.
-	'''
-	angle = 0
-	found_gap = False
-	for i in range(2*(90/5)):
-		#decide on turning direction
-		if i%2 == 0:
-			direction = 1 # right
-			angle += 5*direction	
-		else:
-			direction = 1 # right
-			angle = angle*direction
-		#turn head
-		completed_movement = False
-		while(not completed_movement):
-			completed_movement = h.look(turn=angle)
-		#check for gap
-		depth, _ = c.getFrames(1)
-		x = n.reconstructFrame(depth)
-		frac, _ = n.obstacleAvoid(x,MAX_DIST)
-		if frac is not None:
-			found_gap = True
-			break
-
-	# reset head position
-	turned = False
-	while(not turned):
-		turned = h.look(turn=0.0)
-	if found_gap:
-		gap_direction = 1 if angle > 0 else -1
-		return gap_direction
-	else:
-		return
 
 
 def online(c, n, r, h):
@@ -60,42 +21,26 @@ def online(c, n, r, h):
 	c.connect()
 	r.connect()
 	h.connect()
-	gap_direction = 0 #Camera starts pointing straight ahead 
+
 	try:
 		while True:
 			t = time.time()
 			depth, rgb = c.getFrames(1)
 			x = n.reconstructFrame(depth)
 			if x is None:
-				print("Error, cannot find where to walk")
+				print("Error, caannot find where to walk")
 				continue
-			frac, _ = n.obstacleAvoid(x, MAX_DIST)
-			# when head was used to find a gap
-			frac_prime = None
-			if gap_direction != 0:
-				frac_prime, _ = n.obstacleAvoid(x, 0.7) # avoid running into obstacle straight ahead
-				if frac != None:
-					gap_direction = 0 #reset turning rate
-
+			max_dist = 1.2
+			frac, deg = n.obstacleAvoid(x, max_dist)
 			print("Time: ", time.time()-t)
-			if frac is None and gap_direction == 0:
-				print('Warning: No path straight ahead. Using head to find path')
-				n.plot(rgb, depth, x, 0)
-				r.move()
-				gap_direction = searchForGap(c,n,h,gap_direction)
-			
-			elif(frac is None and frac_prime is None):
+			if frac is None:
 				print("Error: cannot find where to walk")
-				r.move()
-
-			elif(gap_direction != 0):
-				#max turning rate in gap_direction
-				r.move(forward=0.3, turn=gap_direction*0.6)
-
+				n.plot(rgb, depth, x, 0)
+				r.test_move()
 			else:
 				print("Rotate {:.1f} fraction".format(frac))
 				n.plot(rgb, depth, x, (1+frac)*rgb.shape[1]/2)
-				r.move(forward=0.3, turn=round(0.6*frac,1))
+				r.test_move(forward=0.3, turn=0.6*frac)
 
 	except KeyboardInterrupt:
 		logging.warning("Main.py: KeyboardInterrupt")
@@ -109,7 +54,7 @@ def offline(c, n, r):
 	Offline version to load saved images and plot where the robot should move
 	'''
 
-	for _ in range(1):
+	for i in range(1):
 
 		t = time.time()
 		# filename = 'sample_obstacle_course/1_%d_' % (i+105)
@@ -118,9 +63,8 @@ def offline(c, n, r):
 		depth, rgb = c.getFramesFromFile(filename)
 
 		x = n.reconstructFrame(depth)
-		global MAX_DIST
-		MAX_DIST = 0.8
-		frac, deg = n.obstacleAvoid(x, MAX_DIST)
+		max_dist = 0.8
+		frac, deg = n.obstacleAvoid(x, max_dist)
 
 		print("Time: ", time.time()-t)
 		if frac is None:
@@ -158,4 +102,3 @@ def main():
 
 if __name__== "__main__":
   main()
-

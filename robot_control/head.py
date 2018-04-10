@@ -166,7 +166,7 @@ class Head(object):
 		logging.info("head.py: Head arrived at target position.")
 		steps_turn = 0
 		steps_tilt = 0
-		return
+		return True #completed movement
 
 if __name__ == "__main__":
 	"""
