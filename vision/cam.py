@@ -4,10 +4,13 @@ Purpose: Module to connect to camera and retrieve rgb or depth data
 
 '''
 
-import pyrealsense as pyrs
+# import pyrealsense as pyrs
 from skimage.transform import rescale
 import numpy as np
 import logging
+import time
+
+import matplotlib.pyplot as plt
 
 class Camera:
 	"""
@@ -53,12 +56,13 @@ class Camera:
 	    Takes in a depth image and removes 0 and values bigger than max_val
 	    Will also crop image to be last h rows
 	    """
+		d = depth.copy()
 		if h:
-			depth = depth[-h:-10, 69:-10]
-		depth[depth <= 0] = np.nan
-		depth[depth > self.max_val] = np.nan
+			d = d[-h:-30, 69:-10]
+		d[d <= 0] = np.nan
+		d[d > self.max_val] = np.nan
 
-		return depth
+		return d
 
 	def getFramesFromFile(self, filename):
 		"""
@@ -67,9 +71,14 @@ class Camera:
 	    by sub_sample
 	    """
 		npz = np.load(filename)
-
 		col = npz['arr_0']
 		d = npz['arr_1']/1000
+
+		# colf = filename + 'c.npy'
+		# df = filename + 'd.npy'
+		# col = np.load(colf)
+		# d = np.load(df)/1000.
+
 		h = int(self.height_ratio*(d.shape[0]))
 
 		red = self.__reduceFrame(d, h)
@@ -82,6 +91,8 @@ class Camera:
 		meand = np.nanmean(red, 2)
 		red_meand = self.__reduceFrame(meand)
 		final = rescale(red_meand, self.sub_sample)
+
+		# final = rescale(red, self.sub_sample)
 
 		return final, col
 

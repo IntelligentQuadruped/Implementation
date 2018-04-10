@@ -16,16 +16,18 @@ def main():
     connection = False # Holds received message from Minitaur
     try:
         # Wait for successful communication to be established
-        while(connection==False):
-            received = obj.move() 
-            connection = True if received != None else False
+
+        while(not connection):
+            received = obj.move(height = .5) 
+            connection = True if received is not None else False
             print(">>> Connecting... " + str(received))
     
         print(" >>> START TEST SEQUENCE <<<")
         print(">>> RAISE TO WALKING HEIGHT <<<")
         for _ in range(30):
-            connection = obj.move(height = 0.0)
-            if connection==True:
+
+            connection = obj.move(height = .2)
+            if connection:
                 print(">>> Successful Communication")
             else:
                 print(">>> ERROR: Unsuccessful Communication")
@@ -35,7 +37,7 @@ def main():
             connection = obj.move(forward=0.4,height=0.1, turn = -.0)
             time.sleep(0.1)
             connection = obj.move(forward=0.4,height=0.1, turn = -.1)
-            if connection==True:
+            if connection:
                 print(">>> Successful Communication")
             else:
                 print(">>> ERROR: Unsuccessful Communication")
@@ -44,14 +46,16 @@ def main():
         for _ in range (20):
             connection = obj.move(forward=.3,turn = -0.5, height = .1)
             if connection==True:
+
                 print(">>> Successful Communication")
             else:
                 print(">>> ERROR: Unsuccessful Communication")
             time.sleep(0.1)
         print(">>> TURN Rignht <<<")
         for _ in range (30):
-            connection = obj.move(forward=.3,turn = 0.5, height = .1)
-            if connection==True:
+
+            connection = obj.move(forward=.3,turn = -0.3, height = .2)
+            if connection:
                 print(">>> Successful Communication")
             else:
                 print(">>> ERROR: Unsuccessful Communication")

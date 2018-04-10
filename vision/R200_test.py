@@ -12,20 +12,7 @@ with pyrs.Service() as serv:
 
         dev.apply_ivcam_preset(0)
 
-        cnt = 0
-        last = time.time()
-        smoothing = 0.9
-        fps_smooth = 30
-
         while True:
-
-            cnt += 1
-            if (cnt % 10) == 0:
-                now = time.time()
-                dt = now - last
-                fps = 10/dt
-                fps_smooth = (fps_smooth * smoothing) + (fps * (1.0-smoothing))
-                last = now
 
             dev.wait_for_frames()
             c = dev.color
@@ -35,8 +22,6 @@ with pyrs.Service() as serv:
 
             cd = np.concatenate((c, d), axis=1)
 
-            cv2.putText(cd, str(fps_smooth)[:4], (0, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 0))
-
-            cv2.imshow('', cd)
+            cv2.imshow('RGB+Depth', cd)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break

@@ -8,18 +8,6 @@ Performance:    Number of calculations increase as set standard-deviation (SIGMA
 import numpy as np
 
 GLOBAL = False
-SIGMA = 470
-
-def limitTopValue(matrix):
-    """
-    Reduces outliers to a maximum value of 4000.0 which is the max
-    sensitivity value of the R200 depth sensors.
-
-    Arg:
-        matrix - numpy 2D depth matrix
-    """
-    matrix[matrix > 4000.0] = np.nan
-    return matrix
 
 def split(matrix):
     """
@@ -93,7 +81,7 @@ def cleanup(matrix):
                 break
     return matrix
 
-def depth_completion(matrix, sigma = SIGMA):
+def depth_completion(matrix, sigma=0.01):
     """
     Manages the appropriate sequence of completion steps to determine a depth 
     estimate for each matrix entry. 
@@ -101,7 +89,10 @@ def depth_completion(matrix, sigma = SIGMA):
         matrix - depth values as np.array()
         sigma - acceptable deviation within calculated depth fields
     """
-    matrix = limitTopValue(matrix)
+
+    # Reduces outliers to a maximum value of 4000.0 which is the max
+    # sensitivity value of the R200 depth sensors.
+    matrix[matrix > 4] = np.nan
     matrix = average(matrix, sigma)
     if GLOBAL:
         matrix = cleanup(matrix)
@@ -114,12 +105,15 @@ if __name__ == "__main__":
     """
     import matplotlib.pyplot as plt
     import time 
-    dep = np.load("data/7_d.npy")
+    dep = np.load("Depth_Completion/data/7_d.npy")/1000.
     start  = time.time()
-    dep = depth_completion(dep)
+    dep_comp = depth_completion(dep)
     end = time.time()
     print("Depth data completion took %.3f seconds."%(end-start))
+    plt.subplot(1, 2, 1)
     plt.imshow(dep)
+    plt.subplot(1, 2, 2)
+    plt.imshow(dep_comp)
     plt.show()
 else:
     np.warnings.filterwarnings('ignore')
