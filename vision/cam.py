@@ -100,7 +100,7 @@ class Camera:
 
 		red = self.__reduceFrame(d, h)
 
-		for i in range(self.frames-1):
+		for _ in range(self.frames-1):
 			self.dev.wait_for_frames()
 			curr = self.__reduceFrame(self.dev.depth*self.dev.depth_scale, h)
 			red = np.dstack((red, curr))

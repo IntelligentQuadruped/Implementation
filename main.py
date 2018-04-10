@@ -7,8 +7,8 @@ import numpy as np
 import time
 import logging
 
-# from robot_control import robot_dev_wLog as robot
-# from robot_control import head
+from robot_control import robot
+from robot_control import head
 from navigation import nav
 from vision import cam
 
@@ -82,12 +82,12 @@ def main():
 
 	c = cam.Camera(sub_sample=0.3, height_ratio=0.3)
 	n = nav.Navigation(perc_samples=0.3)
-	# r = robot.Robot()
-	# h = head.Head()
+	r = robot.Robot()
+	h = head.Head()
 
-	# PORT = '/dev/ttyUSB0'
-	# BAUDERATE = 115200
-    # r.connect(PORT,BAUDERATE)
+	PORT = '/dev/ttyUSB0'
+	BAUDERATE = 115200
+	r.connect(PORT,BAUDERATE)
 
 	on = False
 
