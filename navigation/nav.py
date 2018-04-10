@@ -192,7 +192,7 @@ class Navigation:
 		frac = 2.*pos/depth.shape[1] - 1
 		return (frac, deg)
 
-	def plot(self, rgb, depth, interpolated, pos, cmap='gray', b=1):
+	def plot(self, rgb, depth, interpolated, pos, cmap='viridis', b=1):
 		"""
 	    Will plot the rgb image, original depth, interpolated depth and the
 	    position of where the algorithm recommends to move.
@@ -203,6 +203,8 @@ class Navigation:
 		plt.scatter(pos, 460)
 		plt.xticks(visible=False)
 		plt.yticks(visible=False)
+
+		plt.imsave('rgb.png', rgb)
 
 		plt.subplot(2, 2, 2)
 		plt.imshow(depth, cmap=cmap)

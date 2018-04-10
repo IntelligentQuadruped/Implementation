@@ -56,8 +56,9 @@ class Camera:
 	    Takes in a depth image and removes 0 and values bigger than max_val
 	    Will also crop image to be last h rows
 	    """
+		d = depth.copy()
 		if h:
-			d = depth.copy()[-h:-30, 69:-10]
+			d = d[-h:-30, 69:-10]
 		d[d <= 0] = np.nan
 		d[d > self.max_val] = np.nan
 
@@ -69,29 +70,29 @@ class Camera:
 	    Gets images from file, cleans and averages depth images and scales down
 	    by sub_sample
 	    """
-		# npz = np.load(filename)
-		# col = npz['arr_0']
-		# d = npz['arr_1']/1000
+		npz = np.load(filename)
+		col = npz['arr_0']
+		d = npz['arr_1']/1000
 
-		colf = filename + 'c.npy'
-		df = filename + 'd.npy'
-		col = np.load(colf)
-		d = np.load(df)/1000.
+		# colf = filename + 'c.npy'
+		# df = filename + 'd.npy'
+		# col = np.load(colf)
+		# d = np.load(df)/1000.
 
 		h = int(self.height_ratio*(d.shape[0]))
 
 		red = self.__reduceFrame(d, h)
 
-		# for i in range(self.frames-1):
-		# 	s = 'arr_%d' % (i+2)
-		# 	curr = self.__reduceFrame(npz[s]/1000, h)
-		# 	red = np.dstack((red, curr))
+		for i in range(self.frames-1):
+			s = 'arr_%d' % (i+2)
+			curr = self.__reduceFrame(npz[s]/1000, h)
+			red = np.dstack((red, curr))
 
-		# meand = np.nanmean(red, 2)
-		# red_meand = self.__reduceFrame(meand)
-		# final = rescale(red_meand, self.sub_sample)
+		meand = np.nanmean(red, 2)
+		red_meand = self.__reduceFrame(meand)
+		final = rescale(red_meand, self.sub_sample)
 
-		final = rescale(red, self.sub_sample)
+		# final = rescale(red, self.sub_sample)
 
 		return final, col
 

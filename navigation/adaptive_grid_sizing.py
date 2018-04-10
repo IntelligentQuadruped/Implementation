@@ -9,8 +9,6 @@ import numpy as np
 
 GLOBAL = False
 
-
-
 def split(matrix):
     """
     Splits matrix into 4 equally sized rectangles.
