@@ -201,7 +201,7 @@ class Head(object):
 								if degrees < 0 else self.turn_steps + steps_turn
 				self.turn_angle = self.turn_steps / self.CONVERSION_FACTOR_TURN
 			elif key == 'tilt':
-				if abs(kwargs[key]) > 30:
+				if abs(kwargs[key]) > 45:
 					logging.warning("head.py: Degrees of head rotation out of bounds.")
 					logging.info("head.py: >>> Valid interval: [-45, 45]")
 					return
