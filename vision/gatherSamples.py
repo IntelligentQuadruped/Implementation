@@ -1,20 +1,25 @@
-import cam
 import numpy as np
 import os
 import time 
+import pyrealsense as pyrs
+serv = pyrs.Service()
+dev = serv.Device(device_id=0, streams=[pyrs.stream.DepthStream(fps=60), pyrs.stream.ColorStream(fps=60)])
 
-c = cam.Camera(frames=1, height_ratio=1.0, sub_sample=1.0, max_val=4)
-c.connect()
 path = './sample_data'
 counter  = 0
 while(True):
     try:
         counter += 1
-        depth_img = c.getFrames()
-        f = os.path.join(path,"0%d_d.npy"%(counter))
-        np.save(f,depth_img)
-        time.sleep(0.5)
+        dev.wait_for_frames()
+        d = dev.depth * dev.depth_scale * 1000  #16 bit numbers
+        gray = np.expand_dims(d.astype(np.uint8), axis=2)
+        f = os.path.join(path,"1_%d_d.npy"%(counter))
+        np.save(f,d)
+        col = dev.color
+        f = os.path.join(path,"1_%d_c.npy"%(counter))
+        np.save(f,col)
+        #time.sleep(0.1)
     except KeyboardInterrupt:
         break
 
-c.disconnect()
+
