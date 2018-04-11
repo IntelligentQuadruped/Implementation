@@ -88,16 +88,27 @@ class Head(object):
 		
 		return direction,steps
 
+	def __deg2step_test(self, degrees, CONVERSION_FACTOR):
+		"""
+		Converts number of degrees to number of steps and step direction.
+		--- Under development ---
+		Add conversion factor: emperically determined.
+		Check: Direction assumption
+		----------------------------------------------
+		"""
+        # assuming that LOW goes left and HIGH turns right
+		direction = -1 if degrees <= 0 else 1
+		steps = round(CONVERSION_FACTOR*degrees,0) # rounding to next integer
+		steps = abs(int(steps))                    # convert to positive int type
+		
+		return direction,steps
 
 	def look(self, **kwargs):
 		""" 
-		--- Under development ---
-		Add max degree safety feature
-		-----------------------------
 		Controls the field of vision by rotating head. 
 		Takes arguments as follows:
 		keyword:    [int] value
-		tilt:       [deg]  -45 to 45 
+		tilt:       [deg] -45 to 45 
 		turn:       [deg] -90 to 90
 		"""
 		if not self.connect_head:
@@ -122,7 +133,7 @@ class Head(object):
 								if degrees < 0 else self.turn_steps + steps_turn
 				self.turn_angle = self.turn_steps / self.CONVERSION_FACTOR_TURN
 			elif key == 'tilt':
-				if abs(kwargs[key]) > 30:
+				if abs(kwargs[key]) > 45:
 					logging.warning("head.py: Degrees of head rotation out of bounds.")
 					logging.info("head.py: >>> Valid interval: [-45, 45]")
 					return
@@ -134,6 +145,7 @@ class Head(object):
 			else:
 				logging.warning("head.py: Invalid command input to look().")
 
+		print(self.turn_angle)
         # Choosing max steps value
 		steps = steps_turn if steps_turn > steps_tilt else steps_tilt
 
@@ -164,6 +176,43 @@ class Head(object):
 				GPIO.output(self.STEP_PIN_TILT,GPIO.HIGH)
 			time.sleep(self.MOTOR_DELAY)
 		logging.info("head.py: Head arrived at target position.")
+		steps_turn = 0
+		steps_tilt = 0
+		return True #completed movement
+
+	def test_look(self, **kwargs):
+		""" 
+		Offline test function to step through procedure without motor units connected.
+		Takes same arguments as regular look() method. 
+		"""
+    
+		steps_turn = 0
+		steps_tilt = 0
+
+		for key in kwargs:
+			if key == 'turn':
+				if abs(kwargs[key]) > 90:
+					logging.warning("head.py: >>> Degrees of head rotation out of bounds.")
+					logging.info("head.py: >>> Valid interval: [-90, 90]")
+					return
+				degrees = kwargs[key] - self.turn_angle
+				_, steps_turn = self.__deg2step_test(degrees, self.CONVERSION_FACTOR_TURN)
+				self.turn_steps = self.turn_steps + (-1*steps_turn) \
+								if degrees < 0 else self.turn_steps + steps_turn
+				self.turn_angle = self.turn_steps / self.CONVERSION_FACTOR_TURN
+			elif key == 'tilt':
+				if abs(kwargs[key]) > 30:
+					logging.warning("head.py: Degrees of head rotation out of bounds.")
+					logging.info("head.py: >>> Valid interval: [-45, 45]")
+					return
+				degrees = kwargs[key] - self.tilt_angle
+				_, steps_tilt = self.__deg2step_test(degrees, self.CONVERSION_FACTOR_TILT)
+				self.tilt_steps = self.tilt_steps + (-1*steps_tilt) \
+								if degrees < 0 else self.tilt_steps + steps_tilt
+				self.tilt_angle = self.tilt_steps / self.CONVERSION_FACTOR_TILT   
+			else:
+				logging.warning("head.py: Invalid command input to look().")
+		print('Set turn angle: %.2f, tilt angle %.2f'%(self.turn_angle, self.tilt_angle))
 		steps_turn = 0
 		steps_tilt = 0
 		return True #completed movement
