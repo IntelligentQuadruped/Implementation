@@ -112,9 +112,9 @@ def offline(c, n, r):
 
 	# sample_dir = './data/sample_data_mounted_camera'
 	# for filename in os.listdir(sample_dir):
-	for i in range(200, 450, 5):
+	for i in range(200, 450, 10):
 		t = time.time()
-		filename = 'sample_data_mounted_camera/1_%d_'
+		filename = './data/sample_data_mounted_camera/1_%d_'
 		depth, rgb = c.getFramesFromFile(filename, i)
 		d_red = c.reduceFrame(depth)
 		print("Time to load images: ", time.time()-t)
@@ -129,6 +129,8 @@ def offline(c, n, r):
 		y = ags.depth_completion(d_red)
 		print("Time to reconstruct using ags: ", time.time()-t)
 
+		global MAX_DIST
+		MAX_DIST = 0.7
 		fracx, degx = n.obstacleAvoid(x, MAX_DIST)
 		fracy, degy = n.obstacleAvoid(y, MAX_DIST)
 
