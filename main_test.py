@@ -108,18 +108,17 @@ def offline(c, n, r):
 	'''
 	Offline version to load saved images and plot where the robot should move
 	'''
+	import os
 
-	for _ in range(1):
-
+	sample_dir = './data/sample_data_mounted_camera'
+	for filename in os.listdir(sample_dir):
 		t = time.time()
 		# filename = 'sample_obstacle_course/1_%d_' % (i+105)
-		filename = 'navigation/npz/%d_c_5d.npz' % 5
-		
-		depth, rgb = c.getFramesFromFile(filename)
+		# filename = 'navigation/npz/%d_c_5d.npz' % 5
+		path = os.path.join(sample_dir,filename)
+		depth, rgb = c.getFramesFromFile(path)
 
 		x = n.reconstructFrame(depth)
-		global MAX_DIST
-		MAX_DIST = 0.8
 		frac, deg = n.obstacleAvoid(x, MAX_DIST)
 
 		print("Time: ", time.time()-t)
