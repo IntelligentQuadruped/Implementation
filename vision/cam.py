@@ -51,50 +51,44 @@ class Camera:
 		self.serv.stop()
 		logging.info("Cam.py: Camera Disconnected")
 
-	def __reduceFrame(self, depth, h=0):
+	def reduceFrame(self, depth):
 		"""
 	    Takes in a depth image and removes 0 and values bigger than max_val
 	    Will also crop image to be last h rows
 	    """
 		d = depth.copy()
-		if h:
-			d = d[-h:-30, 69:-10]
+		h = int(self.height_ratio*(d.shape[0]))
+
+		d = d[-h:-30, 69:-10]
 		d[d <= 0] = np.nan
-		d[d > self.max_val] = np.nan
+		d[d > 4] = np.nan
 
-		return d
+		final = rescale(d, self.sub_sample)
 
-	def getFramesFromFile(self, filename):
+		return final
+
+
+	def getFramesFromFile(self, filename, idx):
 		"""
 	    Function used for testing on saved files
 	    Gets images from file, cleans and averages depth images and scales down
 	    by sub_sample
 	    """
-		npz = np.load(filename)
-		col = npz['arr_0']
-		d = npz['arr_1']/1000
 
-		# colf = filename + 'c.npy'
-		# df = filename + 'd.npy'
-		# col = np.load(colf)
-		# d = np.load(df)/1000.
-
-		h = int(self.height_ratio*(d.shape[0]))
-
-		red = self.__reduceFrame(d, h)
+		colf = filename + 'c.npy'
+		df = filename + 'd.npy'
+		col = np.load(colf % idx)
+		d = np.load(df % idx)/1000.
 
 		for i in range(self.frames-1):
-			s = 'arr_%d' % (i+2)
-			curr = self.__reduceFrame(npz[s]/1000, h)
-			red = np.dstack((red, curr))
+			idy = idx+i+1
+			s = np.load(df % idy)/1000.
+			d = np.dstack((d, s))
 
-		meand = np.nanmean(red, 2)
-		red_meand = self.__reduceFrame(meand)
-		final = rescale(red_meand, self.sub_sample)
+		meand = np.nanmean(d, 2)
+		meand[meand > 4] = np.nan
 
-		# final = rescale(red, self.sub_sample)
-
-		return final, col
+		return meand, col
 
 
 	def getFrames(self, rgb=False):

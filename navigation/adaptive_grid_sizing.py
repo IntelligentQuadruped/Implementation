@@ -44,7 +44,7 @@ def average(matrix, sigma):
         matrix - 2d depth matrix with approximated values.
     """
     h,w = matrix.shape
-    if matrix[matrix > 0].std() > sigma and h%2 == 0 and w%2 == 0:
+    if matrix[matrix > 0].std() > sigma and h/2 != 0 and w/2 != 0:
         submatrices = split(matrix)
         for i,mat in enumerate(submatrices):
             submatrices[i] = average(mat,sigma)
@@ -76,12 +76,12 @@ def cleanup(matrix):
                 higher = [higher[0]+1, higher[1]+1]
             if lower[0]-1 > 0 and lower[1]-1 > 0:
                 lower = [lower[0]-1, lower[1]-1]
-            if np.isnan(matrix[higher[0], higher[1]])==False or np.isnan(matrix[lower[0], lower[1]])==False:
-                matrix[xc,yc] = matrix[higher[0], higher[1]] if np.isnan(matrix[higher[0], higher[1]])==False else matrix[lower[0], lower[1]]
+            if (not np.isnan(matrix[higher[0], higher[1]])) or (not np.isnan(matrix[lower[0], lower[1]])):
+                matrix[xc,yc] = matrix[higher[0], higher[1]] if not np.isnan(matrix[higher[0], higher[1]]) else matrix[lower[0], lower[1]]
                 break
     return matrix
 
-def depth_completion(matrix, sigma=0.01):
+def depth_completion(d, sigma=0.4):
     """
     Manages the appropriate sequence of completion steps to determine a depth 
     estimate for each matrix entry. 
@@ -90,9 +90,9 @@ def depth_completion(matrix, sigma=0.01):
         sigma - acceptable deviation within calculated depth fields
     """
 
-    # Reduces outliers to a maximum value of 4000.0 which is the max
+    # Reduces outliers to a maximum value of 4.0 which is the max
     # sensitivity value of the R200 depth sensors.
-    matrix[matrix > 4] = np.nan
+    matrix = d.copy()
     matrix = average(matrix, sigma)
     if GLOBAL:
         matrix = cleanup(matrix)
@@ -105,7 +105,8 @@ if __name__ == "__main__":
     """
     import matplotlib.pyplot as plt
     import time 
-    dep = np.load("Depth_Completion/data/7_d.npy")/1000.
+    # dep = np.load("Depth_Completion/data/7_d.npy")/1000.
+    dep = np.load("1_116_d.npy")/1000.
     start  = time.time()
     dep_comp = depth_completion(dep)
     end = time.time()

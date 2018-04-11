@@ -112,7 +112,6 @@ def offline(c, n, r):
 	for _ in range(1):
 
 		t = time.time()
-		# filename = 'sample_obstacle_course/1_%d_' % (i+105)
 		filename = 'navigation/npz/%d_c_5d.npz' % 5
 		
 		depth, rgb = c.getFramesFromFile(filename)
@@ -139,7 +138,7 @@ def main():
                     level=logging.DEBUG)
 
 	c = cam.Camera(sub_sample=0.3, height_ratio=1)
-	n = nav.Navigation(perc_samples=0.3)
+	n = nav.Navigation(perc_samples=0.03)
 	r = robot.Robot()
 	h = head.Head()
 

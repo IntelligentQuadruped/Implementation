@@ -23,7 +23,6 @@ from scipy.interpolate import Rbf
 import matplotlib.pyplot as plt
 import time
 import logging
-# import adaptive_grid_sizing as ags
 
 class Navigation:
 	"""
@@ -192,7 +191,7 @@ class Navigation:
 		frac = 2.*pos/depth.shape[1] - 1
 		return (frac, deg)
 
-	def plot(self, rgb, depth, interpolated, pos, cmap='viridis', b=1):
+	def plot(self, rgb, depth, interpolated, posx, ags, posy, cmap='viridis', b=1):
 		"""
 	    Will plot the rgb image, original depth, interpolated depth and the
 	    position of where the algorithm recommends to move.
@@ -200,7 +199,8 @@ class Navigation:
 		plt.subplot(2, 2, 1)
 		plt.title('RGB')
 		plt.imshow(rgb)
-		plt.scatter(pos, 460)
+		plt.scatter(posx, 460, marker='o')
+		plt.scatter(posy, 460, marker='*')
 		plt.xticks(visible=False)
 		plt.yticks(visible=False)
 
@@ -215,6 +215,12 @@ class Navigation:
 		plt.subplot(2, 2, 3)
 		plt.imshow(interpolated, cmap=cmap)
 		plt.title('rbf1')
+		plt.xticks(visible=False)
+		plt.yticks(visible=False)
+
+		plt.subplot(2, 2, 4)
+		plt.imshow(ags, cmap=cmap)
+		plt.title('AGS')
 		plt.xticks(visible=False)
 		plt.yticks(visible=False)
 

@@ -9,7 +9,7 @@ import logging
 
 from robot_control import robot
 from robot_control import head
-from navigation import nav
+from navigation import nav, adaptive_grid_sizing as ags
 from vision import cam
 
 MAX_DIST = 1.2
@@ -108,32 +108,39 @@ def offline(c, n, r):
 	'''
 	Offline version to load saved images and plot where the robot should move
 	'''
-	import os
+	# import os
 
-	sample_dir = './data/sample_data_mounted_camera'
-	for filename in os.listdir(sample_dir):
+	# sample_dir = './data/sample_data_mounted_camera'
+	# for filename in os.listdir(sample_dir):
+	for i in range(200, 450, 5):
 		t = time.time()
-		# filename = 'sample_obstacle_course/1_%d_' % (i+105)
-		# filename = 'navigation/npz/%d_c_5d.npz' % 5
-		
-		depth = None
-		rgb = None
-		if 'd' in filename:
-			path = os.path.join(sample_dir,filename)
-			depth = np.load(path)
-			path = os.path.join(sample_dir,filename.replace('d','c'))
-			rgb = np.load(path)
-		print('Loaded images')
-		x = n.reconstructFrame(depth)
-		frac, deg = n.obstacleAvoid(x, MAX_DIST)
+		filename = 'sample_data_mounted_camera/1_%d_'
+		depth, rgb = c.getFramesFromFile(filename, i)
+		d_red = c.reduceFrame(depth)
+		print("Time to load images: ", time.time()-t)
 
-		print("Time: ", time.time()-t)
-		if frac is None:
-			print("Error: cannot find where to walk")
-			n.plot(rgb, depth, x, 10, b=1)
+		t = time.time()
+		
+		x = n.reconstructFrame(d_red)
+		print("Time to reconstruct using rbf: ", time.time()-t)
+
+		t = time.time()
+
+		y = ags.depth_completion(d_red)
+		print("Time to reconstruct using ags: ", time.time()-t)
+
+		fracx, degx = n.obstacleAvoid(x, MAX_DIST)
+		fracy, degy = n.obstacleAvoid(y, MAX_DIST)
+
+		if fracx is None:
+			posx = 10
 		else:
-			print("Rotate {:.1f} degree".format(deg))
-			n.plot(rgb, depth, x, (1+frac)*rgb.shape[1]/2, b=1)
+			posx = (1+fracx)*rgb.shape[1]/2
+		if fracy is None:
+			posy = 10
+		else:
+			posy = (1+fracy)*rgb.shape[1]/2
+		n.plot(rgb, depth, x, posx, y, posy, b=1)
 
 
 
@@ -143,8 +150,8 @@ def main():
                     datefmt='%I:%M:%S',
                     level=logging.DEBUG)
 
-	c = cam.Camera(sub_sample=0.3, height_ratio=1)
-	n = nav.Navigation(perc_samples=0.3)
+	c = cam.Camera(sub_sample=0.5, height_ratio=0.5)
+	n = nav.Navigation(perc_samples=0.1)
 	r = robot.Robot()
 	h = head.Head()
 
