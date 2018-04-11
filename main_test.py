@@ -115,9 +115,15 @@ def offline(c, n, r):
 		t = time.time()
 		# filename = 'sample_obstacle_course/1_%d_' % (i+105)
 		# filename = 'navigation/npz/%d_c_5d.npz' % 5
-		path = os.path.join(sample_dir,filename)
-		depth, rgb = c.getFramesFromFile(path)
-
+		
+		depth = None
+		rgb = None
+		if 'd' in filename:
+			path = os.path.join(sample_dir,filename)
+			depth = np.load(path)
+			path = os.path.join(sample_dir,filename.replace('d','c'))
+			rgb = np.load(path)
+		print('Loaded images')
 		x = n.reconstructFrame(depth)
 		frac, deg = n.obstacleAvoid(x, MAX_DIST)
 
