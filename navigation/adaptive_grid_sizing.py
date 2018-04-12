@@ -9,6 +9,20 @@ import numpy as np
 
 GLOBAL = False
 
+def setSigma(matrix,num = 2):
+    """
+    Sets starting sigma value by interpolating from emperically
+    determined data from R200 camera. 
+
+    Default is a 3 sigma to get 95% of the values. 
+    """
+    x = matrix[matrix > 0].mean()
+    a,b = [0.07064656, -0.03890366]
+    sigma = lambda x : a*x + b
+    return num*round(sigma(x),3)
+
+
+
 def split(matrix):
     """
     Splits matrix into 4 equally sized rectangles.
@@ -81,19 +95,22 @@ def cleanup(matrix):
                 break
     return matrix
 
-def depth_completion(d, sigma=0.4):
+def depth_completion(d, min_sigma=0.4):
     """
     Manages the appropriate sequence of completion steps to determine a depth 
     estimate for each matrix entry. 
     Args:
         matrix - depth values as np.array()
-        sigma - acceptable deviation within calculated depth fields
+        min_sigma - acceptable deviation within calculated depth fields
     """
 
     # Reduces outliers to a maximum value of 4.0 which is the max
     # sensitivity value of the R200 depth sensors.
     matrix = d.copy()
-    matrix = average(matrix, sigma)
+    # std = setSigma(matrix)
+    # min_sigma = std if min_sigma < std else min_sigma
+    print("Sigma is set to: {}".format(min_sigma))
+    matrix = average(matrix, min_sigma)
     if GLOBAL:
         matrix = cleanup(matrix)
     return matrix
