@@ -142,8 +142,8 @@ class Navigation:
 		if sf is None:
 			return None
 
-		plt.imshow(depth)
-		plt.show()
+		# plt.imshow(depth)
+		# plt.show()
 
 		return (sf[0]+sf[1])/2
 

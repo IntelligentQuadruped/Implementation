@@ -111,7 +111,7 @@ def depth_completion(d, min_sigma=0.3):
     matrix = d.copy()
     # std = setSigma(matrix)
     # min_sigma = std if min_sigma < std else min_sigma
-    print("Sigma is set to: {}".format(min_sigma))
+    #print("Sigma is set to: {}".format(min_sigma))
     matrix = average(matrix, min_sigma)
     if GLOBAL:
         matrix = cleanup(matrix)

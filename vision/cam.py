@@ -89,10 +89,11 @@ class Camera:
 			s = np.load(df % idy)/1000.
 			d = np.dstack((d, s))
 
-		meand = np.nanmean(d, 2)
-		meand[meand > 4] = np.nan
+		if self.frames != 1:
+			d = np.nanmean(d, 2)
+		d[d > 4] = np.nan
 
-		return meand, col
+		return d, col
 
 
 	def getFrames(self, rgb=False):
@@ -102,21 +103,22 @@ class Camera:
 	    """
 		self.dev.wait_for_frames()
 
-		d = self.dev.depth
+		d = self.dev.depth*self.dev.depth_scale
 
 		for _ in range(self.frames-1):
 			self.dev.wait_for_frames()
-			curr = self.dev.depth
+			curr = self.dev.depth*self.dev.depth_scale
 			d = np.dstack((d, curr))
 
-		meand = np.nanmean(d, 2)*self.dev.depth_scale
-		meand[meand > 4] = np.nan
+		if self.frames != 1:
+			d = np.nanmean(d, 2)
+		d[d > 4] = np.nan
 
 		if rgb:
 			col = self.dev.color 
-			return meand, col
+			return d, col
 
-		return meand	
+		return d	
 
 
 
