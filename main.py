@@ -58,7 +58,7 @@ def online(c, n, r, h):
 	to move until keyboard interrupt
 	'''
 	c.connect()
-	r.connect()
+	# r.connect()
 	h.connect()
 	gap_direction = 0 #Camera starts pointing straight ahead 
 	try:

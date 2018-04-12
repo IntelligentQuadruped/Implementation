@@ -34,15 +34,17 @@ def split(matrix):
     """
     h,w = matrix.shape
     h_prime = int(h/2)
-    w_prime = int(w/2)
+    w_prime = int(w/3)
 
     # quarter matrices
     upper_left = matrix[:h_prime,:w_prime]
-    upper_right = matrix[:h_prime,w_prime:]
+    upper_middle = matrix[:h_prime,w_prime:2*w_prime]
+    upper_right = matrix[:h_prime,2*w_prime:w]
     lower_left = matrix[h_prime:,:w_prime]
-    lower_right = matrix[h_prime:,w_prime:]
+    lower_middle = matrix[h_prime:,w_prime:2*w_prime]
+    lower_right = matrix[h_prime:,2*w_prime:w]
 
-    return [upper_left,upper_right,lower_left,lower_right]
+    return [upper_left,upper_middle,upper_right,lower_left,lower_middle,lower_right]
 
 def average(matrix, sigma):
     """
@@ -58,13 +60,13 @@ def average(matrix, sigma):
         matrix - 2d depth matrix with approximated values.
     """
     h,w = matrix.shape
-    if matrix[matrix > 0].std() > sigma and h/2 != 0 and w/2 != 0:
+    if matrix[matrix > 0].std() > sigma and h >= 10:
         submatrices = split(matrix)
         for i,mat in enumerate(submatrices):
             submatrices[i] = average(mat,sigma)
         
-        horizontal1 = np.hstack((submatrices[0],submatrices[1]))
-        horizontal2 = np.hstack((submatrices[2],submatrices[3]))
+        horizontal1 = np.hstack((submatrices[0],submatrices[1],submatrices[2]))
+        horizontal2 = np.hstack((submatrices[3],submatrices[4],submatrices[5]))
         matrix = np.vstack((horizontal1,horizontal2))
         return matrix
     else:
@@ -86,16 +88,16 @@ def cleanup(matrix):
         higher = [xc,yc]
         lower = [xc,yc]
         while(True):
-            if higher[0]+1 < h and higher[1]+1 < w:
-                higher = [higher[0]+1, higher[1]+1]
-            if lower[0]-1 > 0 and lower[1]-1 > 0:
-                lower = [lower[0]-1, lower[1]-1]
-            if (not np.isnan(matrix[higher[0], higher[1]])) or (not np.isnan(matrix[lower[0], lower[1]])):
-                matrix[xc,yc] = matrix[higher[0], higher[1]] if not np.isnan(matrix[higher[0], higher[1]]) else matrix[lower[0], lower[1]]
+            if higher[1]+5 < w:
+                higher[1] = higher[1] + 5
+            if lower[1]-5 > 0:
+                lower[1] = lower[1] - 5
+            if (not np.isnan(matrix[xc, higher[1]])) or (not np.isnan(matrix[xc, lower[1]])):
+                matrix[xc,yc] = matrix[xc, higher[1]] if not np.isnan(matrix[xc, higher[1]]) else matrix[lower[0], lower[1]]
                 break
     return matrix
 
-def depth_completion(d, min_sigma=0.4):
+def depth_completion(d, min_sigma=0.3):
     """
     Manages the appropriate sequence of completion steps to determine a depth 
     estimate for each matrix entry. 
@@ -123,7 +125,9 @@ if __name__ == "__main__":
     import matplotlib.pyplot as plt
     import time 
     # dep = np.load("Depth_Completion/data/7_d.npy")/1000.
-    dep = np.load("1_116_d.npy")/1000.
+    depth = np.load("./../data/sample_data_mounted_camera/1_200_d.npy")/1000.
+    depth[depth>4.0] = 0.0
+    dep = depth.copy()
     start  = time.time()
     dep_comp = depth_completion(dep)
     end = time.time()

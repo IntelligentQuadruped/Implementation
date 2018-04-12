@@ -127,6 +127,7 @@ class Navigation:
 	    gap.
 	    """
 		depth =  depth > max_dist # true where gap exists
+
 		npad = ((0, 0), (1, 1))
 
 		d = np.pad(depth, pad_width=npad, mode='constant', constant_values=0)
@@ -141,6 +142,9 @@ class Navigation:
 		if sf is None:
 			return None
 
+		plt.imshow(depth)
+		plt.show()
+
 		return (sf[0]+sf[1])/2
 
 	def __addNextRow(self, row, start, finish, data):
@@ -151,6 +155,7 @@ class Navigation:
 		if row == data.n:
 			data.setGap(start, finish)
 			return
+
 		args = np.argwhere(data.row_i == row)
 		for i in args:
 			s = start
@@ -164,7 +169,7 @@ class Navigation:
 					f = d
 				if data.compareGap(s, f):
 					self.__addNextRow(row+1, s, f, data)
-			return
+		return
 
 
 	def reconstructFrame(self, depth):
@@ -189,7 +194,7 @@ class Navigation:
 	  	
 		deg = 1.*self.angle_swept*pos/depth.shape[1] - self.angle_swept/2.
 		frac = 2.*pos/depth.shape[1] - 1
-		return (frac, deg)
+		return (frac, pos)
 
 	def plot(self, rgb, depth, interpolated, posx, ags, posy, cmap='viridis', b=1):
 		"""
@@ -203,8 +208,6 @@ class Navigation:
 		plt.scatter(posy, 460, marker='*')
 		plt.xticks(visible=False)
 		plt.yticks(visible=False)
-
-		plt.imsave('rgb.png', rgb)
 
 		plt.subplot(2, 2, 2)
 		plt.imshow(depth, cmap=cmap)

@@ -4,7 +4,7 @@ Purpose: Module to connect to camera and retrieve rgb or depth data
 
 '''
 
-# import pyrealsense as pyrs
+import pyrealsense as pyrs
 from skimage.transform import rescale
 import numpy as np
 import logging
@@ -57,9 +57,13 @@ class Camera:
 	    Will also crop image to be last h rows
 	    """
 		d = depth.copy()
-		h = int(self.height_ratio*(d.shape[0]))
+		height = d.shape[0]
+		h = int(self.height_ratio*(height))
 
-		d = d[-h:-30, 69:-10]
+		up = height/2 + h/2
+		low = height/2 - h/2
+
+		d = d[h:, 10:-10]
 		d[d <= 0] = np.nan
 		d[d > 4] = np.nan
 
@@ -97,28 +101,22 @@ class Camera:
 	    Cleans and averages depth images and scales down by sub_sample
 	    """
 		self.dev.wait_for_frames()
-		if rgb:
-			col = self.dev.color 
 
-		d = self.dev.depth * self.dev.depth_scale
-		h = int(self.height_ratio*(d.shape[0]))
-
-		red = self.__reduceFrame(d, h)
+		d = self.dev.depth
 
 		for _ in range(self.frames-1):
 			self.dev.wait_for_frames()
-			curr = self.__reduceFrame(self.dev.depth*self.dev.depth_scale, h)
-			red = np.dstack((red, curr))
+			curr = self.dev.depth
+			d = np.dstack((d, curr))
 
-		meand = np.nanmean(red, 2)
-		red_meand = self.__reduceFrame(meand)
-		final = rescale(red_meand, self.sub_sample)
+		meand = np.nanmean(d, 2)*self.dev.depth_scale
+		meand[meand > 4] = np.nan
 
-		return final, col
+		if rgb:
+			col = self.dev.color 
+			return meand, col
 
-
-
-			
+		return meand	
 
 
 
