@@ -46,6 +46,7 @@ class Navigation:
 			self.end_i = end_i
 			self.n = n
 			self.gap = None
+			self.DEBUG = False
 
 		def compareGap(self, s, f):
 			"""
@@ -142,8 +143,9 @@ class Navigation:
 		if sf is None:
 			return None
 
-		# plt.imshow(depth)
-		# plt.show()
+		if self.DEBUG: 
+			plt.imshow(depth)
+			plt.show()
 
 		return (sf[0]+sf[1])/2
 

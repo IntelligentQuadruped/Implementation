@@ -4,19 +4,24 @@ Purpose: Module to connect to camera and retrieve rgb or depth data
 
 '''
 
-import pyrealsense as pyrs
-from skimage.transform import rescale
 import numpy as np
 import logging
 import time
-
 import matplotlib.pyplot as plt
+from skimage.transform import rescale
+
+try:
+	import pyrealsense as pyrs
+except ImportError as error:
+	print("Could not import pyrealsense")
+	logging.warning("cam.py: WARNING: " + str(error))
+
+
 
 class Camera:
 	"""
     Object to get data from Realsense Camera
     """
-
 	def __init__(self, frames=5, height_ratio=0.5, sub_sample=0.3, max_val=4):
 		"""
 	    Intitalize Camera object with following optional parameters:
@@ -25,6 +30,7 @@ class Camera:
 	    	sub_sample		Rescale image by sub_sample
 	    	max_val			Upper values to keep in depth image
 	    """
+
 		self.frames = frames
 		self.height_ratio = height_ratio
 		self.sub_sample = sub_sample
@@ -71,31 +77,6 @@ class Camera:
 
 		return final
 
-
-	def getFramesFromFile(self, filename, idx):
-		"""
-	    Function used for testing on saved files
-	    Gets images from file, cleans and averages depth images and scales down
-	    by sub_sample
-	    """
-
-		colf = filename + 'c.npy'
-		df = filename + 'd.npy'
-		col = np.load(colf % idx)
-		d = np.load(df % idx)/1000.
-
-		for i in range(self.frames-1):
-			idy = idx+i+1
-			s = np.load(df % idy)/1000.
-			d = np.dstack((d, s))
-
-		if self.frames != 1:
-			d = np.nanmean(d, 2)
-		d[d > 4] = np.nan
-
-		return d, col
-
-
 	def getFrames(self, rgb=False):
 		"""
 	    Function will retrieve depth frames (and rgb if true) from R200 input
@@ -118,7 +99,40 @@ class Camera:
 			col = self.dev.color 
 			return d, col
 
-		return d	
+		return d
+
+	def getFramesFromFile(self, filename, idx=None):
+		"""
+		Function used for testing on saved files
+		Gets images from file, cleans and averages depth images and scales down
+		by sub_sample
+		"""
+		if idx is None:
+			string = filename.replace("_"," ")
+			numbers = [int(s) for s in str.split(string) if s.isdigit()]
+			idx = numbers[-1]
+			print(idx)
+
+		colf = filename + 'c.npy'
+		df = filename + 'd.npy'
+		# col = np.load(colf % idx)
+		# d = np.load(df % idx)/1000.
+		col = np.load(colf)
+		d = np.load(df)/1000.
+		colf = colf.replace(str(idx),'%d')
+		df = df.replace(str(idx),'%d')
+
+		for i in range(self.frames-1):
+			idy = idx+i+1
+			s = np.load(df % idy)/1000.
+			d = np.dstack((d, s))
+
+		if self.frames != 1:
+			d = np.nanmean(d, 2)
+		d[d > 4] = np.nan
+
+		return d, col
+
 
 
 

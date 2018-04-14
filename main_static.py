@@ -1,9 +1,30 @@
 # !#/usr/bin/env python
 '''
 Author: Viveque Ramji, Jan Bernhard
-Purpose: Main script to bring all modules together
+Purpose: Main script to bring all modules together for autonomous navigation.
+		 Navigation case for 0 DOF in camera joint. 
 
 '''
+########### PARAMETERS TO CHECK BEFORE RUNNING SCRIPT #######################
+
+DEBUG = True
+MAX_DIST = 1. #meter
+AGS_TOLERANCE = 0.2
+
+# FOR ONLINE USE ONLY
+ONLINE = False #Connected to components?
+PORT = '/dev/ttyUSB0' #USB-port address
+BAUDERATE = 115200
+N_AVERAGE_DIRECTIONS = 5 # Number of averaged direction commands
+INITIAL_DELAY = 10 #sec
+
+# FOR OFFLINE USE ONLY
+DATA_DIR = "./data/sample_data_mounted_camera"
+N_FRAMES_TO_LOAD = 10
+RANDOM_SELECTION = False
+
+
+##################### MAIN SCRIPT ###########################################
 import numpy as np
 import time
 import logging
@@ -12,17 +33,6 @@ from robot_control import head
 from navigation import nav
 from navigation import adaptive_grid_sizing as ags
 from vision import cam
-
-# PARAMETERS TO CHECK BEFORE RUNNING SCRIPT
-ONLINE = True #Connected to components?
-PORT = '/dev/ttyUSB0' #USB-port address
-BAUDERATE = 115200
-MAX_DIST = 1. #meter
-N_AVERAGE_DIRECTIONS = 5 #frames
-INITIAL_DELAY = 10 #sec
-AGS_TOLERANCE = 0.2
-
-DATA_DIR = "./sample_data"
 
 def filterOutlier(data_list,z_score_threshold=3):
 	"""
@@ -123,34 +133,56 @@ def online(c, n, r, h):
 
 def offline(c, n, r):
 	'''
-	Offline version to load saved images and plot where the robot should move
+	Offline version to load saved images and plot where the robot should move.
+	Can be run on any computer with skimage,numpy,matplotlib installed.
 	'''
 	import os
+	import random
 
-	for filename in os.listdir(DATA_DIR):
-	# for i in range(200, 450, 10):
+	
+
+	paths = os.listdir(DATA_DIR)
+	n_items = len(paths)
+	if RANDOM_SELECTION:
+		frames = random.sample(paths,N_FRAMES_TO_LOAD)
+	else:
+		index = np.linspace(0,n_items-1,N_FRAMES_TO_LOAD).tolist()
+		frames = [os.listdir(DATA_DIR)[int(i)] for i in index]
+	
+
+
+	for filename in frames:
+		filename = os.path.join(DATA_DIR,filename[:-5])
+		print(filename)
 		t = time.time()
-		# filename = './data/sample_data_mounted_camera/1_%d_'
-		filename = filename[:-5]
-		depth, rgb = c.getFramesFromFile(filename, i)
+		depth, rgb = c.getFramesFromFile(filename)
 		print("ME")
 		d_red = c.reduceFrame(depth)
 		print("Time to load images: ", time.time()-t)
 
 		t = time.time()
-		
 		x = n.reconstructFrame(d_red)
 		print("Time to reconstruct using rbf: ", time.time()-t)
 
-		t = time.time()
+		if x is None:
+			r.move()
+			print("Error, cannot find where to walk")
+			continue
 
-		y = ags.depth_completion(d_red)
+		t = time.time()
+		y = ags.depth_completion(x, AGS_TOLERANCE)
 		print("Time to reconstruct using ags: ", time.time()-t)
 
-		global MAX_DIST
-		MAX_DIST = 0.7
-		fracx, degx = n.obstacleAvoid(x, MAX_DIST)
-		fracy, degy = n.obstacleAvoid(y, MAX_DIST)
+		fracx, _ = n.obstacleAvoid(x, MAX_DIST)
+		fracy, _ = n.obstacleAvoid(y, MAX_DIST)
+
+		# fracy, _ = n.obstacleAvoid(y, MAX_DIST)
+		# fracy = 0 if fracy is None else fracy
+		# fractions.append(fracy)
+
+		# if counter >= N_AVERAGE_DIRECTIONS:
+		# 	fractions = filterOutlier(fractions)
+		# 	fracx = round(sum(fractions)/float(len(fractions)),2)
 
 		if fracx is None:
 			posx = 10
@@ -162,20 +194,19 @@ def offline(c, n, r):
 			posy = (1+fracy)*rgb.shape[1]/2
 		n.plot(rgb, depth, x, posx, y, posy, b=1)
 
-
-
 def main():
 	logging.basicConfig(filename="Control_Log_{}.log".format(time.ctime()),
                     format='%(asctime)s - %(levelname)s: %(message)s',
                     datefmt='%I:%M:%S',
                     level=logging.DEBUG)
-
 	c = cam.Camera(sub_sample=0.3, height_ratio=0.3, frames = 2)
 	n = nav.Navigation(perc_samples=0.01)
 	r = robot.Robot()
 	h = head.Head()
 
 	r.connect(PORT,BAUDERATE)
+
+	n.DEBUG = True # Turns Obstacle plotting on/off
 
 	if ONLINE:
 		online(c, n, r, h)
