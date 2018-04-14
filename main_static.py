@@ -71,6 +71,7 @@ def online(c, n, r, h):
 	c.connect()
 	h.connect()
 	
+	wall = 0
 	counter = 0
 	fractions = []
 
@@ -99,10 +100,16 @@ def online(c, n, r, h):
 			# print("Time to reconstruct using ags: ", time.time()-t)
 			# t = time.time()
 			fracy, _ = n.obstacleAvoid(y, MAX_DIST)
+			wall = wall + 1 if fracy is None else wall
 			fracy = 0 if fracy is None else fracy
 			fractions.append(fracy)
 
 			if counter >= N_AVERAGE_DIRECTIONS:
+				if wall == counter:
+					r.move()
+					print("Error: wall infront")
+					continue
+				
 				fractions = filterOutlier(fractions)
 				fracx = round(sum(fractions)/float(len(fractions)),2)
 
@@ -121,6 +128,7 @@ def online(c, n, r, h):
 				#reset
 				fractions = []
 				counter = 0
+				wall = 0
 				print("Processing time: %.4f"%(time.time()-t_process))
 				t_process = time.time()
 
@@ -138,8 +146,6 @@ def offline(c, n, r):
 	'''
 	import os
 	import random
-
-	
 
 	paths = os.listdir(DATA_DIR)
 	n_items = len(paths)
@@ -165,7 +171,7 @@ def offline(c, n, r):
 		print("Time to reconstruct using rbf: ", time.time()-t)
 
 		if x is None:
-			r.move()
+			# r.testMove()
 			print("Error, cannot find where to walk")
 			continue
 
