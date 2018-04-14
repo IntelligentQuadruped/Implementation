@@ -1,3 +1,4 @@
+# !#/usr/bin/env python
 '''
 Author: Viveque Ramji
 Purpose: Main script to bring all modules together
@@ -9,10 +10,10 @@ import logging
 
 from robot_control import robot
 from robot_control import head
-from navigation import nav
+from navigation import nav, adaptive_grid_sizing as ags
 from vision import cam
 
-MAX_DIST = 1.2
+MAX_DIST = 1.
 
 def searchForGap(c,n,h,head_offset):
 	'''
@@ -20,7 +21,7 @@ def searchForGap(c,n,h,head_offset):
 	'''
 	angle = 0
 	found_gap = False
-	for i in range(2*(90/5)):
+	for i in range(2*int(90/5)):
 		#decide on turning direction
 		if i%2 == 0:
 			direction = 1 # right
@@ -34,7 +35,9 @@ def searchForGap(c,n,h,head_offset):
 			completed_movement = h.look(turn=angle)
 		#check for gap
 		depth, _ = c.getFrames(1)
-		x = n.reconstructFrame(depth)
+		d_red = c.reduceFrame(depth)
+
+		x = n.reconstructFrame(d_red)
 		frac, _ = n.obstacleAvoid(x,MAX_DIST)
 		if frac is not None:
 			found_gap = True
@@ -51,6 +54,42 @@ def searchForGap(c,n,h,head_offset):
 		return
 
 
+def sendDirection(n,r,fracx):
+	print(fracx)
+	gap_direction = 0 #Camera starts pointing straight ahead 
+	# when head was used to find a gap
+	frac_prime = None
+	if gap_direction != 0:
+		frac_prime, _ = n.obstacleAvoid(x, 0.7) # avoid running into obstacle straight ahead
+		if fracx != None:
+			gap_direction = 0 #reset turning rate
+	
+
+	if fracx is None and gap_direction == 0:
+		print('Warning: No path straight ahead. Using head to find path')
+		#n.plot(rgb, depth, x, 0)
+		posx = 10
+		r.move()
+		# gap_direction = searchForGap(c,n,h,gap_direction)
+	
+	elif(fracx is None and frac_prime is None):
+		print("Error: cannot find where to walk")
+		r.move()
+
+	elif(gap_direction != 0):
+		print("something")
+		#max turning rate in gap_direction
+
+		r.move(forward=0.3, turn=gap_direction*0.6)
+
+	else:
+		print("Rotate {:.1f} fraction".format(fracx))
+		# n.plot(rgb, depth, x, (1+frac)*rgb.shape[1]/2)
+		# posx = (1+fracx)*rgb.shape[1]/2
+		r.move(forward=0.2, turn=round(fracx,1))
+
+	return True
+
 def online(c, n, r, h):
 	'''
 	Will continuously to get depth images from camera and then plot rgb,
@@ -58,44 +97,64 @@ def online(c, n, r, h):
 	to move until keyboard interrupt
 	'''
 	c.connect()
-	r.connect()
 	h.connect()
-	gap_direction = 0 #Camera starts pointing straight ahead 
+	
+	counter = 0
+	fractions = []
 	try:
+		time.sleep(10)
 		while True:
-			t = time.time()
+			counter += 1
 			depth, rgb = c.getFrames(1)
-			x = n.reconstructFrame(depth)
+
+			
+			d_red = c.reduceFrame(depth)
+
+			t = time.time()
+			x = n.reconstructFrame(d_red)
+			print("Time to reconstruct using rbf: ", time.time()-t)
+			t = time.time()
+
 			if x is None:
+				r.move()
 				print("Error, cannot find where to walk")
 				continue
-			frac, _ = n.obstacleAvoid(x, MAX_DIST)
-			# when head was used to find a gap
-			frac_prime = None
-			if gap_direction != 0:
-				frac_prime, _ = n.obstacleAvoid(x, 0.7) # avoid running into obstacle straight ahead
-				if frac != None:
-					gap_direction = 0 #reset turning rate
 
-			print("Time: ", time.time()-t)
-			if frac is None and gap_direction == 0:
-				print('Warning: No path straight ahead. Using head to find path')
-				n.plot(rgb, depth, x, 0)
-				r.move()
-				gap_direction = searchForGap(c,n,h,gap_direction)
+			y = ags.depth_completion(x, .2)
+			print("Time to reconstruct using ags: ", time.time()-t)
+			t = time.time()
+
 			
-			elif(frac is None and frac_prime is None):
-				print("Error: cannot find where to walk")
-				r.move()
 
-			elif(gap_direction != 0):
-				#max turning rate in gap_direction
-				r.move(forward=0.3, turn=gap_direction*0.6)
+			# fracx, _ = n.obstacleAvoid(x, MAX_DIST)
+			fracy, _ = n.obstacleAvoid(y, MAX_DIST)
+			fracy = 0 if fracy is None else fracy
+			fractions.append(fracy)
 
-			else:
-				print("Rotate {:.1f} fraction".format(frac))
-				n.plot(rgb, depth, x, (1+frac)*rgb.shape[1]/2)
-				r.move(forward=0.3, turn=round(0.6*frac,1))
+			if counter >= 5:
+				fractions.sort()
+				# fractions = fractions[1:-1]
+				fracx = round(sum(fractions)/float(len(fractions)),2)
+
+				if fracx is None:
+					posx = 0
+				else:
+					posx = (1+fracx)*rgb.shape[1]/2
+
+				if fracy is None:
+					posy = 0
+				else:
+					posy = (1+fracy)*rgb.shape[1]/2
+
+				# n.plot(rgb, depth, x, posx, y, posy, b=1)
+				sendDirection(n,r,fracx)
+				#reset
+				fractions = []
+				counter = 0
+
+
+
+			
 
 	except KeyboardInterrupt:
 		logging.warning("Main.py: KeyboardInterrupt")
@@ -108,26 +167,42 @@ def offline(c, n, r):
 	'''
 	Offline version to load saved images and plot where the robot should move
 	'''
+	# import os
 
-	for _ in range(1):
+	# sample_dir = './data/sample_data_mounted_camera'
+	# for filename in os.listdir(sample_dir):
+	for i in range(200, 450, 10):
+		t = time.time()
+		filename = './data/sample_data_mounted_camera/1_%d_'
+		depth, rgb = c.getFramesFromFile(filename, i)
+		print("ME")
+		d_red = c.reduceFrame(depth)
+		print("Time to load images: ", time.time()-t)
 
 		t = time.time()
-		filename = 'navigation/npz/%d_c_5d.npz' % 5
 		
-		depth, rgb = c.getFramesFromFile(filename)
+		x = n.reconstructFrame(d_red)
+		print("Time to reconstruct using rbf: ", time.time()-t)
 
-		x = n.reconstructFrame(depth)
+		t = time.time()
+
+		y = ags.depth_completion(d_red)
+		print("Time to reconstruct using ags: ", time.time()-t)
+
 		global MAX_DIST
-		MAX_DIST = 0.8
-		frac, deg = n.obstacleAvoid(x, MAX_DIST)
+		MAX_DIST = 0.7
+		fracx, degx = n.obstacleAvoid(x, MAX_DIST)
+		fracy, degy = n.obstacleAvoid(y, MAX_DIST)
 
-		print("Time: ", time.time()-t)
-		if frac is None:
-			print("Error: cannot find where to walk")
-			n.plot(rgb, depth, x, 10, b=1)
+		if fracx is None:
+			posx = 10
 		else:
-			print("Rotate {:.1f} degree".format(deg))
-			n.plot(rgb, depth, x, (1+frac)*rgb.shape[1]/2, b=1)
+			posx = (1+fracx)*rgb.shape[1]/2
+		if fracy is None:
+			posy = 10
+		else:
+			posy = (1+fracy)*rgb.shape[1]/2
+		n.plot(rgb, depth, x, posx, y, posy, b=1)
 
 
 
@@ -137,8 +212,8 @@ def main():
                     datefmt='%I:%M:%S',
                     level=logging.DEBUG)
 
-	c = cam.Camera(sub_sample=0.3, height_ratio=1)
-	n = nav.Navigation(perc_samples=0.03)
+	c = cam.Camera(sub_sample=0.3, height_ratio=0.3, frames = 2)
+	n = nav.Navigation(perc_samples=0.01)
 	r = robot.Robot()
 	h = head.Head()
 
@@ -147,7 +222,7 @@ def main():
 	BAUDERATE = 115200
 	r.connect(PORT,BAUDERATE)
 
-	on = False
+	on = True
 
 	if on:
 		online(c, n, r, h)

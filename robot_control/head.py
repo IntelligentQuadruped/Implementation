@@ -1,8 +1,8 @@
 import time
 import logging
-
 try:
     import RPi.GPIO as GPIO
+
 except:
     logging.warning("head.py: Could not import RPi module.")
 
@@ -45,7 +45,6 @@ class Head(object):
 			GPIO.setup(self.STEP_PIN_TILT, GPIO.OUT)
 			GPIO.setup(self.DIRECTION_PIN_TILT, GPIO.OUT)
 			GPIO.setup(self.ENABLE_PIN_TILT, GPIO.OUT)
-
             ## connecting to motors
 			GPIO.output(self.ENABLE_PIN_TURN,GPIO.LOW)
 			GPIO.output(self.ENABLE_PIN_TILT,GPIO.LOW)

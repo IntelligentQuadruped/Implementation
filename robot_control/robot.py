@@ -6,7 +6,7 @@ Purpose: Module to control the Princeton Minitaur robot research unit.
 import serial
 import time
 import logging
-
+import __future__
 
 class Robot(object):
     """
@@ -116,7 +116,7 @@ class Robot(object):
             elif key == 'behavior':
                 new_move[1] = int(kwargs[key])
 
-        new_move = map(str,new_move) # converting int to char
+        new_move = map(unicode,new_move) # converting int to char
         new_move = ''.join(new_move) # joining char to str
 
         # Waiting for Signal that Minitaur is ready to receive move input
@@ -128,17 +128,17 @@ class Robot(object):
             
             try:
                 # Logs warning when battery voltage is too low or motor temp to high
-                if 'WARNING' in str(read,"utf-8"):
-                    warning_str = str(read,"utf-8")[8:len(str(read,"utf-8"))]
-                    if 'voltage' in str(read,"utf-8"):
-                        logging.warning("robot.py: Battery Voltage too low")
-                        logging.info("robot.py: " + warning_str)
-                    if 'temperature' in str(read,"utf-8"):
-                        # Won't currently work because .getTemperature() 
-                        # isn't implemented on Minitaur SDK
-                        logging.warning("robot.py: " + warning_str)
+                # if 'WARNING' in unicode(read,"utf-8"):
+                #     warning_str = unicode(read,"utf-8")[8:len(unicode(read,"utf-8"))]
+                #     if 'voltage' in unicode(read,"utf-8"):
+                #         logging.warning("robot.py: Battery Voltage too low")
+                #         logging.info("robot.py: " + warning_str)
+                #     if 'temperature' in unicode(read,"utf-8"):
+                #         # Won't currently work because .getTemperature() 
+                #         # isn't implemented on Minitaur SDK
+                #         logging.warning("robot.py: " + warning_str)
                 # converts bites to unicode str
-                if str(self.current_command) in str(read,"utf-8"):
+                if unicode(self.current_command) in unicode(read,"utf-8"):
                     received = True
 
             except UnicodeDecodeError:

@@ -6,11 +6,13 @@ Purpose: Full test sequence for Minitaur loaded with research platform.
 import robot
 import time
 
+
 def main():
     # different for every computer
-    PORT = '/dev/tty.usbserial-DN01QALN' 
+    # PORT = '/dev/tty.usbserial-DN01QALN'
+    PORT = '/dev/ttyUSB0'  
     BAUDERATE = 115200
-    TIMEOUT = 1
+    TIMEOUT = 2
     obj = robot.Robot()
     obj.connect(PORT,BAUDERATE,TIMEOUT)
     connection = False # Holds received message from Minitaur
@@ -18,7 +20,7 @@ def main():
         # Wait for successful communication to be established
 
         while(not connection):
-            received = obj.move(height = .5) 
+            received = obj.move() 
             connection = True if received is not None else False
             print(">>> Connecting... " + str(received))
     
