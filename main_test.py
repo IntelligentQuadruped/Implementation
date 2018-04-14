@@ -54,12 +54,12 @@ def searchForGap(c,n,h,head_offset):
 		return
 
 
-def sendDirection(n,r,fracx):
+def sendDirection(n,r,fracx,depth_image):
 	gap_direction = 0 #Camera starts pointing straight ahead 
 	# when head was used to find a gap
 	frac_prime = None
 	if gap_direction != 0:
-		frac_prime, _ = n.obstacleAvoid(x, 0.7) # avoid running into obstacle straight ahead
+		frac_prime, _ = n.obstacleAvoid(depth_image, 0.7) # avoid running into obstacle straight ahead
 		if fracx != None:
 			gap_direction = 0 #reset turning rate
 	
@@ -142,7 +142,7 @@ def online(c, n, r, h):
 					posy = (1+fracy)*rgb.shape[1]/2
 
 				n.plot(rgb, depth, x, posx, y, posy, b=1)
-				sendDirection(n,r,fracx)
+				sendDirection(n,r,fracx,y)
 				#reset
 				fractions = []
 				counter = 0
