@@ -1,6 +1,7 @@
 '''
 Author: Viveque Ramji
-Purpose: Module to connect to camera and retrieve rgb or depth data
+Purpose: Module to connect to camera and retrieve rgb or depth data.
+		 Currently supporting the R200 Intel Camera.
 
 '''
 
@@ -115,8 +116,6 @@ class Camera:
 
 		colf = filename + 'c.npy'
 		df = filename + 'd.npy'
-		# col = np.load(colf % idx)
-		# d = np.load(df % idx)/1000.
 		col = np.load(colf)
 		d = np.load(df)/1000.
 		colf = colf.replace(str(idx),'%d')
