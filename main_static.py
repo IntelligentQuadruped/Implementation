@@ -10,6 +10,7 @@ Purpose: Main script to bring all modules together for autonomous navigation.
 DEBUG = True
 MAX_DIST = 1. #meter
 AGS_TOLERANCE = 0.2
+# SAVE_SAMPLE = 2.0 # 1 saved frame every 2 seconds
 
 # FOR ONLINE USE ONLY
 ONLINE = False #Connected to components?
