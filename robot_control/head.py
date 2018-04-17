@@ -13,6 +13,7 @@ class Head(object):
 		# Constants
 		self.CONVERSION_FACTOR_TURN = 2.22 #steps per degree
 		self.CONVERSION_FACTOR_TILT = 10.0 #steps per degree
+		self.CONVERSION_FACTOR_DIRECT = 1.8 # degree per step
 		self.connect_head = False
 
 		# Setting time to pause between steps of stepper motor
