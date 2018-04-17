@@ -213,7 +213,7 @@ def main():
 
 	r.connect(PORT,BAUDERATE)
 
-	n.DEBUG = True # Turns Obstacle plotting on/off
+	n.DEBUG = DEBUG # Turns Obstacle plotting on/off
 
 	if ONLINE:
 		online(c, n, r, h)
