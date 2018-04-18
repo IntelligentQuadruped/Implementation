@@ -10,6 +10,9 @@ Purpose: Main script to bring all modules together for autonomous navigation.
 DEBUG = True
 MAX_DIST = 1. #meter
 AGS_TOLERANCE = 0.2
+RBF_SAMPLING = 0.01
+FRAMES_AVRGD = 2
+HEIGHT_RATIO = 0.3
 # SAVE_SAMPLE = 2.0 # 1 saved frame every 2 seconds
 
 # FOR ONLINE USE ONLY
@@ -48,6 +51,9 @@ def filterOutlier(data_list,z_score_threshold=3):
 	return output
 
 def sendDirection(n,r,fracx):
+	"""
+	Takes final turning recommendation and sends movement command.
+	"""
 
 	# print(fracx)
 
@@ -59,7 +65,7 @@ def sendDirection(n,r,fracx):
 		print("Rotate {:.1f} fraction".format(fracx))
 		# n.plot(rgb, depth, x, (1+frac)*rgb.shape[1]/2)
 		# posx = (1+fracx)*rgb.shape[1]/2
-		r.move(forward=0.2, turn=round(fracx,1))
+		r.move(forward=0.3, turn=round(fracx,1))
 
 	return True
 
@@ -67,7 +73,7 @@ def online(c, n, r, h):
 	'''
 	Will continuously to get depth images from camera and then plot rgb,
 	original depth, interpolated depth, and the point where the robot is told
-	to move until keyboard interrupt
+	to move until keyboard interrupt occurs. 
 	'''
 	c.connect()
 	h.connect()
@@ -206,8 +212,8 @@ def main():
                     format='%(asctime)s - %(levelname)s: %(message)s',
                     datefmt='%I:%M:%S',
                     level=logging.DEBUG)
-	c = cam.Camera(sub_sample=0.3, height_ratio=0.3, frames = 2)
-	n = nav.Navigation(perc_samples=0.01)
+	c = cam.Camera(sub_sample=0.3, height_ratio=HEIGHT_RATIO, frames=FRAMES_AVRGD)
+	n = nav.Navigation(perc_samples=RBF_SAMPLING)
 	r = robot.Robot()
 	h = head.Head()
 
