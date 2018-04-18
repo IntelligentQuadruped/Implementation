@@ -46,7 +46,6 @@ class Navigation:
 			self.end_i = end_i
 			self.n = n
 			self.gap = None
-			self.DEBUG = False
 
 		def compareGap(self, s, f):
 			"""
@@ -79,6 +78,7 @@ class Navigation:
 	    """
 		self.perc_samples = perc_samples
 		self.angle_swept = angle_swept
+		self.DEBUG = False
 
 	def __createSamples(self, depth):
 		"""
