@@ -7,9 +7,7 @@ Performance:    Number of calculations increase as set standard-deviation (SIGMA
 
 import numpy as np
 
-GLOBAL = False
-
-def setSigma(matrix,num = 2):
+def setSigma(matrix, num=2):
     """
     Sets starting sigma value by interpolating from emperically
     determined data from R200 camera. 
@@ -18,9 +16,8 @@ def setSigma(matrix,num = 2):
     """
     x = matrix[matrix > 0].mean()
     a,b = [0.07064656, -0.03890366]
-    sigma = lambda x : a*x + b
-    return num*round(sigma(x),3)
-
+    sigma = a*x + b
+    return num*round(sigma, 3)
 
 
 def split(matrix):
@@ -34,19 +31,18 @@ def split(matrix):
     """
     h,w = matrix.shape
     h_prime = int(h/2)
-    w_prime = int(w/3)
+    w_prime = int(w/2)
 
     # quarter matrices
     upper_left = matrix[:h_prime,:w_prime]
-    upper_middle = matrix[:h_prime,w_prime:2*w_prime]
-    upper_right = matrix[:h_prime,2*w_prime:w]
+    upper_right = matrix[:h_prime,w_prime:]
     lower_left = matrix[h_prime:,:w_prime]
-    lower_middle = matrix[h_prime:,w_prime:2*w_prime]
-    lower_right = matrix[h_prime:,2*w_prime:w]
+    lower_right = matrix[h_prime:,w_prime:]
 
-    return [upper_left,upper_middle,upper_right,lower_left,lower_middle,lower_right]
+    return [upper_left,upper_right,lower_left,lower_right]
 
-def average(matrix, sigma):
+
+def average(matrix, sigma, min_h):
     """
     Assigns mean of all non-zero values to each gridcell given that the 
     standard deviations is within bounds and the quarters don't split below the 
@@ -60,24 +56,23 @@ def average(matrix, sigma):
         matrix - 2d depth matrix with approximated values.
     """
     h,w = matrix.shape
-    if matrix[matrix > 0].std() > sigma and h >= 10:
+    if matrix[matrix > 0].std() > sigma and h >= min_h:
         submatrices = split(matrix)
-        for i,mat in enumerate(submatrices):
-            submatrices[i] = average(mat,sigma)
+        for i, submatrix in enumerate(submatrices):
+            submatrices[i] = average(submatrix,sigma, min_h)
         
-        horizontal1 = np.hstack((submatrices[0],submatrices[1],submatrices[2]))
-        horizontal2 = np.hstack((submatrices[3],submatrices[4],submatrices[5]))
-        matrix = np.vstack((horizontal1,horizontal2))
-        return matrix
+        horizontal1 = np.hstack((submatrices[0],submatrices[1]))
+        horizontal2 = np.hstack((submatrices[2],submatrices[3]))
+
+        stacked = np.vstack((horizontal1,horizontal2))
+        return stacked
+
     else:
         ave_depth_value = matrix[matrix > 0].mean()
-        if np.isnan(ave_depth_value):
-            global GLOBAL
-            GLOBAL = True
-        matrix = np.full((h,w),ave_depth_value)
+        matrix = np.full((h,w), ave_depth_value)
         return matrix
 
-def cleanup(matrix):
+def cleanup(matrix, n):
     """
     In case some grid cells are left with a 0.0 as mean-value. It assigns the value 
     to the grid cell of the next non-zero gridcell. 
@@ -88,16 +83,16 @@ def cleanup(matrix):
         higher = [xc,yc]
         lower = [xc,yc]
         while(True):
-            if higher[1]+5 < w:
-                higher[1] = higher[1] + 5
-            if lower[1]-5 > 0:
-                lower[1] = lower[1] - 5
+            if higher[1] + n < w:
+                higher[1] = higher[1] + n
+            if lower[1] - n > 0:
+                lower[1] = lower[1] - n
             if (not np.isnan(matrix[xc, higher[1]])) or (not np.isnan(matrix[xc, lower[1]])):
                 matrix[xc,yc] = matrix[xc, higher[1]] if not np.isnan(matrix[xc, higher[1]]) else matrix[lower[0], lower[1]]
                 break
     return matrix
 
-def depth_completion(d, min_sigma=0.3):
+def depth_completion(d, min_sigma, min_h):
     """
     Manages the appropriate sequence of completion steps to determine a depth 
     estimate for each matrix entry. 
@@ -108,14 +103,14 @@ def depth_completion(d, min_sigma=0.3):
 
     # Reduces outliers to a maximum value of 4.0 which is the max
     # sensitivity value of the R200 depth sensors.
-    matrix = d.copy()
+
+    depth = d.copy()
     # std = setSigma(matrix)
     # min_sigma = std if min_sigma < std else min_sigma
-    #print("Sigma is set to: {}".format(min_sigma))
-    matrix = average(matrix, min_sigma)
-    if GLOBAL:
-        matrix = cleanup(matrix)
-    return matrix
+
+    avg = average(depth, min_sigma, min_h)
+    clean = cleanup(avg, min_h/2)
+    return clean
 
 
 if __name__ == "__main__":
@@ -123,19 +118,22 @@ if __name__ == "__main__":
     Application example with visualization.
     """
     import matplotlib.pyplot as plt
-    import time 
-    # dep = np.load("Depth_Completion/data/7_d.npy")/1000.
-    depth = np.load("./../data/sample_data_mounted_camera/1_200_d.npy")/1000.
+
+    depth = 4*np.random.rand(4, 10)
+    depth[0, 5] = np.nan
+    depth[0, 6] = np.nan
     depth[depth>4.0] = 0.0
-    dep = depth.copy()
-    start  = time.time()
-    dep_comp = depth_completion(dep)
-    end = time.time()
-    print("Depth data completion took %.3f seconds."%(end-start))
-    plt.subplot(1, 2, 1)
-    plt.imshow(dep)
-    plt.subplot(1, 2, 2)
+
+    dep_comp = depth_completion(depth, .001, 2)
+
+    plt.subplot(2, 1, 1)
+    plt.imshow(depth)
+    plt.subplot(2, 1, 2)
     plt.imshow(dep_comp)
     plt.show()
 else:
     np.warnings.filterwarnings('ignore')
+
+
+
+

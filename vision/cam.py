@@ -18,30 +18,20 @@ except ImportError as error:
 	logging.warning("cam.py: WARNING: " + str(error))
 
 
-
 class Camera:
 	"""
     Object to get data from Realsense Camera
     """
-	def __init__(self, frames=5, height_ratio=0.5, sub_sample=0.3, max_val=4):
+	def __init__(self):
 		"""
-	    Intitalize Camera object with following optional parameters:
-	    	frames			Number of frames to average over
-	    	height_ratio 	Ratio of bottom part of image to keep
-	    	sub_sample		Rescale image by sub_sample
-	    	max_val			Upper values to keep in depth image
+	    Intitalize Camera object 
 	    """
-
-		self.frames = frames
-		self.height_ratio = height_ratio
-		self.sub_sample = sub_sample
-		self.max_val = max_val
+		pass
 
 	def connect(self):
 		"""
 	    Establish connection to R200 camera
 	    """
-
 		logging.info("Cam.py: Starts to connect components.")
 		self.serv = pyrs.Service()
 		self.dev = self.serv.Device(device_id=0, 
@@ -53,60 +43,60 @@ class Camera:
 		"""
 	    Disconnect from R200 camera
 	    """
-
 		self.dev.stop()
 		self.serv.stop()
 		logging.info("Cam.py: Camera Disconnected")
 
-	def reduceFrame(self, depth):
+	def reduceFrame(self, depth, height_ratio=0.5, sub_sample=0.3):
 		"""
 	    Takes in a depth image and removes 0 and values bigger than max_val
 	    Will also crop image to be last h rows
 	    """
-		d = depth.copy()
-		height = d.shape[0]
-		h = int(self.height_ratio*(height))
+		depth_copy = depth.copy()
+		height = depth_copy.shape[0]
+		h = int(height_ratio*(height))
 
-		up = height/2 + h/2
-		low = height/2 - h/2
+		d_short = depth_copy[h:, 10:-10]
+		d_short[d_short <= 0] = np.nan
+		d_short[d_short > 4] = np.nan
 
-		d = d[h:, 10:-10]
-		d[d <= 0] = np.nan
-		d[d > 4] = np.nan
+		rescaled = rescale(d_short, sub_sample)
 
-		final = rescale(d, self.sub_sample)
+		return rescaled
 
-		return final
-
-	def getFrames(self, rgb=False):
+	def getFrames(self, frames=5, rgb=False):
 		"""
 	    Function will retrieve depth frames (and rgb if true) from R200 input
 	    Cleans and averages depth images and scales down by sub_sample
 	    """
 		self.dev.wait_for_frames()
 
-		d = self.dev.depth*self.dev.depth_scale
+		depth = self.dev.depth*self.dev.depth_scale
 
-		for _ in range(self.frames-1):
+		for _ in range(frames-1):
 			self.dev.wait_for_frames()
 			curr = self.dev.depth*self.dev.depth_scale
-			d = np.dstack((d, curr))
+			depth = np.dstack((depth, curr))
 
-		if self.frames != 1:
-			d = np.nanmean(d, 2)
-		d[d > 4] = np.nan
+		if frames != 1:
+			depth = np.nanmean(depth, 2)
+
+		depth[depth > 4] = np.nan
 
 		if rgb:
 			col = self.dev.color 
-			return d, col
+			return depth, col
 
-		return d
+		return depth
 
 	def getFramesFromFile(self, filename, idx=None):
 		"""
+		BROKEN FIX SOON BROKEN FIX SOON BROKEN FIX SOON
+
 		Function used for testing on saved files
 		Gets images from file, cleans and averages depth images and scales down
 		by sub_sample
+
 		"""
 		if idx is None:
 			string = filename.replace("_"," ")
@@ -121,18 +111,40 @@ class Camera:
 		colf = colf.replace(str(idx),'%d')
 		df = df.replace(str(idx),'%d')
 
-		for i in range(self.frames-1):
+		for i in range(frames-1):
 			idy = idx+i+1
 			s = np.load(df % idy)/1000.
 			d = np.dstack((d, s))
 
-		if self.frames != 1:
+		if frames != 1:
 			d = np.nanmean(d, 2)
 		d[d > 4] = np.nan
 
 		return d, col
 
 
+if __name__ == "__main__":
+    """
+    Application example with visualization.
+    """
+    import matplotlib.pyplot as plt
+    import time
+
+    cam = Camera()
+    cam.connect()
+    time.sleep(2)
+
+    d = cam.getFrames()
+    d_small = reduceFrame(d)
+
+
+    plt.subplot(2, 1, 1)
+    plt.imshow(d)
+
+    plt.subplot(2, 1, 2)
+    plt.imshow(d_small)
+
+    plt.show()
 
 
 

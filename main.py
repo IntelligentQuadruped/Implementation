@@ -1,4 +1,3 @@
-# !#/usr/bin/env python
 '''
 Author: Viveque Ramji
 Purpose: Main script to bring all modules together
