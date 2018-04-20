@@ -92,7 +92,7 @@ def cleanup(matrix, n):
                 break
     return matrix
 
-def depth_completion(d, min_sigma, min_h):
+def depthCompletion(d, min_sigma, min_h):
     """
     Manages the appropriate sequence of completion steps to determine a depth 
     estimate for each matrix entry. 
@@ -124,7 +124,7 @@ if __name__ == "__main__":
     depth[0, 6] = np.nan
     depth[depth>4.0] = 0.0
 
-    dep_comp = depth_completion(depth, .001, 2)
+    dep_comp = depthCompletion(depth, .001, 2)
 
     plt.subplot(2, 1, 1)
     plt.imshow(depth)

@@ -105,8 +105,6 @@ def online(c, n, r, h):
 		while True:
 			counter += 1
 			depth, rgb = c.getFrames(1)
-
-			
 			d_red = c.reduceFrame(depth)
 
 			t = time.time()

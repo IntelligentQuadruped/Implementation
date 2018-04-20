@@ -7,7 +7,7 @@ Purpose: Module to clean camera data and provide an open direction to move in
 
 import numpy as np
 
-class __Gap_Data:
+class __GapData:
 	"""
     Private Object that will keep track of current row data.
     """
@@ -87,7 +87,7 @@ def findLargestGap(depth, max_dist):
 
 	indices = np.nonzero(np.diff(d_padded))
 	row_indices = indices[0][0::2] # row indices
-	data = __Gap_Data(row_indices, indices[1][0::2], indices[1][1::2], len(np.unique(row_indices)))
+	data = __GapData(row_indices, indices[1][0::2], indices[1][1::2], len(np.unique(row_indices)))
 
 	__addNextRow(0, 0, np.inf, data)
 	sf = data.gap

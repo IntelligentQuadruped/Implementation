@@ -37,8 +37,8 @@ class Navigation:
 		if len(samples) <= 1:
 			return None
 
-		vorn = voronoi.get_voronoi(depth.shape, samples, measured_vector)
-		adapted = ags.depth_completion(vorn, min_sigma, min_h)
+		vorn = voronoi.getVoronoi(depth.shape, samples, measured_vector)
+		adapted = ags.depthCompletion(vorn, min_sigma, min_h)
 
 		if self.debug:
 			sample_img = np.zeros((depth.shape)).flatten()
@@ -47,7 +47,7 @@ class Navigation:
 
 			self.plot(depth, sample_img, vorn, adapted)
 
-		return adapted, vorn
+		return adapted
 	def obstacleAvoid(self, depth, max_dist=1.2):
 		"""
 	    Given a depth image and a threshold value, will find the largest gap
@@ -55,11 +55,11 @@ class Navigation:
 	    this is and the degrees rotation from the center. 
 	    """
 		pos = oa.findLargestGap(depth, max_dist)
-		if pos is None:
-			return(None, None)
+		# if pos is None:
+		# 	return None
 	  	
-		frac = 2.*pos/depth.shape[1] - 1
-		return (frac, pos)
+		# frac = 2.*pos/depth.shape[1] - 1
+		return pos
 
 	def plot(self, depth, sample_img, vorn, ags, cmap='viridis', b=True):
 		"""
@@ -112,7 +112,7 @@ if __name__ == "__main__":
     depth[depth>4.0] = 0.0
 
     nav = Navigation(True)
-    adapted,vorn = nav.reconstructFrame(depth, perc_samples=.1)
+    adapted = nav.reconstructFrame(depth, perc_samples=.1)
     frac, pos = nav.obstacleAvoid(adapted, 1.3)
 
 

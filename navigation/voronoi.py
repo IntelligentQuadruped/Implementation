@@ -10,7 +10,7 @@ from matplotlib.path import Path
 from colorized_voronoi import voronoi_finite_polygons_2d
 
 
-def get_voronoi(shape, samples, vec):
+def getVoronoi(shape, samples, vec):
     h,w = shape
     mask = np.where(vec != 0)
     samples = samples[mask]
@@ -85,7 +85,7 @@ if __name__ == "__main__":
     samples, measured = si.createSamples(depth, .2)
     print(samples.shape)
 
-    dep_comp = get_voronoi(depth.shape, samples, measured)
+    dep_comp = getVoronoi(depth.shape, samples, measured)
 
     plt.subplot(2, 1, 1)
     plt.imshow(depth)
