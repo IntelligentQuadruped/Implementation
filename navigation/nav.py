@@ -28,7 +28,7 @@ class Navigation:
 		self.debug = debug
 
 
-	def reconstructFrame(self, depth, perc_samples=0.1, min_sigma=0.3, min_h=10):
+	def reconstructFrame(self, depth, perc_samples=0.005, min_sigma=0.5, min_h=10):
 		"""
 	    Givena partial depth image, will return an interpolated version filling
 	    all missing data.
@@ -37,8 +37,12 @@ class Navigation:
 		if len(samples) <= 1:
 			return None
 
+		t = time.time()
 		vorn = voronoi.getVoronoi(depth.shape, samples, measured_vector)
+		print(time.time() - t)
+		t = time.time()
 		adapted = ags.depthCompletion(vorn, min_sigma, min_h)
+		print(time.time() - t)
 
 		if self.debug:
 			sample_img = np.zeros((depth.shape)).flatten()
@@ -55,10 +59,7 @@ class Navigation:
 	    this is and the degrees rotation from the center. 
 	    """
 		pos = oa.findLargestGap(depth, max_dist)
-		# if pos is None:
-		# 	return None
-	  	
-		# frac = 2.*pos/depth.shape[1] - 1
+
 		return pos
 
 	def plot(self, depth, sample_img, vorn, ags, cmap='viridis', b=True):

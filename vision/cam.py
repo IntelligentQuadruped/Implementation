@@ -54,9 +54,9 @@ class Camera:
 	    """
 		depth_copy = depth.copy()
 		height = depth_copy.shape[0]
-		h = int(height_ratio*(height))
+		h = int(height_ratio*(height)/2)
 
-		d_short = depth_copy[h:, 10:-10]
+		d_short = depth_copy[h:3*h, 10:-10]
 		d_short[d_short <= 0] = np.nan
 		d_short[d_short > 4] = np.nan
 
