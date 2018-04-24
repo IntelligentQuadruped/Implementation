@@ -113,7 +113,7 @@ if __name__ == "__main__":
     depth[depth>4.0] = 0.0
 
     nav = Navigation(True)
-    adapted = nav.reconstructFrame(depth, perc_samples=.1)
+    adapted = nav.reconstructFrame(depth, .1, .5, 10)
     frac, pos = nav.obstacleAvoid(adapted, 1.3)
 
 

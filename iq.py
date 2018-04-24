@@ -34,7 +34,7 @@ class IntelligentQuadruped:
 		self.c.disconnect()
 		self.h.disconnect()
 
-	def filterOutlier(self, z_score_threshold=3):
+	def filterOutlier(self, z_score_threshold):
 		"""
 		Filters out outliers using the modified Z-Score method.
 		"""
@@ -46,19 +46,17 @@ class IntelligentQuadruped:
 		output = data_out if len(data_out) > 0 else self.average
 		return output
 
-
-
 	def sendDirection(self, frac):
-		self.r.move(forward=0.2, turn=round(frac,1))
+		self.r.move(forward=FORWARD, turn=round(frac,1))
 
 
 	def run(self):
-		depth, col = self.c.getFrames(rgb=True)
+		depth, col = self.c.getFrames(FRAMES_AVRGD, rgb=True)
 
-		depth_reduced = self.c.reduceFrame(depth,height_ratio=HEIGHT_RATIO, sub_sample=SUB_SAMPLE)
+		depth_reduced = self.c.reduceFrame(depth, HEIGHT_RATIO, SUB_SAMPLE)
 
 		t = time.time()
-		adapted = self.n.reconstructFrame(depth_reduced)
+		adapted = self.n.reconstructFrame(depth_reduced, PERC_SAMPLES, MIN_AGS_SIGMA, MIN_AGS_H)
 		print(time.time() - t)
 		
 		if adapted is None:
@@ -67,8 +65,8 @@ class IntelligentQuadruped:
 			print("Error, cannot find where to walk")
 			return
 
-		pos = self.n.obstacleAvoid(adapted, max_dist=MAX_DIST)
-		print(pos, adapted.shape[1])
+		pos = self.n.obstacleAvoid(adapted, MAX_DIST)
+		
 		if pos is None:
 			self.average.clear()
 			self.r.move()
@@ -77,7 +75,7 @@ class IntelligentQuadruped:
 		else:
 			self.average.append(pos)
 			if len(self.average) == N_AVERAGE_DIRECTIONS:
-				outliers_removed = self.filterOutlier()
+				outliers_removed = self.filterOutlier(Z_SCORE_THRESHOLD)
 				mean = np.mean(outliers_removed)
 				frac = 2.*mean/adapted.shape[1] - 1
 				frac = round(frac, 1)
@@ -85,6 +83,7 @@ class IntelligentQuadruped:
 
 				self.sendDirection(frac)
 		if DEBUG:
+			print(pos, adapted.shape[1])
 			self.n.plot(depth, col, depth, adapted)
 
 

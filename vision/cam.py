@@ -47,7 +47,7 @@ class Camera:
 		self.serv.stop()
 		logging.info("Cam.py: Camera Disconnected")
 
-	def reduceFrame(self, depth, height_ratio=0.5, sub_sample=0.3):
+	def reduceFrame(self, depth, height_ratio=.5, sub_sample=.3):
 		"""
 	    Takes in a depth image and removes 0 and values bigger than max_val
 	    Will also crop image to be last h rows
