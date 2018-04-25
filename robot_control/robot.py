@@ -65,10 +65,10 @@ class Robot(object):
         cmd = getattr(self,key)
         # avoid float point exceptions
         cmd = round(cmd,1)
-        dt = time.time() - self.last_cmd
-        dt = round(dt,1)
-        if dt < self.reaction_time:
-            return cmd
+        # dt = time.time() - self.last_cmd
+        # dt = round(dt,1)
+        # if dt < self.reaction_time:
+        #     return cmd
 
         value = round(value,1)
         if  cmd < value:
@@ -78,7 +78,7 @@ class Robot(object):
         else:
             pass
         setattr(self,key,cmd)
-        self.last_cmd = time.time()
+        # self.last_cmd = time.time()
         return cmd
 
     def __convertToMove(self, float_in):
