@@ -14,11 +14,13 @@ class Robot(object):
     move.
     """
     
-    def __init__(self):
+    def __init__(self,reaction_time = 0.5):
         self.current_command = None # stores most recent command
         self.forward = 0.0
         self.turn = 0.0
         self.height = 0.0
+        self.last_cmd = time.time()
+        self.reaction_time = reaction_time
         pass
 
     def connect(self, usb_port_address, bauderate, time_out = 1):
@@ -63,6 +65,11 @@ class Robot(object):
         cmd = getattr(self,key)
         # avoid float point exceptions
         cmd = round(cmd,1)
+        dt = time.time() - self.last_cmd
+        dt = round(dt,1)
+        if dt < self.reaction_time:
+            return cmd
+
         value = round(value,1)
         if  cmd < value:
             cmd = cmd + 0.1
@@ -71,6 +78,7 @@ class Robot(object):
         else:
             pass
         setattr(self,key,cmd)
+        self.last_cmd = time.time()
         return cmd
 
     def __convertToMove(self, float_in):
@@ -128,15 +136,15 @@ class Robot(object):
             
             try:
                 # Logs warning when battery voltage is too low or motor temp to high
-                # if 'WARNING' in unicode(read,"utf-8"):
-                #     warning_str = unicode(read,"utf-8")[8:len(unicode(read,"utf-8"))]
-                #     if 'voltage' in unicode(read,"utf-8"):
-                #         logging.warning("robot.py: Battery Voltage too low")
-                #         logging.info("robot.py: " + warning_str)
-                #     if 'temperature' in unicode(read,"utf-8"):
-                #         # Won't currently work because .getTemperature() 
-                #         # isn't implemented on Minitaur SDK
-                #         logging.warning("robot.py: " + warning_str)
+                if 'WARNING' in unicode(read,"utf-8"):
+                    warning_str = unicode(read,"utf-8")[8:len(unicode(read,"utf-8"))]
+                    if 'voltage' in unicode(read,"utf-8"):
+                        logging.warning("robot.py: Battery Voltage too low")
+                        logging.info("robot.py: " + warning_str)
+                    if 'temperature' in unicode(read,"utf-8"):
+                        # Won't currently work because .getTemperature() 
+                        # isn't implemented on Minitaur SDK
+                        logging.warning("robot.py: " + warning_str)
                 # converts bites to unicode str
                 if unicode(self.current_command) in unicode(read,"utf-8"):
                     received = True
@@ -190,7 +198,6 @@ class Robot(object):
         new_move = ''.join(new_move) # joining char to str
 
         print("Move command sent: {}".format(new_move))
-
 
     
 if __name__ == '__main__':

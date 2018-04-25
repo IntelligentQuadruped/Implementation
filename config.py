@@ -2,7 +2,7 @@
 PORT = '/dev/ttyUSB0' #USB-port address
 BAUDERATE = 115200
 N_AVERAGE_DIRECTIONS = 5 # Number of averaged direction commands
-INITIAL_DELAY = 1 #sec
+INITIAL_DELAY = 5 #sec
 Z_SCORE_THRESHOLD = 3
 DEBUG = False
 
@@ -12,14 +12,15 @@ HEIGHT_RATIO = 0.5
 SUB_SAMPLE = .5
 
 # Navigation
-MAX_DIST = .8 #meter
+MAX_DIST = 1. #meter
 RBF_SAMPLING = 0.01
 PERC_SAMPLES = 0.005
 MIN_AGS_SIGMA = .5
-MIN_AGS_H = 10
+MIN_AGS_H = 15
 
 # Robot
-FORWARD = 0.2
+FORWARD = 0.4
+TURN = 0.4
 
 
 

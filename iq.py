@@ -47,7 +47,8 @@ class IntelligentQuadruped:
 		return output
 
 	def sendDirection(self, frac):
-		self.r.move(forward=FORWARD, turn=round(frac,1))
+		
+		self.r.move(forward=FORWARD, turn=TURN*np.sign(frac), height=.1)
 
 
 	def run(self):
@@ -55,9 +56,9 @@ class IntelligentQuadruped:
 
 		depth_reduced = self.c.reduceFrame(depth, HEIGHT_RATIO, SUB_SAMPLE)
 
-		t = time.time()
+		# t = time.time()
 		adapted = self.n.reconstructFrame(depth_reduced, PERC_SAMPLES, MIN_AGS_SIGMA, MIN_AGS_H)
-		print(time.time() - t)
+		# print(time.time() - t)
 		
 		if adapted is None:
 			self.average.clear()
@@ -67,21 +68,20 @@ class IntelligentQuadruped:
 
 		pos = self.n.obstacleAvoid(adapted, MAX_DIST)
 		
-		if pos is None:
+		if pos is None or pos == np.inf:
 			self.average.clear()
 			self.r.move()
 			print("Error, cannot find where to walk")
 		
 		else:
-			self.average.append(pos)
+			frac = 2.*pos/adapted.shape[1] - 1
+			self.average.append(frac)
 			if len(self.average) == N_AVERAGE_DIRECTIONS:
 				outliers_removed = self.filterOutlier(Z_SCORE_THRESHOLD)
-				mean = np.mean(outliers_removed)
-				frac = 2.*mean/adapted.shape[1] - 1
-				frac = round(frac, 1)
-				print("frac {}".format(frac))
+				mean = round(np.mean(outliers_removed),1)
+				print("frac {}".format(mean))
 
-				self.sendDirection(frac)
+				self.sendDirection(mean)
 		if DEBUG:
 			print(pos, adapted.shape[1])
 			self.n.plot(depth, col, depth, adapted)

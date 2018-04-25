@@ -37,12 +37,13 @@ class Navigation:
 		if len(samples) <= 1:
 			return None
 
-		t = time.time()
+		# t = time.time()
 		vorn = voronoi.getVoronoi(depth.shape, samples, measured_vector)
-		print(time.time() - t)
-		t = time.time()
+		# print(time.time() - t)
+		
+		# t = time.time()
 		adapted = ags.depthCompletion(vorn, min_sigma, min_h)
-		print(time.time() - t)
+		# print(time.time() - t)
 
 		if self.debug:
 			sample_img = np.zeros((depth.shape)).flatten()
@@ -80,7 +81,7 @@ class Navigation:
 		plt.yticks(visible=False)
 
 		plt.subplot(2, 2, 3)
-		plt.imshow(vorn, cmap=cmap)
+		plt.imshow(ags>1., cmap=cmap)
 		plt.title('Voronoi')
 		plt.xticks(visible=False)
 		plt.yticks(visible=False)
