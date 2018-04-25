@@ -6,6 +6,7 @@ Purpose: Module to clean camera data and provide an open direction to move in
 '''
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 class __GapData:
 	"""
@@ -24,7 +25,7 @@ class __GapData:
 		self.end_i = end_i
 		self.n = n
 		self.gap = None
-		self.DEBUG = False
+		
 
 	def compareGap(self, s, f):
 		"""
@@ -74,7 +75,7 @@ def __addNextRow(row, start, finish, data):
 	return
 
 
-def findLargestGap(depth, max_dist):
+def findLargestGap(depth, max_dist, DEBUG=False):
 	"""
     Given depth image, find the largest gap that goes from the bottom of
     the image to the top. Use max_dist to threshold where objects are 
@@ -94,8 +95,9 @@ def findLargestGap(depth, max_dist):
 	if sf is None:
 		return None
 
-	if data.DEBUG: 
+	if DEBUG: 
 		plt.imshow(depth)
+		plt.title('Obstacles in Dark')
 		plt.show()
 
 	return (sf[0]+sf[1])/2.

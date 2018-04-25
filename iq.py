@@ -20,9 +20,11 @@ class IntelligentQuadruped:
 	def __init__(self):
 		self.r = robot.Robot()
 		self.h = head.Head()
-		self.c = cam.Camera()
+		self.c = cam.Camera(SAVE_FRAME,SAVE_FRAME_INTERVAL,OUTPUT_DIR)
 		self.n = nav.Navigation(debug=DEBUG)
 		self.average = deque(maxlen=N_AVERAGE_DIRECTIONS)
+		self.barrier_count = 0
+		self.t_process = time.time()
 
 	def connect(self, port, bauderate):
 		self.r.connect(port, bauderate)
@@ -50,16 +52,18 @@ class IntelligentQuadruped:
 		turn = (abs(frac)/0.9)*(MAX_TURN - MIN_TURN) + MIN_TURN
 		turn = round(turn*np.sign(frac), 1)
 		print("Turning Rate {}".format(turn))
-		self.r.move(forward=FORWARD, turn=turn, height=.3)
+		self.r.move(forward=FORWARD, turn=frac)
+		print("Processing time: %.4f"%(time.time()-self.t_process))
+		self.t_process = time.time()
 
 
 	def run(self):
 		depth, col = self.c.getFrames(FRAMES_AVRGD, rgb=True)
 
-		depth_reduced = self.c.reduceFrame(depth, HEIGHT_RATIO, SUB_SAMPLE)
+		depth_reduced = self.c.reduceFrame(depth, HEIGHT_RATIO, SUB_SAMPLE,NAV_FOCUS)
 
 		# t = time.time()
-		adapted = self.n.reconstructFrame(depth_reduced, PERC_SAMPLES, MIN_AGS_SIGMA, MIN_AGS_H)
+		adapted = self.n.reconstructFrame(depth_reduced, PERC_SAMPLES, MIN_AGS_SIGMA, MIN_AGS_H, ALGORITHM)
 		# print(time.time() - t)
 		
 		if adapted is None:
@@ -69,21 +73,33 @@ class IntelligentQuadruped:
 			return
 
 		pos = self.n.obstacleAvoid(adapted, MAX_DIST)
-		
+
 		if pos is None or pos == np.inf:
-			self.average.clear()
-			self.r.move()
-			print("Error, cannot find where to walk")
-		
+			frac = 0.0
+			self.barrier_count =+ 1
 		else:
 			frac = 2.*pos/adapted.shape[1] - 1
-			self.average.append(frac)
-			if len(self.average) == N_AVERAGE_DIRECTIONS:
-				outliers_removed = self.filterOutlier(Z_SCORE_THRESHOLD)
-				mean = np.mean(outliers_removed)
-				print(mean)
-				self.sendDirection(mean)
-				# self.average.clear()
+		self.average.append(frac)
+
+		if self.barrier_count >= 3:
+			print("Error, cannot find where to walk")
+			#stop and regroup
+			start=time.time()
+			while(time.time()-start < 2.0):
+				self.r.move()
+			self.average.clear()
+			self.barrier_count = 0
+			
+
+		
+		
+		if len(self.average) == N_AVERAGE_DIRECTIONS:
+			outliers_removed = self.filterOutlier(Z_SCORE_THRESHOLD)
+			mean = round(np.mean(outliers_removed), 1)
+			print('mean',mean)
+			self.sendDirection(mean)
+			# self.average.clear()
+
 		if DEBUG:
 			print(pos, adapted.shape[1])
 			self.n.plot(depth, col, depth, adapted)
@@ -91,7 +107,7 @@ class IntelligentQuadruped:
 
 
 def main():
-	logging.basicConfig(filename="Control_Log_{}.log".format(time.ctime()),
+	logging.basicConfig(filename="./Logs/Control_Log_{}.log".format(time.ctime()),
                     format='%(asctime)s - %(levelname)s: %(message)s',
                     datefmt='%I:%M:%S',
                     level=logging.DEBUG)
@@ -102,11 +118,13 @@ def main():
 
 	time.sleep(INITIAL_DELAY)
 
+	
 	while(True):
 		try:
 			iq.run()
 
 		except KeyboardInterrupt:
+			iq.r.move()
 			logging.warning("Iq.py: KeyboardInterrupt")
 			iq.disconnect()
 

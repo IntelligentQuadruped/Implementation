@@ -5,7 +5,7 @@ Purpose: Module to clean camera data and provide an open direction to move in
 '''
 import numpy as np
 from scipy import sparse
-from scipy.interpolate import Rbf
+# from scipy.interpolate import Rbf
 import matplotlib.pyplot as plt
 
 import adaptive_grid_sizing as ags
@@ -28,7 +28,7 @@ class Navigation:
 		self.debug = debug
 
 
-	def reconstructFrame(self, depth, perc_samples=0.005, min_sigma=0.5, min_h=10):
+	def reconstructFrame(self, depth, perc_samples=0.005, min_sigma=0.5, min_h=10, algorithm_type='rbf'):
 		"""
 	    Givena partial depth image, will return an interpolated version filling
 	    all missing data.
@@ -38,11 +38,14 @@ class Navigation:
 			return None
 
 		# t = time.time()
-		vorn = voronoi.getVoronoi(depth.shape, samples, measured_vector)
-		# print(time.time() - t)
-		
-		# t = time.time()
-		adapted = ags.depthCompletion(vorn, min_sigma, min_h)
+		if algorithm_type == 'voronoi':
+			filled = voronoi.getVoronoi(depth.shape, samples, measured_vector)
+		elif algorithm_type == 'rbf':
+			filled = si.interpolateDepthImage(depth.shape,samples, measured_vector)
+		elif algorithm_type == 'ags_only':
+			filled = depth
+
+		adapted = ags.depthCompletion(filled, min_sigma, min_h)
 		# print(time.time() - t)
 
 		if self.debug:
@@ -50,7 +53,7 @@ class Navigation:
 			sample_img[samples] = depth.flatten()[samples]
 			sample_img = sample_img.reshape(depth.shape)
 
-			self.plot(depth, sample_img, vorn, adapted)
+			self.plot(depth, sample_img, filled, adapted)
 
 		return adapted
 	def obstacleAvoid(self, depth, max_dist=1.2):
@@ -59,11 +62,11 @@ class Navigation:
 	    that can be used, returning the fraction along the images width where
 	    this is and the degrees rotation from the center. 
 	    """
-		pos = oa.findLargestGap(depth, max_dist)
+		pos = oa.findLargestGap(depth, max_dist, self.debug)
 
 		return pos
 
-	def plot(self, depth, sample_img, vorn, ags, cmap='viridis', b=True):
+	def plot(self, depth, sample_img, filled, ags, cmap='viridis', b=True):
 		"""
 	    Will plot the rgb image, original depth, interpolated depth and the
 	    position of where the algorithm recommends to move.
@@ -81,7 +84,7 @@ class Navigation:
 		plt.yticks(visible=False)
 
 		plt.subplot(2, 2, 3)
-		plt.imshow(ags>1., cmap=cmap)
+		plt.imshow(filled, cmap=cmap)
 		plt.title('Voronoi')
 		plt.xticks(visible=False)
 		plt.yticks(visible=False)

@@ -31,15 +31,17 @@ def split(matrix):
     """
     h,w = matrix.shape
     h_prime = int(h/2)
-    w_prime = int(w/2)
+    w_prime = int(w/3)
 
     # quarter matrices
     upper_left = matrix[:h_prime,:w_prime]
-    upper_right = matrix[:h_prime,w_prime:]
+    upper_middle = matrix[:h_prime,w_prime:2*w_prime]
+    upper_right = matrix[:h_prime,2*w_prime:w]
     lower_left = matrix[h_prime:,:w_prime]
-    lower_right = matrix[h_prime:,w_prime:]
+    lower_middle = matrix[h_prime:,w_prime:2*w_prime]
+    lower_right = matrix[h_prime:,2*w_prime:w]
 
-    return [upper_left,upper_right,lower_left,lower_right]
+    return [upper_left,upper_middle,upper_right,lower_left,lower_middle,lower_right]
 
 
 def average(matrix, sigma, min_h):
@@ -61,9 +63,8 @@ def average(matrix, sigma, min_h):
         for i, submatrix in enumerate(submatrices):
             submatrices[i] = average(submatrix,sigma, min_h)
         
-        horizontal1 = np.hstack((submatrices[0],submatrices[1]))
-        horizontal2 = np.hstack((submatrices[2],submatrices[3]))
-
+        horizontal1 = np.hstack((submatrices[0],submatrices[1],submatrices[2]))
+        horizontal2 = np.hstack((submatrices[3],submatrices[4],submatrices[5]))
         stacked = np.vstack((horizontal1,horizontal2))
         return stacked
 

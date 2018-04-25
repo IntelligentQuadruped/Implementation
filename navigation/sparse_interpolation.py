@@ -43,7 +43,7 @@ def createSamples(depth, perc_samples):
 	return samples, measured_vector
 
 
-def interpolateDepthImage(shape, measured_vector, samples):
+def interpolateDepthImage(shape, samples, measured_vector):
 	"""
     Using just the original shape of depth image and random samples chosen,
     return a newly constructed depth image by interpolating known points.

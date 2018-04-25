@@ -1,5 +1,5 @@
 '''
-Author: Viveque Ramji
+Author: Viveque Ramji, Jan Bernhard
 Purpose: Module to connect to camera and retrieve rgb or depth data.
 		 Currently supporting the R200 Intel Camera.
 
@@ -10,6 +10,8 @@ import logging
 import time
 import matplotlib.pyplot as plt
 from skimage.transform import rescale
+from fileSupport import ensureDir
+from os import path, makedirs
 
 try:
 	import pyrealsense as pyrs
@@ -22,10 +24,18 @@ class Camera:
 	"""
     Object to get data from Realsense Camera
     """
-	def __init__(self):
+	def __init__(self,save_images = False,t_save_frame=5,output_dir='./trials/'):
 		"""
 	    Intitalize Camera object 
 	    """
+		self.save_images = save_images
+		self.clock = time.time()
+		print(self.save_images)
+		self.t_save_frame = t_save_frame
+		self.output_dir = output_dir
+		self.data_dir = path.join(self.output_dir,"{}".format(time.strftime("%d_%b_%Y_%H:%M", time.gmtime())))
+		if self.save_images:	
+			ensureDir(self.data_dir)
 		pass
 
 	def connect(self):
@@ -47,7 +57,7 @@ class Camera:
 		self.serv.stop()
 		logging.info("Cam.py: Camera Disconnected")
 
-	def reduceFrame(self, depth, height_ratio=.5, sub_sample=.3):
+	def reduceFrame(self, depth, height_ratio=.5, sub_sample=.3, reduce_to = 'lower'):
 		"""
 	    Takes in a depth image and removes 0 and values bigger than max_val
 	    Will also crop image to be last h rows
@@ -56,11 +66,38 @@ class Camera:
 		height = depth_copy.shape[0]
 		h = int(height_ratio*(height))
 
-		d_short = depth_copy[h:, 10:-10]
-		d_short[d_short <= 0] = np.nan
-		d_short[d_short > 4] = np.nan
+		if reduce_to == 'lower':
+			d_short = depth_copy[h:, 10:-10]
+			d_short[d_short <= 0] = np.nan
+			d_short[d_short > 4] = np.nan
+		elif reduce_to == 'middle_lower':
+			upper_brdr = 3*int(round((height-h)/4.0,0))
+			lower_brdr = upper_brdr + h
+			d_short = depth_copy[upper_brdr:lower_brdr, 10:-10]
+			d_short[d_short <= 0] = np.nan
+			d_short[d_short > 4] = np.nan
+		elif reduce_to == 'middle':
+			upper_brdr = int(round((height-h)/2.0,0))
+			lower_brdr = upper_brdr+h
+			d_short = depth_copy[upper_brdr:lower_brdr, 10:-10]
+			d_short[d_short <= 0] = np.nan
+			d_short[d_short > 4] = np.nan
+		elif reduce_to == 'middle_upper':
+			upper_brdr = int(round((height-h)/4.0,0))
+			lower_brdr = upper_brdr+h
+			d_short = depth_copy[upper_brdr:lower_brdr, 10:-10]
+			d_short[d_short <= 0] = np.nan
+			d_short[d_short > 4] = np.nan
+		elif reduce_to == 'upper':
+			d_short = depth_copy[:(height-h), 10:-10]
+			d_short[d_short <= 0] = np.nan
+			d_short[d_short > 4] = np.nan
 
 		rescaled = rescale(d_short, sub_sample)
+		
+		if self.save_images and (time.time() - self.clock > self.t_save_frame):
+			np.save(path.join(self.data_dir,str(time.time())),rescale)
+			self.clock = time.time()
 
 		return rescaled
 
