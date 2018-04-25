@@ -64,7 +64,7 @@ class IntelligentQuadruped:
 		
 		if adapted is None:
 			self.average.clear()
-			self.r.move(height=.3)
+			self.r.move()
 			print("Error, cannot find where to walk")
 			return
 
@@ -72,7 +72,7 @@ class IntelligentQuadruped:
 		
 		if pos is None or pos == np.inf:
 			self.average.clear()
-			self.r.move(height=.3)
+			self.r.move()
 			print("Error, cannot find where to walk")
 		
 		else:
@@ -81,8 +81,9 @@ class IntelligentQuadruped:
 			if len(self.average) == N_AVERAGE_DIRECTIONS:
 				outliers_removed = self.filterOutlier(Z_SCORE_THRESHOLD)
 				mean = np.mean(outliers_removed)
+				print(mean)
 				self.sendDirection(mean)
-
+				# self.average.clear()
 		if DEBUG:
 			print(pos, adapted.shape[1])
 			self.n.plot(depth, col, depth, adapted)
