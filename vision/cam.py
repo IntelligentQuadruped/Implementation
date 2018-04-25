@@ -10,8 +10,8 @@ import logging
 import time
 import matplotlib.pyplot as plt
 from skimage.transform import rescale
-from fileSupport import ensureDir
-from os import path, makedirs
+import fileSupport
+from os import path
 
 try:
 	import pyrealsense as pyrs
@@ -36,7 +36,7 @@ class Camera:
 		self.data_dir = path.join(self.output_dir,"{}".format(time.strftime("%d_%b_%Y_%H:%M", time.gmtime())))
 		if self.save_images:	
 			ensureDir(self.data_dir)
-		pass
+
 
 	def connect(self):
 		"""

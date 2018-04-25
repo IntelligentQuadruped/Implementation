@@ -6,13 +6,14 @@ INITIAL_DELAY = 1 #sec
 Z_SCORE_THRESHOLD = 3
 DEBUG = True
 
+
 # Camera
 FRAMES_AVRGD = 2
 HEIGHT_RATIO = 0.5
 SUB_SAMPLE = .5
 SAVE_FRAME = False
 SAVE_FRAME_INTERVAL = 2.0 # every [value] seconds
-OUTPUT_DIR = "./trials"
+OUTPUT_DIR = "./../data"
 
 # Navigation
 MAX_DIST = 1. #meter
