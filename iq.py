@@ -21,6 +21,9 @@ class IntelligentQuadruped:
 		self.r = robot.Robot()
 		self.h = head.Head()
 		self.c = cam.Camera()
+		self.c.save_images = SAVE_FRAME
+		self.c.t_save_frame = SAVE_FRAME_INTERVAL
+		self.c.output_dir = OUTPUT_DIR
 		self.n = nav.Navigation(debug=DEBUG)
 		self.average = deque(maxlen=N_AVERAGE_DIRECTIONS)
 

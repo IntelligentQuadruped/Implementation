@@ -10,6 +10,8 @@ import logging
 import time
 import matplotlib.pyplot as plt
 from skimage.transform import rescale
+import fileSupport
+from os import path
 
 try:
 	import pyrealsense as pyrs
@@ -26,6 +28,12 @@ class Camera:
 		"""
 	    Intitalize Camera object 
 	    """
+		self.save_images = False
+		self.clock = time.time()
+		self.t_save_frame = 5
+		self.output_dir = "./data/"
+		self.data_dir = path.join(self.output_dir,"{}".format(time.strftime("%d_%b_%Y_%H:%M", time.gmtime()))
+		fileSupport.ensureDir(self.data_dir)
 		pass
 
 	def connect(self):
@@ -61,6 +69,10 @@ class Camera:
 		d_short[d_short > 4] = np.nan
 
 		rescaled = rescale(d_short, sub_sample)
+		
+		if self.save_images and (time.time() - self.clock > self.t_save_frame):
+			np.save(path.join(self.data_dir,str(time.time())),rescale)
+			self.clock = time.time()
 
 		return rescaled
 
