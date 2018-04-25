@@ -20,7 +20,8 @@ MIN_AGS_H = 15
 
 # Robot
 FORWARD = 0.4
-TURN = 0.4
+MAX_TURN = 0.5
+MIN_TURN = 0.3
 
 
 

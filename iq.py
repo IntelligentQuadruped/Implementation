@@ -47,8 +47,10 @@ class IntelligentQuadruped:
 		return output
 
 	def sendDirection(self, frac):
-		
-		self.r.move(forward=FORWARD, turn=TURN*np.sign(frac), height=.1)
+		turn = (abs(frac)/0.9)*(MAX_TURN - MIN_TURN) + MIN_TURN
+		turn = round(turn*np.sign(frac), 1)
+		print("Turning Rate {}".format(turn))
+		self.r.move(forward=FORWARD, turn=turn, height=.3)
 
 
 	def run(self):
@@ -62,7 +64,7 @@ class IntelligentQuadruped:
 		
 		if adapted is None:
 			self.average.clear()
-			self.r.move()
+			self.r.move(height=.3)
 			print("Error, cannot find where to walk")
 			return
 
@@ -70,7 +72,7 @@ class IntelligentQuadruped:
 		
 		if pos is None or pos == np.inf:
 			self.average.clear()
-			self.r.move()
+			self.r.move(height=.3)
 			print("Error, cannot find where to walk")
 		
 		else:
@@ -78,10 +80,9 @@ class IntelligentQuadruped:
 			self.average.append(frac)
 			if len(self.average) == N_AVERAGE_DIRECTIONS:
 				outliers_removed = self.filterOutlier(Z_SCORE_THRESHOLD)
-				mean = round(np.mean(outliers_removed),1)
-				print("frac {}".format(mean))
-
+				mean = np.mean(outliers_removed)
 				self.sendDirection(mean)
+
 		if DEBUG:
 			print(pos, adapted.shape[1])
 			self.n.plot(depth, col, depth, adapted)
