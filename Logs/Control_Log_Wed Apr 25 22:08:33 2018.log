@@ -1,0 +1,231 @@
+10:08:33 - INFO: robot.py: Starts to connect components.
+10:08:33 - INFO: robot.py: Body component connected
+10:08:33 - INFO: robot.py: Body = True
+10:08:33 - INFO: Cam.py: Starts to connect components.
+10:08:34 - INFO: There are 1 connected RealSense devices.
+10:08:34 - INFO: Using device 0, an Intel RealSense R200
+10:08:34 - INFO:     Serial number: 2521000201
+10:08:34 - INFO:     Firmware version: 1.0.71.06
+10:08:34 - INFO: head.py: Head Component is connected.
+10:08:46 - WARNING: robot.py: Battery Voltage too low
+10:08:46 - INFO: robot.py:  Current battery voltage: 0.000000
+
+10:08:46 - WARNING: robot.py: Battery Voltage too low
+10:08:46 - INFO: robot.py:  Current battery voltage: 5.999663
+
+10:08:46 - WARNING: robot.py: Battery Voltage too low
+10:08:46 - INFO: robot.py:  Current battery voltage: 9.637174
+
+10:08:46 - WARNING: robot.py: Battery Voltage too low
+10:08:46 - INFO: robot.py:  Current battery voltage: 11.840742
+
+10:08:46 - WARNING: robot.py: Battery Voltage too low
+10:08:46 - INFO: robot.py:  Current battery voltage: 13.175649
+
+10:08:46 - WARNING: robot.py: Battery Voltage too low
+10:08:46 - INFO: robot.py:  Current battery voltage: 13.987749
+
+10:08:46 - WARNING: robot.py: Last Move command None was not received by Minitaur.
+10:08:46 - INFO: robot.py: Move command sent: 90111100
+10:08:47 - WARNING: robot.py: Last Move command 90111100 was not received by Minitaur.
+10:08:47 - INFO: robot.py: Move command sent: 90121000
+10:08:47 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:08:48 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:08:48 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:08:48 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:08:49 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:08:49 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:08:49 - INFO: robot.py: Move command sent: 90000000
+10:08:49 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:08:49 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:08:49 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:08:49 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:08:49 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:08:49 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:08:49 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:08:49 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:08:49 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:08:49 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:08:49 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:08:49 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:08:49 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:08:49 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:08:49 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:08:50 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:08:53 - INFO: robot.py: Move command sent: 90121100
+10:08:53 - WARNING: robot.py: Last Move command 90121100 was not received by Minitaur.
+10:08:53 - INFO: robot.py: Move command sent: 90121200
+10:08:53 - WARNING: robot.py: Last Move command 90121200 was not received by Minitaur.
+10:08:53 - INFO: robot.py: Move command sent: 90121300
+10:08:54 - WARNING: robot.py: Last Move command 90121300 was not received by Minitaur.
+10:08:54 - WARNING: robot.py: Last Move command 90121300 was not received by Minitaur.
+10:08:54 - INFO: robot.py: Move command sent: 90121400
+10:08:54 - WARNING: robot.py: Last Move command 90121400 was not received by Minitaur.
+10:08:54 - INFO: robot.py: Move command sent: 90121500
+10:08:55 - WARNING: robot.py: Last Move command 90121500 was not received by Minitaur.
+10:08:55 - WARNING: robot.py: Last Move command 90121500 was not received by Minitaur.
+10:08:55 - INFO: robot.py: Move command sent: 90121600
+10:08:56 - WARNING: robot.py: Last Move command 90121600 was not received by Minitaur.
+10:08:56 - INFO: robot.py: Move command sent: 90121700
+10:08:56 - WARNING: robot.py: Last Move command 90121700 was not received by Minitaur.
+10:08:57 - WARNING: robot.py: Last Move command 90121700 was not received by Minitaur.
+10:08:57 - WARNING: robot.py: Last Move command 90121700 was not received by Minitaur.
+10:08:58 - WARNING: robot.py: Last Move command 90121700 was not received by Minitaur.
+10:08:58 - WARNING: robot.py: Last Move command 90121700 was not received by Minitaur.
+10:08:59 - WARNING: robot.py: Last Move command 90121700 was not received by Minitaur.
+10:08:59 - WARNING: robot.py: Last Move command 90121700 was not received by Minitaur.
+10:09:00 - WARNING: robot.py: Last Move command 90121700 was not received by Minitaur.
+10:09:00 - WARNING: robot.py: Last Move command 90121700 was not received by Minitaur.
+10:09:01 - WARNING: robot.py: Last Move command 90121700 was not received by Minitaur.
+10:09:01 - WARNING: robot.py: Last Move command 90121700 was not received by Minitaur.
+10:09:01 - INFO: robot.py: Move command sent: 90121600
+10:09:02 - WARNING: robot.py: Last Move command 90121600 was not received by Minitaur.
+10:09:02 - INFO: robot.py: Move command sent: 90121500
+10:09:02 - WARNING: robot.py: Last Move command 90121500 was not received by Minitaur.
+10:09:02 - INFO: robot.py: Move command sent: 90000000
+10:09:03 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:09:03 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:09:04 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:09:04 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:09:05 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:09:05 - INFO: robot.py: Move command sent: 90121400
+10:09:06 - WARNING: robot.py: Last Move command 90121400 was not received by Minitaur.
+10:09:06 - INFO: robot.py: Move command sent: 90121300
+10:09:06 - WARNING: robot.py: Last Move command 90121300 was not received by Minitaur.
+10:09:06 - INFO: robot.py: Move command sent: 90121100
+10:09:06 - WARNING: robot.py: Last Move command 90121100 was not received by Minitaur.
+10:09:07 - WARNING: robot.py: Last Move command 90121100 was not received by Minitaur.
+10:09:07 - INFO: robot.py: Move command sent: 90121000
+10:09:07 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:09:08 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:09:08 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:09:09 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:09:09 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:09:10 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:09:10 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:09:11 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:09:11 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:09:11 - INFO: robot.py: Move command sent: 90000000
+10:09:13 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:09:14 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:09:14 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:09:15 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:09:15 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:09:16 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:09:16 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:09:17 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:09:17 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:09:18 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:09:18 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:09:20 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:09:20 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:09:24 - INFO: robot.py: Move command sent: 90120100
+10:09:24 - WARNING: robot.py: Last Move command 90120100 was not received by Minitaur.
+10:09:24 - INFO: robot.py: Move command sent: 90121000
+10:09:24 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:09:24 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:09:25 - WARNING: robot.py: Battery Voltage too low
+10:09:25 - INFO: robot.py:  Current battery voltage: 13.989894
+
+10:09:25 - WARNING: robot.py: Battery Voltage too low
+10:09:25 - INFO: robot.py:  Current battery voltage: 9.630969
+
+10:09:26 - WARNING: robot.py: Battery Voltage too low
+10:09:26 - INFO: robot.py:  Current battery voltage: 6.996053
+
+10:09:26 - WARNING: robot.py: Battery Voltage too low
+10:09:26 - INFO: robot.py:  Current battery voltage: 5.409848
+
+10:09:27 - WARNING: robot.py: Battery Voltage too low
+10:09:27 - INFO: robot.py:  Current battery voltage: 4.447849
+
+10:09:27 - WARNING: robot.py: Battery Voltage too low
+10:09:27 - INFO: robot.py:  Current battery voltage: 3.870321
+
+10:09:28 - WARNING: robot.py: Battery Voltage too low
+10:09:28 - INFO: robot.py:  Current battery voltage: 3.522218
+
+10:09:28 - WARNING: robot.py: Battery Voltage too low
+10:09:28 - INFO: robot.py:  Current battery voltage: 3.322187
+
+10:09:29 - WARNING: robot.py: Battery Voltage too low
+10:09:29 - INFO: robot.py:  Current battery voltage: 3.202194
+
+10:09:29 - WARNING: robot.py: Battery Voltage too low
+10:09:29 - INFO: robot.py:  Current battery voltage: 3.129825
+
+10:09:30 - WARNING: robot.py: Battery Voltage too low
+10:09:30 - INFO: robot.py:  Current battery voltage: 3.090827
+
+10:09:30 - WARNING: robot.py: Battery Voltage too low
+10:09:30 - INFO: robot.py:  Current battery voltage: 3.057559
+
+10:09:31 - WARNING: robot.py: Battery Voltage too low
+10:09:31 - INFO: robot.py:  Current battery voltage: 3.039804
+
+10:09:31 - WARNING: robot.py: Battery Voltage too low
+10:09:31 - INFO: robot.py:  Current battery voltage: 3.020183
+
+10:09:32 - WARNING: robot.py: Battery Voltage too low
+10:09:32 - INFO: robot.py:  Current battery voltage: 2.990044
+
+10:09:32 - WARNING: robot.py: Battery Voltage too low
+10:09:32 - INFO: robot.py:  Current battery voltage: 3.003084
+
+10:09:33 - WARNING: robot.py: Battery Voltage too low
+10:09:33 - INFO: robot.py:  Current battery voltage: 2.995252
+
+10:09:33 - WARNING: robot.py: Battery Voltage too low
+10:09:33 - INFO: robot.py:  Current battery voltage: 2.967920
+
+10:09:34 - WARNING: robot.py: Battery Voltage too low
+10:09:34 - INFO: robot.py:  Current battery voltage: 2.963872
+
+10:09:34 - WARNING: robot.py: Battery Voltage too low
+10:09:34 - INFO: robot.py:  Current battery voltage: 2.966927
+
+10:09:35 - WARNING: robot.py: Battery Voltage too low
+10:09:35 - INFO: robot.py:  Current battery voltage: 2.963212
+
+10:09:35 - WARNING: robot.py: Battery Voltage too low
+10:09:35 - INFO: robot.py:  Current battery voltage: 2.974050
+
+10:09:36 - WARNING: robot.py: Battery Voltage too low
+10:09:36 - INFO: robot.py:  Current battery voltage: 2.985401
+
+10:09:36 - WARNING: robot.py: Battery Voltage too low
+10:09:36 - INFO: robot.py:  Current battery voltage: 2.987350
+
+10:09:37 - WARNING: robot.py: Battery Voltage too low
+10:09:37 - INFO: robot.py:  Current battery voltage: 2.988528
+
+10:09:37 - WARNING: robot.py: Battery Voltage too low
+10:09:37 - INFO: robot.py:  Current battery voltage: 2.991532
+
+10:09:38 - WARNING: robot.py: Battery Voltage too low
+10:09:38 - INFO: robot.py:  Current battery voltage: 2.993005
+
+10:09:38 - WARNING: robot.py: Battery Voltage too low
+10:09:38 - INFO: robot.py:  Current battery voltage: 2.994784
+
+10:09:39 - WARNING: robot.py: Battery Voltage too low
+10:09:39 - INFO: robot.py:  Current battery voltage: 2.957133
+
+10:09:39 - WARNING: robot.py: Battery Voltage too low
+10:09:39 - INFO: robot.py:  Current battery voltage: 2.960767
+
+10:09:40 - WARNING: robot.py: Battery Voltage too low
+10:09:40 - INFO: robot.py:  Current battery voltage: 2.975148
+
+10:09:40 - WARNING: robot.py: Battery Voltage too low
+10:09:40 - INFO: robot.py:  Current battery voltage: 2.988304
+
+10:09:41 - WARNING: robot.py: Battery Voltage too low
+10:09:41 - INFO: robot.py:  Current battery voltage: 2.998400
+
+10:09:41 - WARNING: robot.py: Battery Voltage too low
+10:09:41 - INFO: robot.py:  Current battery voltage: 3.000019
+
+10:09:42 - WARNING: robot.py: Battery Voltage too low
+10:09:42 - INFO: robot.py:  Current battery voltage: 3.004925
+

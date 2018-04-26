@@ -1,0 +1,18 @@
+09:19:14 - INFO: robot.py: Starts to connect components.
+09:19:14 - WARNING: robot.py: Body component could not be connected.
+09:19:14 - INFO: robot.py: Body = False
+09:19:14 - INFO: Cam.py: Starts to connect components.
+09:19:14 - INFO: There are 1 connected RealSense devices.
+09:19:14 - INFO: Using device 0, an Intel RealSense R200
+09:19:14 - INFO:     Serial number: 2521000201
+09:19:14 - INFO:     Firmware version: 1.0.71.06
+09:19:14 - INFO: head.py: Head Component is connected.
+09:19:17 - DEBUG: findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=12.0 to DejaVu Sans (u'/usr/local/lib/python2.7/dist-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000
+09:19:17 - DEBUG: findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0 to DejaVu Sans (u'/usr/local/lib/python2.7/dist-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000
+09:20:12 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+09:20:12 - WARNING: Iq.py: KeyboardInterrupt
+09:20:12 - INFO: robot.py: Disconected body component successfully.
+09:20:13 - INFO: Cam.py: Camera Disconnected
+09:20:13 - INFO: head.py: Disconected head component successfully.
+09:20:13 - ERROR: rs_error was raised when calling rs_wait_for_frames(device:0)
+09:20:13 - ERROR:     null pointer passed for argument "device"

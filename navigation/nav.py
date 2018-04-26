@@ -32,13 +32,17 @@ class Navigation:
 	    Givena partial depth image, will return an interpolated version filling
 	    all missing data.
 	    """
-		samples, measured_vector = si.createSamples(depth, perc_samples)
-		if len(samples) <= 1:
-			return None
+
 
 		if algorithm_type == 'voronoi':
+			samples, measured_vector = si.createSamples(depth, perc_samples)
+			if len(samples) <= 1:
+				return None
 			filled = voronoi.getVoronoi(depth.shape, samples, measured_vector)
 		elif algorithm_type == 'rbf':
+			samples, measured_vector = si.createSamples(depth, perc_samples)
+			if len(samples) <= 1:
+				return None
 			filled = si.interpolateDepthImage(depth.shape,samples, measured_vector)
 		elif algorithm_type == 'ags_only':
 			filled = depth

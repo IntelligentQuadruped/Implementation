@@ -1,0 +1,263 @@
+10:36:23 - INFO: robot.py: Starts to connect components.
+10:36:23 - INFO: robot.py: Body component connected
+10:36:23 - INFO: robot.py: Body = True
+10:36:23 - INFO: Cam.py: Starts to connect components.
+10:36:23 - INFO: There are 1 connected RealSense devices.
+10:36:23 - INFO: Using device 0, an Intel RealSense R200
+10:36:23 - INFO:     Serial number: 2521000201
+10:36:23 - INFO:     Firmware version: 1.0.71.06
+10:36:24 - INFO: head.py: Head Component is connected.
+10:36:37 - WARNING: robot.py: Battery Voltage too low
+10:36:37 - INFO: robot.py:  Current battery voltage: 0.000000
+
+10:36:37 - WARNING: robot.py: Battery Voltage too low
+10:36:37 - INFO: robot.py:  Current battery voltage: 2.742790
+
+10:36:37 - WARNING: robot.py: Battery Voltage too low
+10:36:37 - INFO: robot.py:  Current battery voltage: 4.989933
+
+10:36:37 - WARNING: robot.py: Battery Voltage too low
+10:36:37 - INFO: robot.py:  Current battery voltage: 6.821623
+
+10:36:37 - WARNING: robot.py: Battery Voltage too low
+10:36:37 - INFO: robot.py:  Current battery voltage: 8.324181
+
+10:36:37 - WARNING: robot.py: Battery Voltage too low
+10:36:37 - INFO: robot.py:  Current battery voltage: 9.549003
+
+10:36:37 - WARNING: robot.py: Battery Voltage too low
+10:36:37 - INFO: robot.py:  Current battery voltage: 10.556746
+
+10:36:37 - WARNING: robot.py: Battery Voltage too low
+10:36:37 - INFO: robot.py:  Current battery voltage: 11.375022
+
+10:36:37 - WARNING: robot.py: Battery Voltage too low
+10:36:37 - INFO: robot.py:  Current battery voltage: 12.046278
+
+10:36:37 - WARNING: robot.py: Battery Voltage too low
+10:36:37 - INFO: robot.py:  Current battery voltage: 12.600860
+
+10:36:37 - WARNING: robot.py: Battery Voltage too low
+10:36:37 - INFO: robot.py:  Current battery voltage: 13.051163
+
+10:36:37 - WARNING: robot.py: Battery Voltage too low
+10:36:37 - INFO: robot.py:  Current battery voltage: 13.417602
+
+10:36:37 - WARNING: robot.py: Battery Voltage too low
+10:36:37 - INFO: robot.py:  Current battery voltage: 13.715724
+
+10:36:37 - WARNING: robot.py: Battery Voltage too low
+10:36:37 - INFO: robot.py:  Current battery voltage: 13.954131
+
+10:36:37 - WARNING: robot.py: Battery Voltage too low
+10:36:37 - INFO: robot.py:  Current battery voltage: 14.145840
+
+10:36:37 - WARNING: robot.py: Battery Voltage too low
+10:36:37 - INFO: robot.py:  Current battery voltage: 14.294103
+
+10:36:37 - WARNING: robot.py: Last Move command None was not received by Minitaur.
+10:36:37 - INFO: robot.py: Move command sent: 90111000
+10:36:37 - WARNING: robot.py: Last Move command 90111000 was not received by Minitaur.
+10:36:37 - INFO: robot.py: Move command sent: 90121100
+10:36:38 - WARNING: robot.py: Last Move command 90121100 was not received by Minitaur.
+10:36:39 - WARNING: robot.py: Last Move command 90121100 was not received by Minitaur.
+10:36:39 - WARNING: robot.py: Last Move command 90121100 was not received by Minitaur.
+10:36:40 - WARNING: robot.py: Last Move command 90121100 was not received by Minitaur.
+10:36:40 - WARNING: robot.py: Last Move command 90121100 was not received by Minitaur.
+10:36:40 - INFO: robot.py: Move command sent: 90121000
+10:36:40 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:36:40 - INFO: robot.py: Move command sent: 90120100
+10:36:41 - WARNING: robot.py: Last Move command 90120100 was not received by Minitaur.
+10:36:41 - INFO: robot.py: Move command sent: 90120200
+10:36:41 - WARNING: robot.py: Last Move command 90120200 was not received by Minitaur.
+10:36:41 - INFO: robot.py: Move command sent: 90120300
+10:36:42 - WARNING: robot.py: Last Move command 90120300 was not received by Minitaur.
+10:36:42 - WARNING: robot.py: Last Move command 90120300 was not received by Minitaur.
+10:36:42 - INFO: robot.py: Move command sent: 90120100
+10:36:42 - WARNING: robot.py: Last Move command 90120100 was not received by Minitaur.
+10:36:42 - WARNING: robot.py: Last Move command 90120100 was not received by Minitaur.
+10:36:42 - INFO: robot.py: Move command sent: 90121000
+10:36:42 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:36:42 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:36:42 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:36:42 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:36:43 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:36:43 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:36:43 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:36:43 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:36:43 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:36:43 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:36:43 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:36:43 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:36:44 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:36:44 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:36:44 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:36:44 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:36:44 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:36:44 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:36:44 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:36:51 - INFO: robot.py: Move command sent: 90000000
+10:36:52 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:36:52 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:36:52 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:36:52 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:36:52 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:36:53 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:36:53 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:36:53 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:36:53 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:36:53 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:36:54 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:36:54 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:36:54 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:16 - INFO: robot.py: Move command sent: 90121000
+10:37:16 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:16 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:16 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:16 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:16 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:17 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:17 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:17 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:17 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:17 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:18 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:18 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:18 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:27 - INFO: robot.py: Move command sent: 90000000
+10:37:27 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:27 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:27 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:28 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:28 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:28 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:28 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:28 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:29 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:29 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:29 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:29 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:29 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:42 - INFO: robot.py: Move command sent: 90121100
+10:37:42 - WARNING: robot.py: Last Move command 90121100 was not received by Minitaur.
+10:37:42 - INFO: robot.py: Move command sent: 90121200
+10:37:43 - WARNING: robot.py: Last Move command 90121200 was not received by Minitaur.
+10:37:43 - WARNING: robot.py: Last Move command 90121200 was not received by Minitaur.
+10:37:43 - WARNING: robot.py: Last Move command 90121200 was not received by Minitaur.
+10:37:43 - WARNING: robot.py: Last Move command 90121200 was not received by Minitaur.
+10:37:44 - WARNING: robot.py: Last Move command 90121200 was not received by Minitaur.
+10:37:44 - INFO: robot.py: Move command sent: 90121300
+10:37:44 - WARNING: robot.py: Last Move command 90121300 was not received by Minitaur.
+10:37:44 - WARNING: robot.py: Last Move command 90121300 was not received by Minitaur.
+10:37:44 - INFO: robot.py: Move command sent: 90121400
+10:37:44 - WARNING: robot.py: Last Move command 90121400 was not received by Minitaur.
+10:37:44 - INFO: robot.py: Move command sent: 90121300
+10:37:45 - WARNING: robot.py: Last Move command 90121300 was not received by Minitaur.
+10:37:45 - INFO: robot.py: Move command sent: 90121400
+10:37:45 - WARNING: robot.py: Last Move command 90121400 was not received by Minitaur.
+10:37:45 - INFO: robot.py: Move command sent: 90121300
+10:37:45 - WARNING: robot.py: Last Move command 90121300 was not received by Minitaur.
+10:37:45 - INFO: robot.py: Move command sent: 90121100
+10:37:45 - WARNING: robot.py: Last Move command 90121100 was not received by Minitaur.
+10:37:45 - INFO: robot.py: Move command sent: 90000000
+10:37:45 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:45 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:45 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:45 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:45 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:45 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:45 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:45 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:46 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:46 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:46 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:46 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:46 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:37:48 - INFO: robot.py: Move command sent: 90121100
+10:37:48 - WARNING: robot.py: Last Move command 90121100 was not received by Minitaur.
+10:37:49 - WARNING: robot.py: Last Move command 90121100 was not received by Minitaur.
+10:37:49 - INFO: robot.py: Move command sent: 90121000
+10:37:49 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:49 - INFO: robot.py: Move command sent: 90121100
+10:37:49 - WARNING: robot.py: Last Move command 90121100 was not received by Minitaur.
+10:37:49 - INFO: robot.py: Move command sent: 90121200
+10:37:49 - WARNING: robot.py: Last Move command 90121200 was not received by Minitaur.
+10:37:49 - INFO: robot.py: Move command sent: 90121300
+10:37:49 - WARNING: robot.py: Last Move command 90121300 was not received by Minitaur.
+10:37:49 - INFO: robot.py: Move command sent: 90121400
+10:37:50 - WARNING: robot.py: Last Move command 90121400 was not received by Minitaur.
+10:37:50 - INFO: robot.py: Move command sent: 90121500
+10:37:50 - WARNING: robot.py: Last Move command 90121500 was not received by Minitaur.
+10:37:50 - WARNING: robot.py: Last Move command 90121500 was not received by Minitaur.
+10:37:50 - INFO: robot.py: Move command sent: 90121400
+10:37:50 - WARNING: robot.py: Last Move command 90121400 was not received by Minitaur.
+10:37:50 - INFO: robot.py: Move command sent: 90121300
+10:37:50 - WARNING: robot.py: Last Move command 90121300 was not received by Minitaur.
+10:37:50 - WARNING: robot.py: Last Move command 90121300 was not received by Minitaur.
+10:37:51 - WARNING: robot.py: Last Move command 90121300 was not received by Minitaur.
+10:37:51 - INFO: robot.py: Move command sent: 90121100
+10:37:51 - INFO: robot.py: Move command sent: 90121200
+10:37:51 - WARNING: robot.py: Last Move command 90121200 was not received by Minitaur.
+10:37:51 - WARNING: robot.py: Last Move command 90121200 was not received by Minitaur.
+10:37:51 - WARNING: robot.py: Last Move command 90121200 was not received by Minitaur.
+10:37:51 - WARNING: robot.py: Last Move command 90121200 was not received by Minitaur.
+10:37:51 - INFO: robot.py: Move command sent: 90121300
+10:37:51 - WARNING: robot.py: Last Move command 90121300 was not received by Minitaur.
+10:37:52 - WARNING: robot.py: Last Move command 90121300 was not received by Minitaur.
+10:37:52 - WARNING: robot.py: Last Move command 90121300 was not received by Minitaur.
+10:37:52 - INFO: robot.py: Move command sent: 90121100
+10:37:52 - WARNING: robot.py: Last Move command 90121100 was not received by Minitaur.
+10:37:52 - INFO: robot.py: Move command sent: 90121200
+10:37:52 - WARNING: robot.py: Last Move command 90121200 was not received by Minitaur.
+10:37:52 - INFO: robot.py: Move command sent: 90121100
+10:37:52 - WARNING: robot.py: Last Move command 90121100 was not received by Minitaur.
+10:37:52 - INFO: robot.py: Move command sent: 90121200
+10:37:52 - WARNING: robot.py: Last Move command 90121200 was not received by Minitaur.
+10:37:52 - INFO: robot.py: Move command sent: 90121100
+10:37:53 - WARNING: robot.py: Last Move command 90121100 was not received by Minitaur.
+10:37:53 - WARNING: robot.py: Last Move command 90121100 was not received by Minitaur.
+10:37:53 - INFO: robot.py: Move command sent: 90121200
+10:37:53 - INFO: robot.py: Move command sent: 90121100
+10:37:53 - WARNING: robot.py: Last Move command 90121100 was not received by Minitaur.
+10:37:53 - INFO: robot.py: Move command sent: 90121000
+10:37:54 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:54 - INFO: robot.py: Move command sent: 90121100
+10:37:54 - WARNING: robot.py: Last Move command 90121100 was not received by Minitaur.
+10:37:54 - INFO: robot.py: Move command sent: 90121200
+10:37:54 - WARNING: robot.py: Last Move command 90121200 was not received by Minitaur.
+10:37:54 - INFO: robot.py: Move command sent: 90121100
+10:37:54 - WARNING: robot.py: Last Move command 90121100 was not received by Minitaur.
+10:37:55 - WARNING: robot.py: Last Move command 90121100 was not received by Minitaur.
+10:37:55 - INFO: robot.py: Move command sent: 90121000
+10:37:55 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:55 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:55 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:55 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:56 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:56 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:56 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:56 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:57 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:57 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:57 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:37:57 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+10:38:07 - INFO: robot.py: Move command sent: 90000000
+10:38:07 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:38:07 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:38:08 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:38:08 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:38:08 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:38:08 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:38:08 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:38:09 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:38:09 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:38:09 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:38:10 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+10:38:10 - INFO: robot.py: Move command sent: 90121000
+10:38:10 - INFO: robot.py: Move command sent: 90000000
+10:38:10 - WARNING: Iq.py: KeyboardInterrupt
+10:38:10 - INFO: robot.py: Disconected body component successfully.
+10:38:10 - INFO: Cam.py: Camera Disconnected
+10:38:10 - INFO: head.py: Disconected head component successfully.
+10:38:10 - ERROR: rs_error was raised when calling rs_wait_for_frames(device:0)
+10:38:10 - ERROR:     null pointer passed for argument "device"

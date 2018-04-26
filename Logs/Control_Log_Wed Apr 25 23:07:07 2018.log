@@ -1,0 +1,276 @@
+11:07:07 - INFO: robot.py: Starts to connect components.
+11:07:07 - INFO: robot.py: Body component connected
+11:07:07 - INFO: robot.py: Body = True
+11:07:07 - INFO: Cam.py: Starts to connect components.
+11:07:07 - INFO: There are 1 connected RealSense devices.
+11:07:07 - INFO: Using device 0, an Intel RealSense R200
+11:07:07 - INFO:     Serial number: 2521000201
+11:07:07 - INFO:     Firmware version: 1.0.71.06
+11:07:08 - INFO: head.py: Head Component is connected.
+11:07:20 - WARNING: robot.py: Battery Voltage too low
+11:07:20 - INFO: robot.py:  Current battery voltage: 0.000000
+
+11:07:20 - WARNING: robot.py: Battery Voltage too low
+11:07:20 - INFO: robot.py:  Current battery voltage: 2.696833
+
+11:07:20 - WARNING: robot.py: Battery Voltage too low
+11:07:20 - INFO: robot.py:  Current battery voltage: 4.899426
+
+11:07:20 - WARNING: robot.py: Battery Voltage too low
+11:07:20 - INFO: robot.py:  Current battery voltage: 6.705608
+
+11:07:20 - WARNING: robot.py: Battery Voltage too low
+11:07:20 - INFO: robot.py:  Current battery voltage: 8.183656
+
+11:07:20 - WARNING: robot.py: Battery Voltage too low
+11:07:20 - INFO: robot.py:  Current battery voltage: 9.392996
+
+11:07:20 - WARNING: robot.py: Battery Voltage too low
+11:07:20 - INFO: robot.py:  Current battery voltage: 10.381314
+
+11:07:20 - WARNING: robot.py: Battery Voltage too low
+11:07:20 - INFO: robot.py:  Current battery voltage: 11.187953
+
+11:07:20 - WARNING: robot.py: Battery Voltage too low
+11:07:20 - INFO: robot.py:  Current battery voltage: 11.844166
+
+11:07:20 - WARNING: robot.py: Battery Voltage too low
+11:07:20 - INFO: robot.py:  Current battery voltage: 12.388215
+
+11:07:20 - WARNING: robot.py: Battery Voltage too low
+11:07:20 - INFO: robot.py:  Current battery voltage: 12.837342
+
+11:07:20 - WARNING: robot.py: Battery Voltage too low
+11:07:20 - INFO: robot.py:  Current battery voltage: 13.198125
+
+11:07:20 - WARNING: robot.py: Battery Voltage too low
+11:07:20 - INFO: robot.py:  Current battery voltage: 13.491446
+
+11:07:20 - WARNING: robot.py: Battery Voltage too low
+11:07:20 - INFO: robot.py:  Current battery voltage: 13.734561
+
+11:07:20 - WARNING: robot.py: Battery Voltage too low
+11:07:20 - INFO: robot.py:  Current battery voltage: 13.931625
+
+11:07:20 - WARNING: robot.py: Battery Voltage too low
+11:07:20 - INFO: robot.py:  Current battery voltage: 14.095279
+
+11:07:20 - WARNING: robot.py: Battery Voltage too low
+11:07:20 - INFO: robot.py:  Current battery voltage: 14.222848
+
+11:07:20 - WARNING: robot.py: Last Move command None was not received by Minitaur.
+11:07:20 - INFO: robot.py: Move command sent: 90110100
+11:07:21 - WARNING: robot.py: Last Move command 90110100 was not received by Minitaur.
+11:07:21 - INFO: robot.py: Move command sent: 90120100
+11:07:21 - WARNING: robot.py: Last Move command 90120100 was not received by Minitaur.
+11:07:21 - INFO: robot.py: Move command sent: 90121000
+11:07:22 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+11:07:23 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+11:07:23 - INFO: robot.py: Move command sent: 90120100
+11:07:23 - WARNING: robot.py: Last Move command 90120100 was not received by Minitaur.
+11:07:23 - INFO: robot.py: Move command sent: 90120200
+11:07:24 - WARNING: robot.py: Last Move command 90120200 was not received by Minitaur.
+11:07:24 - INFO: robot.py: Move command sent: 90120300
+11:07:24 - WARNING: robot.py: Last Move command 90120300 was not received by Minitaur.
+11:07:25 - INFO: robot.py: Move command sent: 90120400
+11:07:25 - WARNING: robot.py: Last Move command 90120400 was not received by Minitaur.
+11:07:25 - INFO: robot.py: Move command sent: 90120500
+11:07:26 - WARNING: robot.py: Last Move command 90120500 was not received by Minitaur.
+11:07:26 - INFO: robot.py: Move command sent: 90120600
+11:07:26 - WARNING: robot.py: Last Move command 90120600 was not received by Minitaur.
+11:07:26 - INFO: robot.py: Move command sent: 90120700
+11:07:27 - WARNING: robot.py: Last Move command 90120700 was not received by Minitaur.
+11:07:27 - INFO: robot.py: Move command sent: 90120600
+11:07:28 - WARNING: robot.py: Last Move command 90120600 was not received by Minitaur.
+11:07:28 - INFO: robot.py: Move command sent: 90120500
+11:07:29 - WARNING: robot.py: Last Move command 90120500 was not received by Minitaur.
+11:07:29 - INFO: robot.py: Move command sent: 90120400
+11:07:30 - WARNING: robot.py: Last Move command 90120400 was not received by Minitaur.
+11:07:30 - INFO: robot.py: Move command sent: 90120300
+11:07:31 - WARNING: robot.py: Last Move command 90120300 was not received by Minitaur.
+11:07:31 - INFO: robot.py: Move command sent: 90120100
+11:07:32 - WARNING: robot.py: Last Move command 90120100 was not received by Minitaur.
+11:07:33 - WARNING: robot.py: Last Move command 90120100 was not received by Minitaur.
+11:07:33 - INFO: robot.py: Move command sent: 90121000
+11:07:34 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+11:07:35 - WARNING: robot.py: Last Move command 90121000 was not received by Minitaur.
+11:07:35 - INFO: robot.py: Move command sent: 90000000
+11:07:35 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+11:07:35 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+11:07:35 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+11:07:35 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+11:07:35 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+11:07:35 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+11:07:35 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+11:07:35 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+11:07:35 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+11:07:35 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+11:07:35 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+11:07:36 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+11:07:41 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+11:07:41 - WARNING: robot.py: Last Move command 90000000 was not received by Minitaur.
+11:07:42 - WARNING: robot.py: Battery Voltage too low
+11:07:42 - INFO: robot.py:  Current battery voltage: 12.531605
+
+11:07:42 - WARNING: robot.py: Battery Voltage too low
+11:07:42 - INFO: robot.py:  Current battery voltage: 10.799996
+
+11:07:42 - WARNING: robot.py: Battery Voltage too low
+11:07:42 - INFO: robot.py:  Current battery voltage: 9.384886
+
+11:07:42 - WARNING: robot.py: Battery Voltage too low
+11:07:42 - INFO: robot.py:  Current battery voltage: 8.226693
+
+11:07:43 - WARNING: robot.py: Battery Voltage too low
+11:07:43 - INFO: robot.py:  Current battery voltage: 7.282209
+
+11:07:43 - WARNING: robot.py: Battery Voltage too low
+11:07:43 - INFO: robot.py:  Current battery voltage: 6.513782
+
+11:07:43 - WARNING: robot.py: Battery Voltage too low
+11:07:43 - INFO: robot.py:  Current battery voltage: 5.885996
+
+11:07:43 - WARNING: robot.py: Battery Voltage too low
+11:07:43 - INFO: robot.py:  Current battery voltage: 5.371280
+
+11:07:43 - WARNING: robot.py: Battery Voltage too low
+11:07:43 - INFO: robot.py:  Current battery voltage: 4.951866
+
+11:07:44 - WARNING: robot.py: Battery Voltage too low
+11:07:44 - INFO: robot.py:  Current battery voltage: 4.608162
+
+11:07:44 - WARNING: robot.py: Battery Voltage too low
+11:07:44 - INFO: robot.py:  Current battery voltage: 4.327543
+
+11:07:44 - WARNING: robot.py: Battery Voltage too low
+11:07:44 - INFO: robot.py:  Current battery voltage: 4.097899
+
+11:07:44 - WARNING: robot.py: Battery Voltage too low
+11:07:44 - INFO: robot.py:  Current battery voltage: 3.911856
+
+11:07:44 - WARNING: robot.py: Battery Voltage too low
+11:07:44 - INFO: robot.py:  Current battery voltage: 3.758898
+
+11:07:45 - WARNING: robot.py: Battery Voltage too low
+11:07:45 - INFO: robot.py:  Current battery voltage: 3.633768
+
+11:07:45 - WARNING: robot.py: Battery Voltage too low
+11:07:45 - INFO: robot.py:  Current battery voltage: 3.531624
+
+11:07:45 - WARNING: robot.py: Battery Voltage too low
+11:07:45 - INFO: robot.py:  Current battery voltage: 3.446688
+
+11:07:45 - WARNING: robot.py: Battery Voltage too low
+11:07:45 - INFO: robot.py:  Current battery voltage: 3.378285
+
+11:07:45 - WARNING: robot.py: Battery Voltage too low
+11:07:45 - INFO: robot.py:  Current battery voltage: 3.322712
+
+11:07:46 - WARNING: robot.py: Battery Voltage too low
+11:07:46 - INFO: robot.py:  Current battery voltage: 3.275936
+
+11:07:46 - WARNING: robot.py: Battery Voltage too low
+11:07:46 - INFO: robot.py:  Current battery voltage: 3.238416
+
+11:07:46 - WARNING: robot.py: Battery Voltage too low
+11:07:46 - INFO: robot.py:  Current battery voltage: 3.207915
+
+11:07:46 - WARNING: robot.py: Battery Voltage too low
+11:07:46 - INFO: robot.py:  Current battery voltage: 3.184155
+
+11:07:46 - WARNING: robot.py: Battery Voltage too low
+11:07:46 - INFO: robot.py:  Current battery voltage: 3.154728
+
+11:07:47 - WARNING: robot.py: Battery Voltage too low
+11:07:47 - INFO: robot.py:  Current battery voltage: 3.132331
+
+11:07:47 - WARNING: robot.py: Battery Voltage too low
+11:07:47 - INFO: robot.py:  Current battery voltage: 3.114532
+
+11:07:47 - WARNING: robot.py: Battery Voltage too low
+11:07:47 - INFO: robot.py:  Current battery voltage: 3.098360
+
+11:07:47 - WARNING: robot.py: Battery Voltage too low
+11:07:47 - INFO: robot.py:  Current battery voltage: 3.095294
+
+11:07:47 - WARNING: robot.py: Battery Voltage too low
+11:07:47 - INFO: robot.py:  Current battery voltage: 3.093269
+
+11:07:48 - WARNING: robot.py: Battery Voltage too low
+11:07:48 - INFO: robot.py:  Current battery voltage: 3.090967
+
+11:07:48 - WARNING: robot.py: Battery Voltage too low
+11:07:48 - INFO: robot.py:  Current battery voltage: 3.090059
+
+11:07:48 - WARNING: robot.py: Battery Voltage too low
+11:07:48 - INFO: robot.py:  Current battery voltage: 3.072461
+
+11:07:48 - WARNING: robot.py: Battery Voltage too low
+11:07:48 - INFO: robot.py:  Current battery voltage: 3.054282
+
+11:07:48 - WARNING: robot.py: Battery Voltage too low
+11:07:48 - INFO: robot.py:  Current battery voltage: 3.046660
+
+11:07:49 - WARNING: robot.py: Battery Voltage too low
+11:07:49 - INFO: robot.py:  Current battery voltage: 3.036100
+
+11:07:49 - WARNING: robot.py: Battery Voltage too low
+11:07:49 - INFO: robot.py:  Current battery voltage: 3.033964
+
+11:07:49 - WARNING: robot.py: Battery Voltage too low
+11:07:49 - INFO: robot.py:  Current battery voltage: 3.035112
+
+11:07:49 - WARNING: robot.py: Battery Voltage too low
+11:07:49 - INFO: robot.py:  Current battery voltage: 3.036325
+
+11:07:49 - WARNING: robot.py: Battery Voltage too low
+11:07:49 - INFO: robot.py:  Current battery voltage: 3.036616
+
+11:07:50 - WARNING: robot.py: Battery Voltage too low
+11:07:50 - INFO: robot.py:  Current battery voltage: 3.029064
+
+11:07:50 - WARNING: robot.py: Battery Voltage too low
+11:07:50 - INFO: robot.py:  Current battery voltage: 3.034302
+
+11:07:50 - WARNING: robot.py: Battery Voltage too low
+11:07:50 - INFO: robot.py:  Current battery voltage: 3.035800
+
+11:07:50 - WARNING: robot.py: Battery Voltage too low
+11:07:50 - INFO: robot.py:  Current battery voltage: 3.028387
+
+11:07:50 - WARNING: robot.py: Battery Voltage too low
+11:07:50 - INFO: robot.py:  Current battery voltage: 3.032775
+
+11:07:51 - WARNING: robot.py: Battery Voltage too low
+11:07:51 - INFO: robot.py:  Current battery voltage: 3.036859
+
+11:07:51 - WARNING: robot.py: Battery Voltage too low
+11:07:51 - INFO: robot.py:  Current battery voltage: 3.038937
+
+11:07:51 - WARNING: robot.py: Battery Voltage too low
+11:07:51 - INFO: robot.py:  Current battery voltage: 3.041038
+
+11:07:51 - WARNING: robot.py: Battery Voltage too low
+11:07:51 - INFO: robot.py:  Current battery voltage: 3.043442
+
+11:07:52 - WARNING: robot.py: Battery Voltage too low
+11:07:52 - INFO: robot.py:  Current battery voltage: 3.043592
+
+11:07:52 - WARNING: robot.py: Battery Voltage too low
+11:07:52 - INFO: robot.py:  Current battery voltage: 3.044828
+
+11:07:52 - WARNING: robot.py: Battery Voltage too low
+11:07:52 - INFO: robot.py:  Current battery voltage: 3.046050
+
+11:07:52 - WARNING: robot.py: Battery Voltage too low
+11:07:52 - INFO: robot.py:  Current battery voltage: 3.046768
+
+11:07:52 - WARNING: robot.py: Battery Voltage too low
+11:07:52 - INFO: robot.py:  Current battery voltage: 3.048182
+
+11:07:53 - WARNING: robot.py: Battery Voltage too low
+11:07:53 - INFO: robot.py:  Current battery voltage: 3.047579
+
+11:07:53 - WARNING: robot.py: Battery Voltage too low
+11:07:53 - INFO: robot.py:  Current battery voltage: 3.040123
+

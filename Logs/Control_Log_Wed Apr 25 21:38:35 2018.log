@@ -1,0 +1,21 @@
+09:38:35 - INFO: robot.py: Starts to connect components.
+09:38:35 - WARNING: robot.py: Body component could not be connected.
+09:38:35 - INFO: robot.py: Body = False
+09:38:35 - INFO: Cam.py: Starts to connect components.
+09:38:35 - INFO: There are 1 connected RealSense devices.
+09:38:35 - INFO: Using device 0, an Intel RealSense R200
+09:38:35 - INFO:     Serial number: 2521000201
+09:38:35 - INFO:     Firmware version: 1.0.71.06
+09:38:36 - INFO: head.py: Head Component is connected.
+09:38:44 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+09:38:44 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+09:38:44 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+09:38:44 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+09:38:45 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+09:38:45 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+09:38:45 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+09:38:45 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+09:38:46 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+09:38:46 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+09:38:46 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+09:38:46 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
