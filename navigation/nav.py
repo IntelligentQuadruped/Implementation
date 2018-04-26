@@ -5,7 +5,6 @@ Purpose: Module to clean camera data and provide an open direction to move in
 '''
 import numpy as np
 from scipy import sparse
-# from scipy.interpolate import Rbf
 import matplotlib.pyplot as plt
 
 import adaptive_grid_sizing as ags
@@ -28,7 +27,7 @@ class Navigation:
 		self.debug = debug
 
 
-	def reconstructFrame(self, depth, perc_samples=0.005, min_sigma=0.5, min_h=10, algorithm_type='rbf'):
+	def reconstructFrame(self, depth, perc_samples=0.005, min_sigma=0.5, min_h=10, algorithm_type='voronoi'):
 		"""
 	    Givena partial depth image, will return an interpolated version filling
 	    all missing data.
@@ -37,7 +36,6 @@ class Navigation:
 		if len(samples) <= 1:
 			return None
 
-		# t = time.time()
 		if algorithm_type == 'voronoi':
 			filled = voronoi.getVoronoi(depth.shape, samples, measured_vector)
 		elif algorithm_type == 'rbf':
@@ -46,7 +44,6 @@ class Navigation:
 			filled = depth
 
 		adapted = ags.depthCompletion(filled, min_sigma, min_h)
-		# print(time.time() - t)
 
 		if self.debug:
 			sample_img = np.zeros((depth.shape)).flatten()

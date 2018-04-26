@@ -20,7 +20,7 @@ class IntelligentQuadruped:
 	def __init__(self):
 		self.r = robot.Robot()
 		self.h = head.Head()
-		self.c = cam.Camera(SAVE_FRAME,SAVE_FRAME_INTERVAL,OUTPUT_DIR)
+		self.c = cam.Camera(SAVE_FRAME, SAVE_FRAME_INTERVAL, OUTPUT_DIR)
 		self.n = nav.Navigation(debug=DEBUG)
 		self.average = deque(maxlen=N_AVERAGE_DIRECTIONS)
 		self.barrier_count = 0
@@ -52,7 +52,9 @@ class IntelligentQuadruped:
 		turn = (abs(frac)/0.9)*(MAX_TURN - MIN_TURN) + MIN_TURN
 		turn = round(turn*np.sign(frac), 1)
 		print("Turning Rate {}".format(turn))
+
 		self.r.move(forward=FORWARD, turn=frac)
+
 		print("Processing time: %.4f"%(time.time()-self.t_process))
 		self.t_process = time.time()
 
@@ -62,9 +64,7 @@ class IntelligentQuadruped:
 
 		depth_reduced = self.c.reduceFrame(depth, HEIGHT_RATIO, SUB_SAMPLE,NAV_FOCUS)
 
-		# t = time.time()
 		adapted = self.n.reconstructFrame(depth_reduced, PERC_SAMPLES, MIN_AGS_SIGMA, MIN_AGS_H, ALGORITHM)
-		# print(time.time() - t)
 		
 		if adapted is None:
 			self.average.clear()
@@ -79,6 +79,7 @@ class IntelligentQuadruped:
 			self.barrier_count =+ 1
 		else:
 			frac = 2.*pos/adapted.shape[1] - 1
+
 		self.average.append(frac)
 
 		if self.barrier_count >= 3:
@@ -89,9 +90,7 @@ class IntelligentQuadruped:
 				self.r.move()
 			self.average.clear()
 			self.barrier_count = 0
-			
 
-		
 		
 		if len(self.average) == N_AVERAGE_DIRECTIONS:
 			outliers_removed = self.filterOutlier(Z_SCORE_THRESHOLD)

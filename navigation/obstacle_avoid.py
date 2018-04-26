@@ -12,7 +12,7 @@ class __GapData:
 	"""
     Private Object that will keep track of current row data.
     """
-	def __init__(self, row_i, start_i, end_i, n):
+	def __init__(self, row_i, start_i, end_i, n, frac_h):
 		"""
     	Intitalize Camera object with following optional parameters:
     		row_i			Number of frames to average over
@@ -25,6 +25,8 @@ class __GapData:
 		self.end_i = end_i
 		self.n = n
 		self.gap = None
+		self.min_h = int(n*frac_h)
+
 		
 
 	def compareGap(self, s, f):
@@ -59,6 +61,9 @@ def __addNextRow(row, start, finish, data):
 		data.setGap(start, finish)
 		return
 
+	if row == data.min_h and data.gap is None:
+		return
+
 	args = np.argwhere(data.row_i == row)
 	for i in args:
 		s = start
@@ -88,7 +93,8 @@ def findLargestGap(depth, max_dist, DEBUG=False):
 
 	indices = np.nonzero(np.diff(d_padded))
 	row_indices = indices[0][0::2] # row indices
-	data = __GapData(row_indices, indices[1][0::2], indices[1][1::2], len(np.unique(row_indices)))
+	data = __GapData(row_indices, indices[1][0::2], indices[1][1::2],
+		len(np.unique(row_indices)), .5)
 
 	__addNextRow(0, 0, np.inf, data)
 	sf = data.gap

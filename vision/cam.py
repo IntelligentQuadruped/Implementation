@@ -126,39 +126,6 @@ class Camera:
 
 		return depth
 
-	def getFramesFromFile(self, filename, idx=None):
-		"""
-		BROKEN FIX SOON BROKEN FIX SOON BROKEN FIX SOON
-
-		Function used for testing on saved files
-		Gets images from file, cleans and averages depth images and scales down
-		by sub_sample
-
-		"""
-		if idx is None:
-			string = filename.replace("_"," ")
-			numbers = [int(s) for s in str.split(string) if s.isdigit()]
-			idx = numbers[-1]
-			print(idx)
-
-		colf = filename + 'c.npy'
-		df = filename + 'd.npy'
-		col = np.load(colf)
-		d = np.load(df)/1000.
-		colf = colf.replace(str(idx),'%d')
-		df = df.replace(str(idx),'%d')
-
-		for i in range(frames-1):
-			idy = idx+i+1
-			s = np.load(df % idy)/1000.
-			d = np.dstack((d, s))
-
-		if frames != 1:
-			d = np.nanmean(d, 2)
-		d[d > 4] = np.nan
-
-		return d, col
-
 
 if __name__ == "__main__":
     """
