@@ -2,9 +2,10 @@
 PORT = '/dev/ttyUSB0' #USB-port address
 BAUDERATE = 115200
 N_AVERAGE_DIRECTIONS = 5 # Number of averaged direction commands
-INITIAL_DELAY = 1#sec
 Z_SCORE_THRESHOLD = 3
-DEBUG = True
+DEBUG = False
+INITIAL_DELAY = 10#sec
+
 
 # Camera
 FRAMES_AVRGD = 2
