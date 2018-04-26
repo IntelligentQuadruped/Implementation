@@ -1,9 +1,0 @@
-08:16:22 - INFO: robot.py: Starts to connect components.
-08:16:22 - WARNING: robot.py: Body component could not be connected.
-08:16:22 - INFO: robot.py: Body = False
-08:16:22 - INFO: Cam.py: Starts to connect components.
-08:16:22 - INFO: There are 1 connected RealSense devices.
-08:16:22 - INFO: Using device 0, an Intel RealSense R200
-08:16:22 - INFO:     Serial number: 2521000201
-08:16:22 - INFO:     Firmware version: 1.0.71.06
-08:16:23 - INFO: head.py: Head Component is connected.
