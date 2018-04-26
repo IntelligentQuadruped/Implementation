@@ -2,9 +2,9 @@
 PORT = '/dev/ttyUSB0' #USB-port address
 BAUDERATE = 115200
 N_AVERAGE_DIRECTIONS = 5 # Number of averaged direction commands
-INITIAL_DELAY = 7#sec
+INITIAL_DELAY = 1#sec
 Z_SCORE_THRESHOLD = 3
-DEBUG = False
+DEBUG = True
 
 # Camera
 FRAMES_AVRGD = 2
@@ -16,6 +16,7 @@ OUTPUT_DIR = "./trials"
 
 # Navigation
 MAX_DIST = 1. #meter
+BARRIER_HEIGHT = 0.5 #relative to frame height
 RBF_SAMPLING = 0.01 #What is this supposed to do?
 PERC_SAMPLES = 0.01
 MIN_AGS_SIGMA = .5

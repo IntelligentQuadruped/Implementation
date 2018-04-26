@@ -61,8 +61,9 @@ def __addNextRow(row, start, finish, data):
 		data.setGap(start, finish)
 		return
 
-	if row == data.min_h and data.gap is None:
-		return
+	# if row == data.min_h and data.gap is None:
+	# 	print("NEW STATEMENT")
+	# 	return
 
 	args = np.argwhere(data.row_i == row)
 	for i in args:
@@ -80,7 +81,7 @@ def __addNextRow(row, start, finish, data):
 	return
 
 
-def findLargestGap(depth, max_dist, DEBUG=False):
+def findLargestGap(depth, max_dist,barrier_h = .5, DEBUG=False):
 	"""
     Given depth image, find the largest gap that goes from the bottom of
     the image to the top. Use max_dist to threshold where objects are 
@@ -94,7 +95,7 @@ def findLargestGap(depth, max_dist, DEBUG=False):
 	indices = np.nonzero(np.diff(d_padded))
 	row_indices = indices[0][0::2] # row indices
 	data = __GapData(row_indices, indices[1][0::2], indices[1][1::2],
-		len(np.unique(row_indices)), .5)
+		len(np.unique(row_indices)), barrier_h)
 
 	__addNextRow(0, 0, np.inf, data)
 	sf = data.gap

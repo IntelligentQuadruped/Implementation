@@ -72,11 +72,11 @@ class IntelligentQuadruped:
 			print("Error, cannot find where to walk")
 			return
 
-		pos = self.n.obstacleAvoid(adapted, MAX_DIST)
+		pos = self.n.obstacleAvoid(adapted, MAX_DIST,BARRIER_HEIGHT)
 
 		if pos is None or pos == np.inf:
 			frac = 0.0
-			self.barrier_count =+ 1
+			self.barrier_count = self.barrier_count + 1
 		else:
 			frac = 2.*pos/adapted.shape[1] - 1
 
@@ -101,7 +101,7 @@ class IntelligentQuadruped:
 
 		if DEBUG:
 			print(pos, adapted.shape[1])
-			self.n.plot(depth, col, depth, adapted)
+			self.n.plot(depth, col, adapted>MAX_DIST, adapted)
 
 
 

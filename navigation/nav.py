@@ -53,13 +53,13 @@ class Navigation:
 			self.plot(depth, sample_img, filled, adapted)
 
 		return adapted
-	def obstacleAvoid(self, depth, max_dist=1.2):
+	def obstacleAvoid(self, depth, max_dist=1.2,barrier_h=.5):
 		"""
 	    Given a depth image and a threshold value, will find the largest gap
 	    that can be used, returning the fraction along the images width where
 	    this is and the degrees rotation from the center. 
 	    """
-		pos = oa.findLargestGap(depth, max_dist, self.debug)
+		pos = oa.findLargestGap(depth, max_dist, barrier_h,DEBUG=self.debug)
 
 		return pos
 
