@@ -30,7 +30,6 @@ class Camera:
 	    """
 		self.save_images = save_images
 		self.clock = time.time()
-		print(self.save_images)
 		self.t_save_frame = t_save_frame
 		self.output_dir = output_dir
 		self.data_dir = path.join(self.output_dir,"{}".format(time.strftime("%d_%b_%Y_%H:%M", time.gmtime())))
@@ -96,7 +95,7 @@ class Camera:
 		rescaled = rescale(d_short, sub_sample)
 		
 		if self.save_images and (time.time() - self.clock > self.t_save_frame):
-			np.save(path.join(self.data_dir,str(time.time())),rescale)
+			np.save(path.join(self.data_dir,str(time.time())),rescaled)
 			self.clock = time.time()
 
 		return rescaled
