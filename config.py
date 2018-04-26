@@ -2,9 +2,9 @@
 PORT = '/dev/ttyUSB0' #USB-port address
 BAUDERATE = 115200
 N_AVERAGE_DIRECTIONS = 5 # Number of averaged direction commands
-INITIAL_DELAY = 1 #sec
+INITIAL_DELAY = 7#sec
 Z_SCORE_THRESHOLD = 3
-DEBUG = True
+DEBUG = False
 
 # Camera
 FRAMES_AVRGD = 2
@@ -21,14 +21,14 @@ PERC_SAMPLES = 0.01
 MIN_AGS_SIGMA = .5
 MIN_AGS_H = 15
 #Options are: 'upper','middle_upper','middle','middle_lower','lower'
-NAV_FOCUS = 'lower' #Considers the middle of the input frame. 
+NAV_FOCUS = 'middle_lower' #Considers the middle of the input frame. 
 #Options are: 'rbf','voronoi','ags_only'
 ALGORITHM = 'ags_only'
 
 # Robot
-FORWARD = 0.2
-MAX_TURN = 0.5
-MIN_TURN = 0.1
+FORWARD = 0.2 # Walking speed in m/s
+MAX_TURN = 0.5 # Turning rate
+MIN_TURN = 0.1 # Turning rate
 
 
 

@@ -1,5 +1,5 @@
 '''
-Author: Viveque Ramji
+Author: Viveque Ramji, Jan Bernhard
 Purpose: Main script to bring all modules together
 
 '''

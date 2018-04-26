@@ -82,7 +82,7 @@ class Navigation:
 
 		plt.subplot(2, 2, 3)
 		plt.imshow(filled, cmap=cmap)
-		plt.title('Voronoi')
+		plt.title('RBF, Voronoi, or None')
 		plt.xticks(visible=False)
 		plt.yticks(visible=False)
 
@@ -116,32 +116,3 @@ if __name__ == "__main__":
     nav = Navigation(True)
     adapted = nav.reconstructFrame(depth, .1, .5, 10)
     frac, pos = nav.obstacleAvoid(adapted, 1.3)
-
-
-
-
-
-
-
-
-
-	  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

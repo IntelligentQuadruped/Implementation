@@ -1,0 +1,106 @@
+08:17:25 - INFO: robot.py: Starts to connect components.
+08:17:25 - WARNING: robot.py: Body component could not be connected.
+08:17:25 - INFO: robot.py: Body = False
+08:17:25 - INFO: Cam.py: Starts to connect components.
+08:17:25 - INFO: There are 1 connected RealSense devices.
+08:17:25 - INFO: Using device 0, an Intel RealSense R200
+08:17:25 - INFO:     Serial number: 2521000201
+08:17:25 - INFO:     Firmware version: 1.0.71.06
+08:17:25 - INFO: head.py: Head Component is connected.
+08:17:30 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:30 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:31 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:32 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:32 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:33 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:33 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:34 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:35 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:35 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:36 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:37 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:37 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:38 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:39 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:39 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:40 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:41 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:41 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:42 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:42 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:43 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:44 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:44 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:45 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:45 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:46 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:46 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:47 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:48 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:48 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:49 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:49 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:50 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:51 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:51 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:51 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:52 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:53 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:53 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:54 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:54 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:54 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:55 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:55 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:56 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:56 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:56 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:57 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:57 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:58 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:58 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:58 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:59 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:17:59 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:00 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:00 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:00 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:01 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:01 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:02 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:02 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:03 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:03 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:04 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:04 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:04 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:05 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:05 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:06 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:06 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:07 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:07 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:07 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:08 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:08 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:09 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:09 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:10 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:10 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:10 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:11 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:11 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:11 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:12 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:12 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:13 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:13 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:14 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:14 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:14 - WARNING: robot.py: Method move(): Cannot execute command. Body disconneted.
+08:18:14 - WARNING: Iq.py: KeyboardInterrupt
+08:18:14 - INFO: robot.py: Disconected body component successfully.
+08:18:14 - INFO: Cam.py: Camera Disconnected
+08:18:14 - INFO: head.py: Disconected head component successfully.
+08:18:14 - ERROR: rs_error was raised when calling rs_wait_for_frames(device:0)
+08:18:14 - ERROR:     null pointer passed for argument "device"
