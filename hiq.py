@@ -55,7 +55,7 @@ class IntelligentQuadruped:
 		turn = round(turn*np.sign(frac), 1)
 		print("Turning Rate {}".format(turn))
 
-		self.r.move(forward=FORWARD, turn=frac)
+		self.r.move(forward=FORWARD, turn=turn, height=WALKING_HGHT)
 
 		print("Processing time: %.4f"%(time.time()-self.t_process))
 		self.t_process = time.time()
@@ -107,8 +107,24 @@ class IntelligentQuadruped:
 		_______
 		pick up here
 		"""
-		if self.gap_direction > 0:
-			# self.r.move()
+		if self.gap_direction != 0:
+			gap_cnt = 0
+			while(True):
+				# Max turn towards gap direction
+				self.r.move(forward=FORWARD, turn=self.gap_direction*MAX_TURN, height=WALKING_HGHT)
+				depth, _ = self.c.getFrames(FRAMES_AVRGD, rgb=True)
+				depth_reduced = self.c.reduceFrame(depth, HEIGHT_RATIO, SUB_SAMPLE,NAV_FOCUS)
+				adapted = self.n.reconstructFrame(depth_reduced, PERC_SAMPLES, MIN_AGS_SIGMA, MIN_AGS_H, ALGORITHM)
+				if adapted is None:
+					continue
+				pos = self.n.obstacleAvoid(adapted, MAX_DIST,BARRIER_HEIGHT)
+				if pos is not None:
+					gap_cnt = gap_cnt + 1
+				if gap_cnt >= 3:
+					break
+		else:
+			print("Error, cannot find where to walk")
+		return
 
 	def run(self):
 		depth, col = self.c.getFrames(FRAMES_AVRGD, rgb=True)
@@ -136,7 +152,7 @@ class IntelligentQuadruped:
 		
 		if self.barrier_count >= 3:
 			start=time.time()
-			while(time.time()-start < 2.0):
+			while(time.time()-start < 1.0):
 				self.r.move()
 			if self.head:
 				print("Truning head")

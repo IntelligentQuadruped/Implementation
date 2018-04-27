@@ -29,8 +29,9 @@ ALGORITHM = 'ags_only'
 
 # Robot
 FORWARD = 0.2 # Walking speed in m/s
-MAX_TURN = 0.5 # Turning rate
+MAX_TURN = 0.7 # Turning rate
 MIN_TURN = 0.1 # Turning rate
+WALKING_HGHT = -0.1
 
 
 
