@@ -53,7 +53,7 @@ class IntelligentQuadruped:
 		turn = round(turn*np.sign(frac), 1)
 		print("Turning Rate {}".format(turn))
 
-		self.r.move(forward=FORWARD, turn=frac)
+		self.r.move(forward=FORWARD, turn=turn, height = WALKING_HGHT)
 
 		print("Processing time: %.4f"%(time.time()-self.t_process))
 		self.t_process = time.time()
