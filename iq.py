@@ -69,7 +69,7 @@ class IntelligentQuadruped:
 		if adapted is None:
 			self.average.clear()
 			self.r.move()
-			print("Error, cannot find where to walk")
+			print("No image data was received")
 			return
 
 		pos = self.n.obstacleAvoid(adapted, MAX_DIST,BARRIER_HEIGHT)
