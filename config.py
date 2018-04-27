@@ -1,6 +1,7 @@
 # IQ
 PORT = '/dev/ttyUSB0' #USB-port address
 BAUDERATE = 115200
+HEAD_CONNECTED = False
 N_AVERAGE_DIRECTIONS = 3 # Number of averaged direction commands
 Z_SCORE_THRESHOLD = 3
 DEBUG = False
@@ -18,7 +19,6 @@ OUTPUT_DIR = "./trials"
 # Navigation
 MAX_DIST = 1.2 #meter
 BARRIER_HEIGHT = 0 #relative to frame height
-RBF_SAMPLING = 0.01 #What is this supposed to do?
 PERC_SAMPLES = 0.01
 MIN_AGS_SIGMA = .4
 MIN_AGS_H = 25
