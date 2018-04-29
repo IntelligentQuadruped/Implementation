@@ -87,10 +87,7 @@ class Camera:
 		d_short[d_short > self.max_depth] = np.nan
 		rescaled = rescale(d_short, sub_sample)
 		
-		if self.save_images and (time.time() - self.clock > self.t_save_frame):
-			np.save(path.join(self.data_dir,str(time.time())),rescaled)
-			self.clock = time.time()
-
+		
 		return rescaled
 
 	def getFrames(self, frames=5, rgb=False):
@@ -101,6 +98,13 @@ class Camera:
 		self.dev.wait_for_frames()
 
 		depth = self.dev.depth*self.dev.depth_scale
+		col = self.dev.color 
+
+		if self.save_images and (time.time() - self.clock > self.t_save_frame):
+			np.save(path.join(self.data_dir,str(time.time())+"_d"),depth)
+			np.save(path.join(self.data_dir,str(time.time())+"_c"),col)
+			self.clock = time.time()
+
 
 		for _ in range(frames-1):
 			self.dev.wait_for_frames()
@@ -113,7 +117,6 @@ class Camera:
 		depth[depth > self.max_depth] = np.nan
 
 		if rgb:
-			col = self.dev.color 
 			return depth, col
 
 		return depth

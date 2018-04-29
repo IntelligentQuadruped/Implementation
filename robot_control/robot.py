@@ -21,6 +21,7 @@ class Robot(object):
 		self.height = 0.0
 		self.last_cmd = time.time()
 		self.reaction_time = reaction_time
+		self.step_size = 0.1
 		pass
 
 	def connect(self, usb_port_address, bauderate, time_out = 1):
@@ -66,9 +67,9 @@ class Robot(object):
 		cmd = round(cmd,1)
 		value = round(value,1)
 		if  cmd < value:
-			cmd = cmd + 0.1
+			cmd = cmd + self.step_size
 		elif cmd > value:
-			cmd = cmd - 0.1
+			cmd = cmd - self.step_size
 		else:
 			pass
 		setattr(self,key,cmd)
@@ -117,6 +118,8 @@ class Robot(object):
 				new_move[6:8] = self.__convertToMove(hght)
 			elif key == 'behavior':
 				new_move[1] = int(kwargs[key])
+			elif key == 'step_size':
+				self.step_size = kwargs[key]
 
 		new_move = map(unicode,new_move) # converting int to char
 		new_move = ''.join(new_move) # joining char to str

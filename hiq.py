@@ -12,7 +12,7 @@ from robot_control import robot
 from robot_control import head
 from navigation import nav
 from vision import cam
-from config import *
+from config_rbf import *
 
 
 class IntelligentQuadruped:
@@ -20,7 +20,7 @@ class IntelligentQuadruped:
 	def __init__(self):
 		self.r = robot.Robot()
 		self.h = head.Head()
-		self.c = cam.Camera(SAVE_FRAME, SAVE_FRAME_INTERVAL, OUTPUT_DIR)
+		self.c = cam.Camera(MAX_DEPTH, SAVE_FRAME, SAVE_FRAME_INTERVAL, OUTPUT_DIR)
 		self.n = nav.Navigation(debug=DEBUG)
 		self.average = deque(maxlen=N_AVERAGE_DIRECTIONS)
 		self.barrier_count = 0
@@ -54,8 +54,9 @@ class IntelligentQuadruped:
 		turn = (abs(frac)/0.9)*(MAX_TURN - MIN_TURN) + MIN_TURN
 		turn = round(turn*np.sign(frac), 1)
 		print("Turning Rate {}".format(turn))
-
-		self.r.move(forward=FORWARD, turn=turn, height=WALKING_HGHT)
+		received = False
+		while not received:
+			received = self.r.move(forward=FORWARD, turn=turn, height = WALKING_HGHT, step_size=0.1)
 
 		print("Processing time: %.4f"%(time.time()-self.t_process))
 		self.t_process = time.time()
@@ -66,12 +67,12 @@ class IntelligentQuadruped:
 		'''
 		angle = 0
 		found_gap = False
-		for i in range(2*int(90/5)):
+		for i in range(2*int(90/15)):
 			print('index', i)
 			#decide on turning direction
 			if i%2 == 0:
 				direction = 1 # right
-				angle = abs(angle) + 5*direction	
+				angle = abs(angle) + 15*direction	
 			else:
 				direction = -1 # left
 				angle = angle*direction
@@ -81,12 +82,19 @@ class IntelligentQuadruped:
 				completed_movement = self.h.look(turn=angle)
 
 			#check for gap
-			depth= self.c.getFrames()
-			d_red = self.c.reduceFrame(depth)
+			# depth = None
+			# while(depth is None):
+			for i in range(5):
+				depth = self.c.getFrames()
+				d_red = self.c.reduceFrame(depth)
 
-			x = self.n.reconstructFrame(d_red)
+				x = self.n.reconstructFrame(d_red, PERC_SAMPLES, MIN_AGS_SIGMA, MIN_AGS_H, ALGORITHM)
 
-			pos = self.n.obstacleAvoid(x,MAX_DIST)
+				pos = x if x is None else self.n.obstacleAvoid(x,MAX_DIST)
+
+				if pos is not None:
+					break
+
 			print('Position: ', pos)
 			if pos is not None:
 				print('found gap')
@@ -116,16 +124,19 @@ class IntelligentQuadruped:
 			while(True):
 				print("Turning towards Gap")
 				# Max turn towards gap direction
-				self.r.move(forward=FORWARD, turn=self.gap_direction*MAX_TURN, height=WALKING_HGHT)
+				received = False
+				while not received:
+					received = self.r.move(forward=FORWARD-0.1, turn=self.gap_direction*MAX_TURN, height=WALKING_HGHT, step_size=0.2)
 				depth, _ = self.c.getFrames(FRAMES_AVRGD, rgb=True)
 				depth_reduced = self.c.reduceFrame(depth, HEIGHT_RATIO, SUB_SAMPLE,NAV_FOCUS)
 				adapted = self.n.reconstructFrame(depth_reduced, PERC_SAMPLES, MIN_AGS_SIGMA, MIN_AGS_H, ALGORITHM)
 				if adapted is None:
+					print("adapted is none")
 					continue
 				pos = self.n.obstacleAvoid(adapted, MAX_DIST,BARRIER_HEIGHT)
 				if pos is not None:
 					gap_cnt = gap_cnt + 1
-				if gap_cnt >= 3:
+				if gap_cnt >= 5:
 					break
 		else:
 			print("Error, cannot find where to walk")
