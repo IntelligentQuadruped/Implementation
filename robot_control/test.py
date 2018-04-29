@@ -9,8 +9,8 @@ import time
 
 def main():
     # different for every computer
-    PORT = '/dev/tty.usbserial-DN01QALN'
-    # PORT = '/dev/ttyUSB0'  
+    # PORT = '/dev/tty.usbserial-DN01QALN'
+    PORT = '/dev/ttyUSB0'  
     BAUDERATE = 115200
     TIMEOUT = 2
     obj = robot.Robot()

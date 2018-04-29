@@ -24,15 +24,16 @@ class Camera:
 	"""
     Object to get data from Realsense Camera
     """
-	def __init__(self,save_images = False,t_save_frame=5,output_dir='./trials/'):
+	def __init__(self,max_depth = 4, save_images = False,t_save_frame=5,output_dir='./trials/'):
 		"""
 	    Intitalize Camera object 
 	    """
+		self.max_depth = max_depth
 		self.save_images = save_images
 		self.clock = time.time()
 		self.t_save_frame = t_save_frame
 		self.output_dir = output_dir
-		self.data_dir = path.join(self.output_dir,"{}".format(time.strftime("%d_%b_%Y_%H:%M", time.gmtime())))
+		self.data_dir = path.join(self.output_dir,"{}".format(time.strftime("%d_%b_%Y_%H:%M", time.localtime())))
 		if self.save_images:	
 			ensureDir(self.data_dir)
 		pass
@@ -67,31 +68,23 @@ class Camera:
 
 		if reduce_to == 'lower':
 			d_short = depth_copy[h:, 10:-10]
-			d_short[d_short <= 0] = np.nan
-			d_short[d_short > 4] = np.nan
 		elif reduce_to == 'middle_lower':
 			upper_brdr = 3*int(round((height-h)/4.0,0))
 			lower_brdr = upper_brdr + h
 			d_short = depth_copy[upper_brdr:lower_brdr, 10:-10]
-			d_short[d_short <= 0] = np.nan
-			d_short[d_short > 4] = np.nan
 		elif reduce_to == 'middle':
 			upper_brdr = int(round((height-h)/2.0,0))
 			lower_brdr = upper_brdr+h
 			d_short = depth_copy[upper_brdr:lower_brdr, 10:-10]
-			d_short[d_short <= 0] = np.nan
-			d_short[d_short > 4] = np.nan
 		elif reduce_to == 'middle_upper':
 			upper_brdr = int(round((height-h)/4.0,0))
 			lower_brdr = upper_brdr+h
 			d_short = depth_copy[upper_brdr:lower_brdr, 10:-10]
-			d_short[d_short <= 0] = np.nan
-			d_short[d_short > 4] = np.nan
 		elif reduce_to == 'upper':
 			d_short = depth_copy[:(height-h), 10:-10]
-			d_short[d_short <= 0] = np.nan
-			d_short[d_short > 4] = np.nan
 
+		d_short[d_short <= 0] = np.nan
+		d_short[d_short > self.max_depth] = np.nan
 		rescaled = rescale(d_short, sub_sample)
 		
 		if self.save_images and (time.time() - self.clock > self.t_save_frame):
@@ -117,7 +110,7 @@ class Camera:
 		if frames != 1:
 			depth = np.nanmean(depth, 2)
 
-		depth[depth > 4] = np.nan
+		depth[depth > self.max_depth] = np.nan
 
 		if rgb:
 			col = self.dev.color 

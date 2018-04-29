@@ -67,10 +67,11 @@ class IntelligentQuadruped:
 		angle = 0
 		found_gap = False
 		for i in range(2*int(90/5)):
+			print('index', i)
 			#decide on turning direction
 			if i%2 == 0:
 				direction = 1 # right
-				angle += 5*direction	
+				angle = abs(angle) + 5*direction	
 			else:
 				direction = -1 # left
 				angle = angle*direction
@@ -80,12 +81,15 @@ class IntelligentQuadruped:
 				completed_movement = self.h.look(turn=angle)
 
 			#check for gap
-			depth, _ = self.c.getFrames(1)
+			depth= self.c.getFrames()
 			d_red = self.c.reduceFrame(depth)
 
 			x = self.n.reconstructFrame(d_red)
-			frac, _ = self.n.obstacleAvoid(x,MAX_DIST)
-			if frac is not None:
+
+			pos = self.n.obstacleAvoid(x,MAX_DIST)
+			print('Position: ', pos)
+			if pos is not None:
+				print('found gap')
 				found_gap = True
 				break
 
@@ -110,6 +114,7 @@ class IntelligentQuadruped:
 		if self.gap_direction != 0:
 			gap_cnt = 0
 			while(True):
+				print("Turning towards Gap")
 				# Max turn towards gap direction
 				self.r.move(forward=FORWARD, turn=self.gap_direction*MAX_TURN, height=WALKING_HGHT)
 				depth, _ = self.c.getFrames(FRAMES_AVRGD, rgb=True)
@@ -151,6 +156,7 @@ class IntelligentQuadruped:
 		self.average.append(frac)
 		
 		if self.barrier_count >= 3:
+			print('Potential Barrier ahead')
 			start=time.time()
 			while(time.time()-start < 1.0):
 				self.r.move()

@@ -1,4 +1,6 @@
 data/
+Logs/
+trials/
 **/__pycache__/
 *.pyc
 ./robot_control/__pycache__/robot.cpython-36.pyc

@@ -1,6 +1,6 @@
-opencv-contrib-python
-Pillow
 numpy
 matplotlib
+skimage
+pyrealsense
 
 
