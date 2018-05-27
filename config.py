@@ -1,14 +1,15 @@
 # IQ
 PORT = '/dev/ttyUSB0' #USB-port address
 BAUDERATE = 115200
-HEAD_CONNECTED = False
+HEAD_CONNECTED = True
 N_AVERAGE_DIRECTIONS = 3 # Number of averaged direction commands
 Z_SCORE_THRESHOLD = 3
 DEBUG = False
-INITIAL_DELAY = 10#sec
+INITIAL_DELAY = 1#sec
 
 
 # Camera
+MAX_DEPTH = 20.0
 FRAMES_AVRGD = 2
 HEIGHT_RATIO = 0.5
 SUB_SAMPLE = .5

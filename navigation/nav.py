@@ -50,6 +50,7 @@ class Navigation:
 		adapted = ags.depthCompletion(filled, min_sigma, min_h)
 
 		if self.debug:
+			samples, measured_vector = si.createSamples(depth, perc_samples)
 			sample_img = np.zeros((depth.shape)).flatten()
 			sample_img[samples] = depth.flatten()[samples]
 			sample_img = sample_img.reshape(depth.shape)
@@ -64,7 +65,6 @@ class Navigation:
 	    this is and the degrees rotation from the center. 
 	    """
 		pos = oa.findLargestGap(depth, max_dist, barrier_h,DEBUG=self.debug)
-
 		return pos
 
 	def plot(self, depth, sample_img, filled, ags, cmap='viridis', b=True):

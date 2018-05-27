@@ -12,7 +12,7 @@ from robot_control import robot
 from robot_control import head
 from navigation import nav
 from vision import cam
-from config import *
+from config_rbf import *
 
 
 class IntelligentQuadruped:
@@ -20,7 +20,7 @@ class IntelligentQuadruped:
 	def __init__(self):
 		self.r = robot.Robot()
 		self.h = head.Head()
-		self.c = cam.Camera(SAVE_FRAME, SAVE_FRAME_INTERVAL, OUTPUT_DIR)
+		self.c = cam.Camera(MAX_DEPTH, SAVE_FRAME, SAVE_FRAME_INTERVAL, OUTPUT_DIR)
 		self.n = nav.Navigation(debug=DEBUG)
 		self.average = deque(maxlen=N_AVERAGE_DIRECTIONS)
 		self.barrier_count = 0
@@ -52,8 +52,9 @@ class IntelligentQuadruped:
 		turn = (abs(frac)/0.9)*(MAX_TURN - MIN_TURN) + MIN_TURN
 		turn = round(turn*np.sign(frac), 1)
 		print("Turning Rate {}".format(turn))
-
-		self.r.move(forward=FORWARD, turn=turn, height = WALKING_HGHT)
+		received = False
+		while not received:
+			received = self.r.move(forward=FORWARD, turn=turn, height = WALKING_HGHT)
 
 		print("Processing time: %.4f"%(time.time()-self.t_process))
 		self.t_process = time.time()

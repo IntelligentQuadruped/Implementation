@@ -20,6 +20,12 @@ l = len(os.listdir(dir_in))
 for i, file in enumerate(os.listdir(dir_in)):
 	path = os.path.join(dir_in,file)
 	frame = np.load(str(path))
+	if 'c' in file:
+		plt.figure()
+		plt.imshow(frame)
+		plt.imsho()
+		continue
+
 	try:
 		recon = ags.depthCompletion(frame,MIN_AGS_SIGMA, MIN_AGS_H)
 		samples, measured_vector = si.createSamples(frame, PERC_SAMPLES)
@@ -29,26 +35,26 @@ for i, file in enumerate(os.listdir(dir_in)):
 		rbf = ags.depthCompletion(rbf_pre,0.2, 30)
 
 		plt.subplot(2, 2, 1)
-		plt.title('Depth')
+		plt.title('Raw Depth')
 		plt.imshow(frame)
 		plt.xticks(visible=False)
 		plt.yticks(visible=False)
 
 		plt.subplot(2, 2, 2)
 		plt.imshow(voro>MAX_DIST)
-		plt.title('Voronoi')
+		plt.title('Voronoi + AGS')
 		plt.xticks(visible=False)
 		plt.yticks(visible=False)
 
 		plt.subplot(2, 2, 3)
 		plt.imshow(rbf>MAX_DIST)
-		plt.title('RBF, Voronoi, or None')
+		plt.title('RBF + AGS')
 		plt.xticks(visible=False)
 		plt.yticks(visible=False)
 
 		plt.subplot(2, 2, 4)
-		plt.imshow(filled > MAX_DIST)
-		plt.title('AGS')
+		plt.imshow(recon > MAX_DIST)
+		plt.title('Pure AGS')
 		plt.xticks(visible=False)
 		plt.yticks(visible=False)
 

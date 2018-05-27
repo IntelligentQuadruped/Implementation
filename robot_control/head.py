@@ -15,6 +15,7 @@ class Head(object):
 		self.CONVERSION_FACTOR_TILT = 10.0 #steps per degree
 		self.CONVERSION_FACTOR_DIRECT = 1.8 # degree per step
 		self.connect_head = False
+		self.double_motor = False
 
 		# Setting time to pause between steps of stepper motor
 		self.MOTOR_DELAY = 0.01 #sec
@@ -42,13 +43,14 @@ class Head(object):
 			GPIO.setup(self.STEP_PIN_TURN, GPIO.OUT)
 			GPIO.setup(self.DIRECTION_PIN_TURN, GPIO.OUT)
 			GPIO.setup(self.ENABLE_PIN_TURN, GPIO.OUT)
-            ## motor 2: tilting
-			GPIO.setup(self.STEP_PIN_TILT, GPIO.OUT)
-			GPIO.setup(self.DIRECTION_PIN_TILT, GPIO.OUT)
-			GPIO.setup(self.ENABLE_PIN_TILT, GPIO.OUT)
-            ## connecting to motors
 			GPIO.output(self.ENABLE_PIN_TURN,GPIO.LOW)
-			GPIO.output(self.ENABLE_PIN_TILT,GPIO.LOW)
+            ## motor 2: tilting
+			if self.double_motor:
+				GPIO.setup(self.STEP_PIN_TILT, GPIO.OUT)
+				GPIO.setup(self.DIRECTION_PIN_TILT, GPIO.OUT)
+				GPIO.setup(self.ENABLE_PIN_TILT, GPIO.OUT)
+				GPIO.output(self.ENABLE_PIN_TILT,GPIO.LOW)
+            ## connecting to motors
 			self.connect_head = True # stores which components are connected.
 			logging.info("head.py: Head Component is connected.")
 		except:
@@ -59,7 +61,8 @@ class Head(object):
 	def disconnect(self):
 		if self.connect_head:
 			GPIO.output(self.ENABLE_PIN_TURN,GPIO.HIGH)
-			GPIO.output(self.ENABLE_PIN_TILT,GPIO.HIGH)
+			if self.double_motor:
+				GPIO.output(self.ENABLE_PIN_TILT,GPIO.HIGH)
 			GPIO.cleanup()
 		logging.info("head.py: Disconected head component successfully.")
 
@@ -132,7 +135,7 @@ class Head(object):
 				self.turn_steps = self.turn_steps + (-1*steps_turn) \
 								if degrees < 0 else self.turn_steps + steps_turn
 				self.turn_angle = self.turn_steps / self.CONVERSION_FACTOR_TURN
-			elif key == 'tilt':
+			elif key == 'tilt' and self.double_motor:
 				if abs(kwargs[key]) > 45:
 					logging.warning("head.py: Degrees of head rotation out of bounds.")
 					logging.info("head.py: >>> Valid interval: [-45, 45]")
@@ -156,10 +159,11 @@ class Head(object):
 			GPIO.output(self.DIRECTION_PIN_TURN,GPIO.HIGH)
 		else:
 			GPIO.output(self.DIRECTION_PIN_TURN,GPIO.LOW)
-		if direct_tilt:
-			GPIO.output(self.DIRECTION_PIN_TILT,GPIO.HIGH)
-		else:
-			GPIO.output(self.DIRECTION_PIN_TILT,GPIO.LOW)
+		if self.double_motor:
+			if direct_tilt:
+				GPIO.output(self.DIRECTION_PIN_TILT,GPIO.HIGH)
+			else:
+				GPIO.output(self.DIRECTION_PIN_TILT,GPIO.LOW)
 
 		logging.info("head.py: Look command sent: turn={}, tilt={}".format(direct_turn,direct_tilt))
 
@@ -167,12 +171,12 @@ class Head(object):
 		for i in range(steps):
 			if i < steps_turn:
 				GPIO.output(self.STEP_PIN_TURN,GPIO.LOW)
-			if i < steps_tilt:
+			if i < steps_tilt and self.double_motor:
 				GPIO.output(self.STEP_PIN_TILT,GPIO.LOW)
 			time.sleep(self.MOTOR_DELAY)
 			if i < steps_turn:
 				GPIO.output(self.STEP_PIN_TURN,GPIO.HIGH)
-			if i < steps_tilt:
+			if i < steps_tilt and self.double_motor:
 				GPIO.output(self.STEP_PIN_TILT,GPIO.HIGH)
 			time.sleep(self.MOTOR_DELAY)
 		logging.info("head.py: Head arrived at target position.")
@@ -200,7 +204,7 @@ class Head(object):
 				self.turn_steps = self.turn_steps + (-1*steps_turn) \
 								if degrees < 0 else self.turn_steps + steps_turn
 				self.turn_angle = self.turn_steps / self.CONVERSION_FACTOR_TURN
-			elif key == 'tilt':
+			elif key == 'tilt' and self.double_motor:
 				if abs(kwargs[key]) > 45:
 					logging.warning("head.py: Degrees of head rotation out of bounds.")
 					logging.info("head.py: >>> Valid interval: [-45, 45]")
