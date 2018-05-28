@@ -1,6 +1,0 @@
-pyserial
-RPi.GPIO
-pyrealsense
-numpy
-matplotlib
-

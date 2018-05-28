@@ -1,7 +1,6 @@
 '''
 Author: Viveque Ramji, Jan Bernhard
 Purpose: Main script to bring all modules together
-
 '''
 import numpy as np
 import time
@@ -51,6 +50,9 @@ class IntelligentQuadruped:
 		return output
 
 	def sendDirection(self, frac):
+		'''
+		Send Body translation command.
+		'''
 		turn = (abs(frac)/0.9)*(MAX_TURN - MIN_TURN) + MIN_TURN
 		turn = round(turn*np.sign(frac), 1)
 		print("Turning Rate {}".format(turn))
@@ -64,6 +66,7 @@ class IntelligentQuadruped:
 	def searchForGap(self):
 		'''
 		Will check if the head was used to find gap and will adjust body rotation to follow head.
+		--> Next step: Use gap search that maps full view field to find new gaps more reliable.
 		'''
 		angle = 0
 		found_gap = False
@@ -115,9 +118,6 @@ class IntelligentQuadruped:
 	def moveToGap(self):
 		"""
 		Moves to gap that was found by turning the head.
-
-		_______
-		pick up here
 		"""
 		if self.gap_direction != 0:
 			gap_cnt = 0

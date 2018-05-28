@@ -32,7 +32,7 @@ ALGORITHM = 'ags_only'
 FORWARD = 0.2 # Walking speed in m/s
 MAX_TURN = 0.7 # Turning rate
 MIN_TURN = 0.1 # Turning rate
-WALKING_HGHT = -0.1
+WALKING_HGHT = -0.1 # Deviation from neutral walking height
 
 
 

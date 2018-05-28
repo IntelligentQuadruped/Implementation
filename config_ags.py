@@ -3,9 +3,9 @@ PORT = '/dev/ttyUSB0' #USB-port address
 BAUDERATE = 115200
 N_AVERAGE_DIRECTIONS = 3 # Number of averaged direction commands
 Z_SCORE_THRESHOLD = 3
+HEAD_CONNECTED = True
 DEBUG = False
 INITIAL_DELAY = 10#sec
-
 
 # Camera
 FRAMES_AVRGD = 2
@@ -18,7 +18,6 @@ OUTPUT_DIR = "./trials"
 # Navigation
 MAX_DIST = 1.2 #meter
 BARRIER_HEIGHT = 0 #relative to frame height
-RBF_SAMPLING = 0.01 #What is this supposed to do?
 PERC_SAMPLES = 0.01
 MIN_AGS_SIGMA = .4
 MIN_AGS_H = 25
@@ -31,7 +30,7 @@ ALGORITHM = 'ags_only'
 FORWARD = 0.2 # Walking speed in m/s
 MAX_TURN = 0.5 # Turning rate
 MIN_TURN = 0.1 # Turning rate
-
+WALKING_HGHT = 0.0 # Deviation from neutral walking height
 
 
 
