@@ -1,3 +1,9 @@
+"""
+Author: Jan Bernhard
+Last updated: 03/20/18
+Purpose: Gather sample RGB and depth images with the R200.
+"""
+
 import numpy as np
 import os
 import time 

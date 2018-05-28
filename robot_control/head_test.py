@@ -1,3 +1,9 @@
+"""
+Author: Jan Bernhard
+Last updated: 04/22/18
+Purpose: Testing head.py with defined control sequence. 
+"""
+
 import head
 
 obj = head.Head()

@@ -1,15 +1,17 @@
 # Robot Control
-High-level control commands for the quadruped.
+Controls the Minitaur base and the rotational sensor mount with the `robot.py` and `head.py` scripts, respectively.
 
 ## Development status
 #### Robot.py:
  - [x] function testing 
  - [x] object terminal testing
  - [x] object robot testing
+ - [x] revise communication robustness
 #### Head.py:
  - [x] add control code
  - [x] terminal testing of control code
  - [x] physical testing of control code
+ - [ ] add functionality to differentiate between 2-DOF and 1-DOF design
 #### V0.2: With logging capability and more robust functionality:
  - [x] add logging
  - [x] replace if-loops with try-except statements
@@ -38,7 +40,6 @@ import robot_v2
 
 # different for every computer
 PORT = '/dev/ttyUSB0' # Realsense CPU
-# PORT = '/dev/tty.usbserial-DN01QALN' # Jan's MB
 BAUDERATE = 115200
 TIMEOUT = 1
 obj = robot_v2.Robot()
