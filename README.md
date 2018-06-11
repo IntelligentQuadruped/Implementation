@@ -40,8 +40,8 @@ BARRIER_HEIGHT | Sets height of barrier relative to frame height
 PERC_SAMPLES | 
 MIN_AGS_SIGMA | Acceptable deviation within a single gridcell (float 0.1-1.0)
 MIN_AGS_H | Minimum size of a gridcell
-NAV_FOCUS | Reduces the region within the camera image for which obstacles are considered. Options are: 'upper','middle_upper','middle','middle_lower','lower'
-ALGORITHM | Set the combination of reconstruction algortihms. Options are: 'rbf','voronoi','ags_only'
+NAV_FOCUS | Reduces the region within the camera image for which obstacles are considered. Options are: 'upper','middle_upper', 'middle', 'middle_lower', 'lower'
+ALGORITHM | Set the combination of reconstruction algortihms. Options are: 'rbf', 'voronoi', 'ags_only'
 
 ### Modules 
 ![Code Structure](/Module_Structure.png)
