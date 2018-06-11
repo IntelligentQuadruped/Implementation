@@ -46,9 +46,21 @@ ALGORITHM | Set the combination of reconstruction algortihms. Options are: 'rbf'
 ### Modules 
 ![Code Structure](/Module_Structure.png)
 
+## How to execute
+After setting all parameters in config.py, the behavior can be triggered by executing iq.py. 
+```
+python iq.py
+```
+or if used together with the turning sensor platform
+```
+python hiq.py
+```
+
 ## Future Steps
 
-![alt tag](https://github.com/IntelligentQuadruped/Implementation.gif)
+[ ] Calibrate turning behavior
+[ ] Improve application for turning head during normal walking operation
+[ ] Add memory capability to save previously observed obstacles
 
 ## Video of selected physical trials: [Link to Video](https://youtu.be/LM8ooHoOcEU)
 NOTE: The video can only be accessed via a Google account registered with a princeton.edu email address.
