@@ -58,9 +58,9 @@ python hiq.py
 
 ## Future Steps
 
-[ ] Calibrate turning behavior
-[ ] Improve application for turning head during normal walking operation
-[ ] Add memory capability to save previously observed obstacles
+- [ ] Calibrate turning behavior
+- [ ] Improve application for turning head during normal walking operation
+- [ ] Add memory capability to save previously observed obstacles
 
 ## Video of selected physical trials: [Link to Video](https://youtu.be/LM8ooHoOcEU)
 NOTE: The video can only be accessed via a Google account registered with a princeton.edu email address.
