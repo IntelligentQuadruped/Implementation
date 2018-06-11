@@ -1,4 +1,5 @@
 # Intelligent Quadruped Implementation
+This repository holds all code developed in the context of the senior thesis project titled "*Intelligent Quadruped: Simplified RGBD-Based Autonomous Navigation for a Quadruped Robot*." The thesis project was submitted to the department of Mechanical and Aerospace Engineering of Princeton University in partial fullfilment of the requirements of undergraduate independent work. Multiple sensor platform variants were developed as part of the project. GhostRobotics' Minitaur is utilized during ongoing testing of the sensor platforms.
 
 ## Setup
 ### Requirements
