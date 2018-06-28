@@ -12,7 +12,6 @@ Dependencies beyond the **Python 2.7** standard library:
 * pyrealsense 1.16
 * RPi.GPIO
 * skimage
-* OpenCV
 
 ## Structure
 
