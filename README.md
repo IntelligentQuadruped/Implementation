@@ -51,13 +51,13 @@ ALGORITHM | Set the combination of reconstruction algortihms. Options are: 'rbf'
 ![Code Structure](/Module_Structure.png)
 
 ## How to execute
-After setting all parameters in config.py, the behavior can be triggered by executing iq.py. 
+All files are found in main. After setting all parameters in configs/config.py, the behavior can be triggered by executing iq.py. 
 ```
-python iq.py
+sudo python iq.py
 ```
 or if used together with the turning sensor platform
 ```
-python hiq.py
+sudo python hiq.py
 ```
 
 ## Future Steps

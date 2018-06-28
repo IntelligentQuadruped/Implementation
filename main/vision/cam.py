@@ -10,7 +10,7 @@ import logging
 import time
 import matplotlib.pyplot as plt
 from skimage.transform import rescale
-from fileSupport import ensureDir
+from file_support import ensureDir
 from os import path, makedirs
 
 try:
